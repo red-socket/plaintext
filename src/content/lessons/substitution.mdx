@@ -1,0 +1,73 @@
+---
+title: Substitution and frequency analysis
+track: classical
+order: 2
+summary: Scramble the whole alphabet and there are too many keys to try. Count the letters instead.
+minutes: 15
+tool: substitution
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import SubstitutionTool from '../../components/tools/SubstitutionTool.svelte';
+
+<Step n={1} title="Any alphabet will do">
+
+A Caesar shift slides the alphabet along. A **substitution cipher** scrambles it completely: every letter gets a stand-in, chosen however you like. There are about 4 × 10²⁶ ways to scramble 26 letters, so trying every key is hopeless.
+
+The oldest fixed scramble is **Atbash**: the alphabet backwards. A becomes Z, B becomes Y. It comes from Hebrew writing and is still a puzzle favourite, because it undoes itself.
+
+<QuickCheck id="subst-atbash-z" answer="A" note="Atbash swaps the ends of the alphabet: Z and A.">In Atbash, what does Z become?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Keyword alphabets">
+
+A random alphabet is hard to remember, so people often build one from a **keyword**: write the keyword, drop repeated letters, then add the rest of the alphabet in order. ZEBRAS gives `ZEBRASCDFGHIJKLMNOPQTUVWXY`. Plain A becomes Z, B becomes E, C becomes B.
+
+<QuickCheck id="subst-zebras-b" answer="E" note="The cipher alphabet starts Z E B R A S, so the second letter, B, becomes E.">With the keyword ZEBRAS, what does plain B become?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Count the letters">
+
+In the 9th century the scholar al-Kindi noticed the weakness: a substitution changes the letters but not how often they appear. In English, E is the most common letter, then T, A, O, I and N. Count the ciphertext, and its most common letter is probably E.
+
+Letter counts get you started. Word shapes finish the job:
+
+- **One-letter words** are A or I.
+- **Common short words**: THE, AND, THAT, WITH. A three-letter word that appears over and over is almost certainly THE.
+- **Apostrophes**: a single letter after one is usually S or T.
+- **Double letters**: LL, EE, SS, OO, TT are the usual suspects.
+
+The workbench below counts letters for you. Type your guesses into the grid and watch the text fill in.
+
+<SubstitutionTool client:visible text="SBO SPMCI GOMUOQ MS ICIO, MIL SBO SBCOW VCGG AO JI CS. VMSRB SBO SBCPL RMPPCMEO." />
+
+<QuickCheck id="subst-most-common" answer="E" note="E is about one letter in eight in ordinary English.">In a long English text, which letter is usually the most common?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="A way in">
+
+A good order of work:
+
+1. Count the letters. Mark the top one or two as E and T.
+2. Find a repeated three-letter word and try THE.
+3. Fill in what you know everywhere, and look at half-finished words. `TH_T` is THAT; `_E_E` with a gap might be HERE or WERE.
+4. Expect to be wrong sometimes. Clear a guess and try again.
+
+<QuickCheck id="subst-zit" answer="THE" note="The most common three-letter word in English, by a long way.">A cryptogram contains the three-letter word `ZIT` again and again. What English word is it most likely to be?</QuickCheck>
+
+</Step>
+
+<Step n={5} title="How to spot it">
+
+- Letters only, with normal word shapes, but **no Caesar shift works**.
+- Letter counts look like English, **on the wrong letters**.
+- Repeated words and double letters survive.
+- Atbash in particular: `GSV` for THE, and lots of letters from the end of the alphabet.
+
+The [field guide](/field-guide#letters) has substitution next to its neighbours, Caesar and Vigenère.
+
+</Step>

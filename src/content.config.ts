@@ -30,6 +30,17 @@ const step = z.discriminatedUnion('type', [
   z.object({ type: z.literal('hex') }),
   z.object({ type: z.literal('base64') }),
   z.object({ type: z.literal('base32') }),
+  z.object({ type: z.literal('atbash') }),
+  z.object({ type: z.literal('substitution'), key: z.string().regex(/^[A-Z]{26}$/, 'Key must be all 26 letters') }),
+  z.object({ type: z.literal('keyword'), keyword: z.string() }),
+  z.object({ type: z.literal('polybius'), keyword: z.string().optional(), tap: z.boolean().optional() }),
+  z.object({ type: z.literal('vigenere'), key: z.string() }),
+  z.object({ type: z.literal('railfence'), rails: z.number().int().min(2) }),
+  z.object({ type: z.literal('columnar'), key: z.string() }),
+  z.object({ type: z.literal('bacon'), variant: z.union([z.literal(24), z.literal(26)]).optional() }),
+  z.object({ type: z.literal('bacon-case'), cover: z.string(), variant: z.union([z.literal(24), z.literal(26)]).optional() }),
+  z.object({ type: z.literal('book'), source: z.string(), mode: z.enum(['line-word', 'word-letter']) }),
+  z.object({ type: z.literal('upper') }),
   z.object({ type: z.literal('reverse') }),
   z.object({ type: z.literal('map'), map: z.record(z.string(), z.string()) }),
 ]);
@@ -46,7 +57,9 @@ const puzzles = defineCollection({
       order: z.number().int(),
       difficulty: z.number().int().min(1).max(5),
       ciphertext: z.string().optional(),
-      display: z.enum(['text', 'morse-audio']).default('text'),
+      display: z.enum(['text', 'morse-audio', 'pigpen']).default('text'),
+      /** A page of text shown with the puzzle, e.g. the source for a book cipher. Line breaks are kept. */
+      page: z.string().optional(),
       cipher: cipher.optional(),
       answers: z.array(answer).min(1),
       partials: z.array(z.object({ answer, reply: z.string() })).default([]),
@@ -58,7 +71,13 @@ const puzzles = defineCollection({
         ctx.addIssue({ code: 'custom', path: ['ciphertext'], message: 'A puzzle with `cipher` needs `ciphertext`' });
       }
       if (p.cipher && p.ciphertext !== undefined) {
-        const made = applySteps(p.cipher.plaintext, p.cipher.steps);
+        let made: string;
+        try {
+          made = applySteps(p.cipher.plaintext, p.cipher.steps);
+        } catch (e) {
+          ctx.addIssue({ code: 'custom', path: ['cipher'], message: (e as Error).message });
+          return;
+        }
         if (made !== p.ciphertext) {
           ctx.addIssue({ code: 'custom', path: ['ciphertext'], message: `Does not match cipher; expected "${made}"` });
         }

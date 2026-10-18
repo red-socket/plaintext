@@ -1,0 +1,24 @@
+---
+title: The labyrinth
+lesson: polybius
+order: 3
+difficulty: 3
+ciphertext: "33 42 11 11 42 53 / 23 24 32 / 15 32 31 / 23 24 15 32 12 31 / 23 24 32 / 12 22 45 53 32 15 / 21 45 / 41 21 22 42 23 12 51 15"
+cipher: { plaintext: "FOLLOW THE RED THREAD. THE ANSWER IS MINOTAUR.", steps: [{ type: polybius, keyword: LABYRINTH }] }
+answers: [MINOTAUR]
+partials:
+  - answer: "FOLLOW THE RED THREAD THE ANSWER IS MINOTAUR"
+    reply: "Decoded. The answer is the last word."
+hints:
+  - "It's a Polybius square, but the plain square gives nonsense. The square must start with a keyword."
+  - "The square is drawn inside the front cover of a book. What's the book called?"
+  - "Fill the square with L A B Y R I N T H first, then the rest of the alphabet without those letters (J shares a cell with I)."
+writeup: |
+  The pairs use only 1 to 5, so it's a Polybius square, but the plain square gives nonsense. The square is in a book called *Labyrinth*, which makes the title the keyword.
+
+  A square starting `L A B Y R / I N T H C` decodes the line to `FOLLOW THE RED THREAD. THE ANSWER IS MINOTAUR.`
+
+  When a method you recognise gives nonsense, look for a keyword before you look for a different method.
+---
+
+A battered paperback called *Labyrinth*. Inside the front cover, someone has ruled a 5×5 grid in pencil and left it empty. On the back cover, a line of numbers.

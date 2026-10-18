@@ -1,0 +1,39 @@
+---
+title: The ferry
+lesson: book-ciphers
+order: 1
+difficulty: 2
+page: &page |
+  The ferry left the harbour at seven, as it always did,
+  and the captain stood on the bridge with his coffee going cold.
+  Nobody on board noticed the woman in the grey coat,
+  which is odd, because she carried no luggage at all.
+  When they passed the old fort she walked to the rail,
+  dropped a small brass key into the water below,
+  and watched it sink until the light was gone.
+  Then she went down to the cabin and slept until the island.
+ciphertext: "1.1 2.3 4.6 1.1 6.5"
+cipher: { plaintext: "THE CAPTAIN CARRIED THE KEY", steps: [{ type: book, mode: line-word, source: *page }] }
+answers: [CAPTAIN, THE CAPTAIN]
+partials:
+  - answer: "THE CAPTAIN CARRIED THE KEY"
+    reply: "That's the whole message. Who had the key?"
+  - answer: "WOMAN"
+    reply: "That's what the story says. What do the numbers say?"
+  - answer: "THE WOMAN"
+    reply: "That's what the story says. What do the numbers say?"
+hints:
+  - "Each pair of numbers points to one word on the page."
+  - "The first number is the line, the second is the word in that line."
+  - "1.1 is the first word of the first line: The."
+writeup: |
+  Pairs of small numbers next to a page of text: a book cipher. Each pair is a line and a word on that line.
+
+  `1.1` is The, `2.3` is captain, `4.6` is carried, and `6.5` is key. The numbers say `THE CAPTAIN CARRIED THE KEY`, whatever the story says.
+
+  When a puzzle shows you a page and some numbers, count lines and words first. It's quicker than anything clever.
+---
+
+A page torn from a novel, found folded in a ferry timetable. Pencilled under the last line, a short list of numbers.
+
+According to the numbers, who had the key?

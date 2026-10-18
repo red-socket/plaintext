@@ -1,0 +1,27 @@
+---
+title: Yours ever, Edmund
+lesson: book-ciphers
+order: 2
+difficulty: 3
+page: &letter |
+  Dear Margaret,
+  The weather here has turned at last, and the garden is a ruin.
+  I have taken your advice about the roses and cut them back hard.
+  Write soon, and tell me whether the parcel arrived safely.
+  Yours ever, Edmund
+ciphertext: "19.2 1.4 20.5 3.2 1.3 1.4 1.1"
+cipher: { plaintext: "ORCHARD", steps: [{ type: book, mode: word-letter, source: *letter }] }
+answers: [ORCHARD]
+hints:
+  - "The numbers point into the letter itself."
+  - "Some numbers are bigger than the number of lines, so they can't be lines. Count words through the whole letter."
+  - "It's word.letter. Word 1 is Dear, word 2 is Margaret. 1.2 would be E."
+writeup: |
+  The numbers can't be line numbers: some are bigger than the letter's five lines. Counting words through the whole letter instead, and letters within each word, works: it's a word.letter book cipher, and the key is the letter itself.
+
+  The seven references spell `ORCHARD`.
+
+  When the obvious scheme gives numbers that are too big, try a scheme that counts something smaller, words instead of lines, letters instead of words.
+---
+
+A letter from a great-uncle, kept in a family Bible. At the bottom, after the signature, a row of numbers in a different ink.

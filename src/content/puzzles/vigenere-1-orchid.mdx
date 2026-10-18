@@ -1,0 +1,24 @@
+---
+title: Greenhouse
+lesson: vigenere
+order: 1
+difficulty: 2
+ciphertext: "AVGA UH OK VOM JFVGUPRIJG. APH OEUDMU WJ HLZQ."
+cipher: { plaintext: "MEET ME AT THE GREENHOUSE. THE ANSWER IS FERN.", steps: [{ type: vigenere, key: ORCHID }] }
+answers: [FERN]
+partials:
+  - answer: "MEET ME AT THE GREENHOUSE THE ANSWER IS FERN"
+    reply: "Decoded. The answer is the last word."
+  - answer: "ORCHID"
+    reply: "That's the key. Use it."
+hints:
+  - "The label tells you the key."
+  - "Use Vigenère with the key ORCHID."
+  - "M + O = A: shift each letter back by its key letter, O is 14, R is 17, C is 2."
+writeup: |
+  The label says the key is ORCHID. Writing ORCHID over the ciphertext, repeated, and shifting each letter back by its key letter gives `MEET ME AT THE GREENHOUSE. THE ANSWER IS FERN.`
+
+  Notice the two Es in MEET encrypt differently: that's the Vigenère cipher at work.
+---
+
+A plant pot at the back of the greenhouse. On the label, in place of a plant name: *key: orchid*. Underneath, a line of letters.

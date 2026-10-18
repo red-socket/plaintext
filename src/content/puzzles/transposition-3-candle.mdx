@@ -1,0 +1,26 @@
+---
+title: Candle and Crown
+lesson: transposition
+order: 3
+difficulty: 3
+ciphertext: "HITEOWSTRIHDSICRBARREUATKNHOWYCAWYEESBOEK"
+cipher: { plaintext: "THE COURIER WAITS BY THE BACK DOOR. ANSWER WHISKEY.", steps: [{ type: columnar, key: CANDLE }] }
+answers: [WHISKEY]
+partials:
+  - answer: "THE COURIER WAITS BY THE BACK DOOR ANSWER WHISKEY"
+    reply: "Decoded. The answer is the last word."
+  - answer: "CANDLE"
+    reply: "That's the keyword. Use it."
+hints:
+  - "The letters are English, the order isn't, and a rail fence with 2 to 5 rails doesn't work."
+  - "Six columns. Which six-letter word is on the menu?"
+  - "Columnar transposition with the keyword CANDLE."
+writeup: |
+  It's a transposition, but no rail fence fits. The grid has six columns, and the menu is from the Candle & Crown, so CANDLE, six letters, is the keyword.
+
+  The columns were read in the order A, C, D, E, L, N. Putting them back under C A N D L E and reading across gives `THE COURIER WAITS BY THE BACK DOOR. ANSWER WHISKEY.`
+
+  A grid with a fixed number of columns is a clue to the keyword's length.
+---
+
+On the back of a menu from the Candle & Crown, someone has drawn a grid six columns wide and then scribbled it out. Under it, one long line of capitals.

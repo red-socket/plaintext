@@ -1,0 +1,22 @@
+---
+title: Two letters
+lesson: bacon
+order: 1
+difficulty: 1
+ciphertext: "AAAAA ABBAB BAABA BABBA AABAA BAAAB BAABA AAAAA ABABB BAABB"
+cipher: { plaintext: "ANSWER SALT", steps: [{ type: bacon }] }
+answers: [SALT]
+partials:
+  - answer: "ANSWER SALT"
+    reply: "Decoded. The answer is the second word."
+hints:
+  - "Only A and B, in groups of five."
+  - "It's Bacon's cipher: each group of five is one letter."
+  - "Read A as 0 and B as 1: AAAAA is A, AAAAB is B."
+writeup: |
+  Only two letters, in groups of five: Bacon's cipher. Each group is a letter's number written with A for 0 and B for 1.
+
+  `AAAAA` is A, `ABBAB` is N, and the whole thing reads `ANSWER SALT`.
+---
+
+A typed card in a spice tin, nothing but As and Bs.

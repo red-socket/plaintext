@@ -1,0 +1,50 @@
+---
+title: Polybius square and tap code
+track: classical
+order: 3
+summary: Put the alphabet in a 5×5 grid and every letter becomes two small numbers.
+minutes: 10
+tool: polybius
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import PolybiusTool from '../../components/tools/PolybiusTool.svelte';
+
+<Step n={1} title="A grid of letters">
+
+The Greek historian Polybius described a way to signal with torches: write the alphabet in a 5×5 grid, then send each letter as its row and its column. Modern versions use our alphabet, which has one letter too many, so **I and J share a square**.
+
+H is in row 2, column 3, so it's sent as **23**. HELLO is `23 15 31 31 34`.
+
+<PolybiusTool client:visible text="23 15 31 31 34" />
+
+<QuickCheck id="polybius-11" answer="A" note="Row 1, column 1: the first square.">In the plain square, what letter is 11?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Keyed squares">
+
+Like a substitution alphabet, the square can start with a keyword: write the keyword's letters first, without repeats, then the rest of the alphabet. Without the keyword the numbers decode to nonsense, but they still look like a Polybius square, which tells you to look for a word somewhere in the puzzle.
+
+<QuickCheck id="polybius-zebra-11" answer="Z" note="The keyword fills the square first, so Z takes the first cell.">With the keyword ZEBRA, what letter is at 11?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Tap code">
+
+Prisoners have used the same grid to talk through walls: tap the row, pause, tap the column. American prisoners of war in Vietnam used it for years. The tap square drops **K** instead of J and uses **C** in its place, so the grid reads A B C D E, F G H I J, L M N O P…
+
+<QuickCheck id="polybius-tap-k" answer="C" note="Tap code has no K. C stands in for it, and readers work it out from context.">In tap code, which letter stands in for K?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Pairs of digits**, and every digit is from **1 to 5**.
+- **Knocks, taps or flashes** in two groups with a pause between.
+- Dots arranged in pairs of small numbers.
+
+If the pairs decode to nonsense, look for a keyword. If a word looks right except for C where you'd expect K, it's tap code.
+
+</Step>

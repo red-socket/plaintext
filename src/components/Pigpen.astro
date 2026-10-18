@@ -1,0 +1,55 @@
+---
+/** Renders text as pigpen glyphs (static SVG). Non-letters become gaps. */
+import { pigpenDrawing, pigpenGlyph } from '../lib/classical';
+
+interface Props {
+  text: string;
+  label?: string;
+}
+const { text, label = 'A message in pigpen symbols' } = Astro.props;
+const words = text.toUpperCase().split(/[^A-Z]+/).filter(Boolean);
+---
+
+<div class="pigpen" role="img" aria-label={label}>
+  {
+    words.map((w) => (
+      <span class="word">
+        {[...w].map((c) => {
+          const { d, dot } = pigpenDrawing(pigpenGlyph(c)!);
+          return (
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d={d} />
+              {dot && <circle cx={dot[0]} cy={dot[1]} r="1.8" />}
+            </svg>
+          );
+        })}
+      </span>
+    ))
+  }
+</div>
+
+<style>
+  .pigpen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1.6rem;
+  }
+  .word {
+    display: inline-flex;
+    gap: 0.35rem;
+  }
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+  path {
+    fill: none;
+    stroke: var(--violet);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  circle {
+    fill: var(--violet);
+  }
+</style>

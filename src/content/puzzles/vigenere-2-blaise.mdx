@@ -1,0 +1,26 @@
+---
+title: Signed, Blaise
+lesson: vigenere
+order: 2
+difficulty: 3
+ciphertext: "USE KATIPR ESW OLMMV EGEEZ LLF HRWFK NLN. BZI BYSEWV JD BMDPBDO."
+cipher: { plaintext: "THE CIPHER WAS NAMED AFTER THE WRONG MAN. THE ANSWER IS BELLASO.", steps: [{ type: vigenere, key: BLAISE }] }
+answers: [BELLASO]
+partials:
+  - answer: "THE CIPHER WAS NAMED AFTER THE WRONG MAN THE ANSWER IS BELLASO"
+    reply: "Decoded. The answer is the name at the end."
+  - answer: "BLAISE"
+    reply: "That's the key. Use it."
+  - answer: "VIGENERE"
+    reply: "Close, but that's the name the cipher got, not the key. Who signed it?"
+hints:
+  - "No shift works, and word shapes are normal. Try Vigenère."
+  - "The key is something written on the letter."
+  - "Use the signature, BLAISE, as the key."
+writeup: |
+  No single shift works, so it's probably Vigenère, and a key is needed. The letter is signed *Blaise*, as in Blaise de Vigenère. With BLAISE as the key, it reads `THE CIPHER WAS NAMED AFTER THE WRONG MAN. THE ANSWER IS BELLASO.`
+
+  It's true: Giovan Battista Bellaso published the cipher in 1553, decades before Vigenère wrote about a stronger relative of it.
+---
+
+A letter written in a 16th-century hand, signed only *Blaise*. A note from the archivist says it may be a forgery.

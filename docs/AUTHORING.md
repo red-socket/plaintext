@@ -28,7 +28,8 @@ One file per puzzle: `src/content/puzzles/<id>.mdx`. The file name is the puzzle
 | `difficulty` | yes | 1–5. See below. |
 | `ciphertext` | no | Shown in a large violet block with a copy button. Leave it out if the puzzle is an image, a sound or prose. |
 | `cipher` | no | How the ciphertext was made: `{ plaintext: "…", steps: [...] }`. The build applies the steps in order and fails unless the result is exactly `ciphertext`. Always include it when the puzzle has a ciphertext. See [Cipher steps](#cipher-steps). |
-| `display` | no | `text` (default) shows the ciphertext. `morse-audio` hides it and gives a play button that sends it as sound. |
+| `display` | no | `text` (default) shows the ciphertext. `morse-audio` hides it and gives a play button that sends it as sound. `pigpen` draws it as pigpen symbols. |
+| `page` | no | A page of text shown with the puzzle, line breaks kept. The source for book ciphers; also passed to the book cipher helper. |
 | `answers` | yes | Every answer you'll accept. Case, spaces, punctuation and accents are ignored, so `Lighthouse keeper!` and `LIGHTHOUSEKEEPER` are the same. Add real alternatives (`THE LIGHTHOUSE KEEPER`), not typos. |
 | `partials` | no | Wrong turns you can predict, each with a reply. See below. |
 | `hints` | yes | In order, from a nudge to nearly the whole method. Three is the norm. |
@@ -50,6 +51,16 @@ Each step is applied to the output of the one before. Available steps (from `src
 | `{ type: ascii }` | Decimal codes: `72 101 108 108 111`. |
 | `{ type: hex }` | Uppercase byte pairs: `48 65 6C 6C 6F`. |
 | `{ type: base64 }`, `{ type: base32 }` | Standard, with `=` padding. |
+| `{ type: atbash }` | The alphabet reversed. |
+| `{ type: substitution, key: QWERTY… }` | A full 26-letter cipher alphabet. |
+| `{ type: keyword, keyword: ZEBRAS }` | Substitution with a keyword alphabet. |
+| `{ type: polybius }` | `23 15 31 31 34`. Add `keyword:` for a keyed square, `tap: true` for tap code. |
+| `{ type: vigenere, key: LEMON }` | Vigenère; only letters use up the key. |
+| `{ type: railfence, rails: 3 }`, `{ type: columnar, key: ZEBRAS }` | Letters only, uppercase, no spaces. |
+| `{ type: bacon }` | `AABBB AABAA …`. Add `variant: 24` for Bacon's original alphabet. |
+| `{ type: bacon-case, cover: "…" }` | Hides the message in the capitals of a cover text, which needs exactly five letters per hidden letter. |
+| `{ type: book, mode: line-word, source: *page }` | References to the first appearance of each word (or letter, with `word-letter`). Use a YAML anchor so `source` is the puzzle's `page`. |
+| `{ type: upper }` | Uppercase. Useful with `display: pigpen`. |
 | `{ type: reverse }` | The whole string backwards. |
 | `{ type: map, map: { "0": "□", "1": "■" } }` | Replaces single characters; anything else passes through. |
 

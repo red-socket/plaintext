@@ -1,0 +1,21 @@
+---
+title: Hearts and spades
+lesson: bacon
+order: 2
+difficulty: 2
+ciphertext: "♠♥♥♥♥ ♠♥♠♥♥ ♥♠♥♥♥ ♥♠♥♠♠ ♥♠♥♠♠"
+cipher: { plaintext: "QUILL", steps: [{ type: bacon }, { type: map, map: { A: "♥", B: "♠" } }] }
+answers: [QUILL]
+hints:
+  - "Two symbols in groups of five."
+  - "It's Bacon's cipher in disguise. Decide which suit is A."
+  - "Hearts are A and spades are B."
+writeup: |
+  Two symbols, five to a group: Bacon's cipher with suits in place of letters. Spades come first, but reading spades as A gives nonsense. Swap them: with hearts as A and spades as B, the first group `♠♥♥♥♥` is BAAAA, the letter Q.
+
+  The five groups spell `QUILL`.
+
+  If two symbols give nonsense, swap them. One way round always reads.
+---
+
+A row of playing cards dealt face up on a café table, in five neat groups. Only hearts and spades. The dealer left before you sat down.

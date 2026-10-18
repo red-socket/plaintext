@@ -5,13 +5,22 @@ import BaseConverter from './BaseConverter.svelte';
 import CipherWheel from './CipherWheel.svelte';
 import LetterNumbers from './LetterNumbers.svelte';
 import MorseTool from './MorseTool.svelte';
+import BaconTool from './BaconTool.svelte';
+import BookTool from './BookTool.svelte';
+import PigpenTool from './PigpenTool.svelte';
+import PolybiusTool from './PolybiusTool.svelte';
+import SubstitutionTool from './SubstitutionTool.svelte';
+import TranspositionTool from './TranspositionTool.svelte';
+import VigenereTool from './VigenereTool.svelte';
 
 interface Props {
   tool: string;
   text?: string;
+  /** A source text (for the book cipher helper). */
+  page?: string;
 }
 
-const { tool, text = '' } = Astro.props;
+const { tool, text = '', page = '' } = Astro.props;
 ---
 
 {tool === 'caesar-wheel' && <CipherWheel client:visible shift={text ? 0 : 3} mode={text ? 'decrypt' : 'encrypt'} text={text} />}
@@ -19,3 +28,10 @@ const { tool, text = '' } = Astro.props;
 {tool === 'morse-key' && <MorseTool client:visible text={text} />}
 {tool === 'base-converter' && <BaseConverter client:visible text={text} />}
 {tool === 'base64' && <Base64Tool client:visible text={text} />}
+{tool === 'substitution' && <SubstitutionTool client:visible text={text} />}
+{tool === 'polybius' && <PolybiusTool client:visible text={text} />}
+{tool === 'vigenere' && <VigenereTool client:visible text={text} />}
+{tool === 'transposition' && <TranspositionTool client:visible text={text} />}
+{tool === 'bacon' && <BaconTool client:visible text={text} />}
+{tool === 'pigpen' && <PigpenTool client:visible />}
+{tool === 'book' && <BookTool client:visible text={text} source={page} />}

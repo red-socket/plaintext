@@ -1,0 +1,59 @@
+---
+title: The Vigenère cipher
+track: classical
+order: 4
+summary: A different Caesar shift for every letter, set by a keyword. Unbroken for three centuries.
+minutes: 15
+tool: vigenere
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import VigenereTool from '../../components/tools/VigenereTool.svelte';
+
+<Step n={1} title="A shift for every letter">
+
+Caesar uses one shift for the whole message. **Vigenère** uses a keyword to give each letter its own: A means shift 0, B shift 1, up to Z for 25. Write the keyword over the message, repeating it, and shift each letter by the key letter above it.
+
+With the key LEMON, `ATTACK AT DAWN` becomes `LXFOPV EF RNHR`. The two As in ATTACK come out as L and O, because different key letters sat over them.
+
+<QuickCheck id="vigenere-cat-b" answer="DBU" note="Key B is a shift of 1 for every letter: C→D, A→B, T→U.">With the key B, what does CAT become?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="The table">
+
+Before computers, people used a **tabula recta**: 26 rows, each the alphabet shifted one more place. Find the key letter's row and the plaintext letter's column; the ciphertext is where they meet. The workbench does the same arithmetic.
+
+The cipher is named after Blaise de Vigenère, but Giovan Battista Bellaso described it first, in 1553. For three hundred years it was called *le chiffre indéchiffrable*, the unbreakable cipher.
+
+<VigenereTool client:visible text="LXFOPV EF RNHR" />
+
+<QuickCheck id="vigenere-a-k" answer="K" note="A is a shift of 0, so whatever the key letter is comes straight through.">Encrypt the letter A with the key letter K.</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Breaking it">
+
+It was broken in the 1800s, independently by Charles Babbage and Friedrich Kasiski, with an idea you can do by hand:
+
+1. **Find repeats.** When the same plaintext falls under the same part of the key, it encrypts the same way. Look for repeated chunks of three or more letters.
+2. **Measure the gaps.** The distances between repeats are usually multiples of the key length. A length that divides most of them is probably right.
+3. **Split into columns.** With a key of length 5, letters 1, 6, 11… were all shifted by the same key letter. Each column is a Caesar cipher, and frequency analysis breaks each one.
+
+The workbench's "Help me find the key" does each step and shows its working.
+
+<QuickCheck id="vigenere-gaps" answer={["5", "FIVE"]} note="5 divides both 15 and 25. So does 1, but a one-letter key would just be Caesar.">Repeats appear 15 and 25 letters apart. What key length is most likely?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- Letters only, with normal word shapes if spaces are kept, but **no single shift works**.
+- **Letter counts are flat**: no letter stands out the way E does in English.
+- The same word encrypts differently in different places.
+- The puzzle mentions or hides a **keyword**.
+
+Try any keyword the puzzle offers first. Breaking an unknown key needs a long text: a few hundred letters at least.
+
+</Step>

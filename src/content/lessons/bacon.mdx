@@ -1,0 +1,48 @@
+---
+title: Bacon's cipher
+track: classical
+order: 6
+summary: Five letters of two kinds for every letter, hidden in anything that comes in two styles.
+minutes: 10
+tool: bacon
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import BaconTool from '../../components/tools/BaconTool.svelte';
+
+<Step n={1} title="A and B, five at a time">
+
+In 1605 Francis Bacon described a cipher made from only two symbols, A and B, in groups of five. AAAAA is A, AAAAB is B, AAABA is C, and so on: it's binary, centuries before computers. HELLO is `AABBB AABAA ABABB ABABB ABBBA`.
+
+<BaconTool client:visible text="AABBB AABAA ABABB ABABB ABBBA" />
+
+<QuickCheck id="bacon-b" answer="B" note="AAAAB is 00001, the second letter.">Decode `AAAAB`.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Hiding it">
+
+Bacon's real idea wasn't the code, it was where to put it. Any text written in **two styles** can carry it: two typefaces, bold and plain, capitals and lowercase, two colours. The text says one thing; the styles say another.
+
+<QuickCheck id="bacon-case" answer="M" note="hELlo is A B B A A, which is 01100, 12, the thirteenth letter: M.">If capitals mean B and lowercase means A, what letter is hidden in `hELlo`?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="24 or 26 letters">
+
+Bacon's original alphabet had 24 letters: I and J shared a code, and so did U and V. Modern puzzles usually give every letter its own. If a decode is close but a few letters are off by one, switch versions.
+
+<QuickCheck id="bacon-24" answer="U" note="In the 24-letter version, U and V share a code, and so do I and J.">In Bacon's original 24-letter alphabet, which letter shares a code with V?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Two symbols in groups of five**: A/B, or anything else.
+- A text where **two styles alternate for no reason**: odd capitals, mixed fonts, some words bold.
+- A letter count that's a multiple of five.
+
+If two symbols read as nonsense, swap which one is A.
+
+</Step>

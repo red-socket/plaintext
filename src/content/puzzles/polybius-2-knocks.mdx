@@ -1,0 +1,26 @@
+---
+title: Through the wall
+lesson: polybius
+order: 2
+difficulty: 2
+ciphertext: "44 23 15 54 / 32 34 51 15 / 45 43 / 11 44 / 14 11 52 33"
+cipher: { plaintext: "THEY MOVE US AT DAWN", steps: [{ type: polybius, tap: true }] }
+answers: [DAWN, AT DAWN]
+partials:
+  - answer: "THEY MOVE US AT DAWN"
+    reply: "That's the whole message. When?"
+hints:
+  - "Knocks in two groups. Prisoners have talked this way for a century."
+  - "It's tap code: a 5×5 grid, row then column. There's no K in the grid."
+  - "The tap grid starts A B C D E, F G H I J, L M N O P. 44 is T."
+writeup: |
+  Knocks in pairs of groups, between cells: tap code. The first count is the row, the second the column, in a 5×5 grid without K.
+
+  `44 23 15 54` is THEY, and the message reads `THEY MOVE US AT DAWN`.
+
+  Tap code and the Polybius square differ in one cell: tap code drops K (C stands in for it), Polybius merges I and J.
+---
+
+A cell in an old prison, now a museum. The guide's notes include what one prisoner heard through the wall one night, written down as counts of knocks: *4 then 4* is written 44.
+
+When are they being moved?

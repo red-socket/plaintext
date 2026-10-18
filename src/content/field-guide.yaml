@@ -32,7 +32,7 @@
     - Lots of letters from the far end of the alphabet (Z, Y, X, W) where you'd expect A, B, C, D.
     - "GSV keeps appearing: that's THE."
   try: Reverse the alphabet. A↔Z, B↔Y, C↔X and so on.
-  track: classical
+  lesson: substitution
 
 - id: substitution
   name: Substitution cipher
@@ -43,7 +43,7 @@
     - Letter frequencies look like English, just on the wrong letters.
     - Repeated patterns survive, like a double letter or a repeated three-letter word.
   try: Count letters. The most common is probably E, then T, A, O. Guess short words first.
-  track: classical
+  lesson: substitution
 
 - id: vigenere
   name: Vigenère cipher
@@ -54,7 +54,7 @@
     - The same word encrypts differently in different places.
     - Repeated chunks appear at distances that share a factor, which is the key length.
   try: Look for a keyword in the puzzle. Without one, find the key length, then solve each column as a Caesar shift.
-  track: classical
+  lesson: vigenere
 
 - id: rail-fence
   name: Rail fence and other transpositions
@@ -65,7 +65,7 @@
     - Often one long block with no spaces.
     - You can sometimes spot real words broken up across the text.
   try: "Write the letters in a zigzag over 2, 3 or 4 rows, or in a grid, and read it off another way."
-  track: classical
+  lesson: transposition
 
 - id: bacon
   name: Baconian cipher
@@ -75,7 +75,7 @@
     - Only two symbols, often A and B, in groups of five.
     - Or a normal-looking text where two fonts, cases or styles alternate for no reason.
   try: Read each group of five as a binary number (A=0, B=1), then 0=A, 1=B, 2=C. Older versions merge I/J and U/V.
-  track: classical
+  lesson: bacon
 
 - id: a1z26
   name: A1Z26
@@ -104,7 +104,7 @@
     - Pairs of digits, each digit from 1 to 5.
     - Knocks or taps in two groups, or dots arranged in pairs.
   try: Write A–Z in a 5×5 grid (I and J share a cell) and read each pair as row then column. Tap code uses C for K instead.
-  track: classical
+  lesson: polybius
 
 - id: ascii
   name: ASCII codes
@@ -124,7 +124,7 @@
     - Groups of two or three numbers, where one of them can get large.
     - The puzzle mentions or shows a book, a page, a song or a document.
   try: Read the numbers as page, line and word (or word and letter) in the text the puzzle points to.
-  track: classical
+  lesson: book-ciphers
 
 - id: binary
   name: Binary
@@ -205,7 +205,7 @@
     - Symbols built from parts of a tic-tac-toe grid and an X.
     - Some symbols are the same shape with and without a dot.
   try: "Draw two # grids and two X's. Fill in A–I, then J–R with dots, then S–V, then W–Z with dots. Each symbol is the shape of its letter's cell."
-  track: classical
+  lesson: pigpen
 
 - id: semaphore
   name: Flag semaphore

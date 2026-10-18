@@ -1,0 +1,26 @@
+---
+title: With love, Gardenia
+lesson: substitution
+order: 2
+difficulty: 2
+ciphertext: "TBE SEED VGUJT RMDE CS SULNJMWEQ."
+cipher: { plaintext: "THE SEED VAULT CODE IS SUNFLOWER.", steps: [{ type: keyword, keyword: GARDENIA }] }
+answers: [SUNFLOWER]
+partials:
+  - answer: "THE SEED VAULT CODE IS SUNFLOWER"
+    reply: "Decoded. The answer is the code."
+  - answer: "GARDENIA"
+    reply: "That's the key. Use it to build the cipher alphabet."
+hints:
+  - "No single shift works. It's a substitution, and the signature is unusual."
+  - "Build a keyword alphabet from the signature: GARDENI, then the rest of the alphabet."
+  - "The cipher alphabet is GARDENIBCFHJKLMOPQSTUVWXYZ. Plain A became G, B became A."
+writeup: |
+  No Caesar shift works, and a love letter signed with an odd name suggests the name is the key. A keyword alphabet from GARDENIA drops the repeated A and adds the rest: `GARDENIBCFHJKLMOPQSTUVWXYZ`.
+
+  Reading each ciphertext letter back through that alphabet gives `THE SEED VAULT CODE IS SUNFLOWER.`
+
+  A word in a puzzle that has no other job, like a signature, a title or a name on a box, is usually a key.
+---
+
+A botanist's love letter, tucked into a seed catalogue. It's one line long, and signed *with love, Gardenia*. The botanist's wife is called Ruth.

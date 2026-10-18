@@ -1,0 +1,52 @@
+---
+title: Rail fence and columns
+track: classical
+order: 5
+summary: Keep every letter, change the order. Transposition ciphers shuffle instead of substituting.
+minutes: 12
+tool: transposition
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import TranspositionTool from '../../components/tools/TranspositionTool.svelte';
+
+<Step n={1} title="Same letters, new order">
+
+Every cipher so far replaced letters. A **transposition** cipher keeps the letters and moves them around, like an anagram with rules. Because no letter changes, the letter counts are exactly those of English: plenty of E, T and A, the usual third of vowels. That's the giveaway.
+
+<QuickCheck id="transposition-which" answer="TRANSPOSITION" note="Counts that match English mean the letters themselves weren't changed, only moved.">A ciphertext's letter counts look exactly like English, but nothing reads. Substitution or transposition?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="The rail fence">
+
+Write the message in a zigzag across a few rows, the **rails**, then read each row from left to right. With three rails, `WE ARE DISCOVERED, FLEE AT ONCE` zigzags down and up, and reads off as `WECRLTEER…`. Open the tool below and switch to Encrypt to watch the zigzag form.
+
+To decrypt, you need the number of rails. Try 2, 3 and 4; it's rarely more.
+
+<TranspositionTool client:visible text="WECRLTEERDSOEEFEAOCAIVDEN" />
+
+<QuickCheck id="transposition-hello" answer="HLOEL" note="With two rails, letters 1, 3, 5 go on top (H L O) and 2, 4 below (E L).">With 2 rails, encrypt HELLO.</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Columns under a keyword">
+
+The **columnar** transposition writes the message in rows under a keyword, then reads the columns in alphabetical order of the keyword's letters. Under ZEBRAS, the column below A is read first, then B, E, R, S and finally Z.
+
+To decrypt, you need the keyword, or at least its length and order. The puzzle usually hides it.
+
+<QuickCheck id="transposition-cab" answer="A" note="Columns are read in alphabetical order of the keyword: A, then B, then C.">Under the keyword CAB, which letter's column is read first?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Letter counts match English exactly**, and about two letters in five are vowels.
+- Usually **one long block** with no spaces.
+- Bits of words show up broken across the text, or a word reads in every second letter.
+
+If it's not a rail fence with 2 to 5 rails, look for a keyword and try columns.
+
+</Step>

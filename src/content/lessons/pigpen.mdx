@@ -1,0 +1,44 @@
+---
+title: The pigpen cipher
+track: classical
+order: 7
+summary: Letters drawn as the lines around them. A simple key that looks like an alien alphabet.
+minutes: 8
+tool: pigpen
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import PigpenTool from '../../components/tools/PigpenTool.svelte';
+
+<Step n={1} title="Draw the cell">
+
+Draw two tic-tac-toe grids and two X shapes. Fill the first grid with A to I, the second with J to R, the first X with S to V, and the second X with W to Z. The letters in the second grid and second X each get a **dot**.
+
+Now each letter is written as the **shape of its cell**: A, in the top-left corner, is just a right side and a bottom (`⌟`). E, in the middle, is a full square. S, at the top of the first X, is a V.
+
+Freemasons used it in the 1700s, which is why it's sometimes called the Masonic cipher.
+
+<PigpenTool client:visible />
+
+<QuickCheck id="pigpen-e" answer="E" note="The middle cell of the first grid has lines on all four sides and no dot.">Which letter is drawn as a full square with no dot?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Other keys">
+
+Pigpen has variants: some put the letters in the X shapes in a different order, some fill the grids differently, some put the dots elsewhere. If most letters come out right and a few look wrong, the puzzle probably uses another key. Work out the odd ones from the words around them.
+
+<QuickCheck id="pigpen-n" answer="N" note="The middle cell of the second grid: a full square with a dot.">Which letter is a full square with a dot inside?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="How to spot it">
+
+- **Symbols made of right angles and V shapes**, some with dots.
+- The same shape turns up **with and without a dot**.
+- About 26 different symbols, in word-length groups.
+
+Lookalikes include the Templar cipher (based on a cross) and Rosicrucian variants. The method is the same: work out the grid, then read the cells.
+
+</Step>

@@ -11,9 +11,11 @@ interface Props {
   text?: string;
   /** This tool starts open. */
   open?: string;
+  /** A source text shown with the puzzle, passed to the book cipher helper. */
+  page?: string;
 }
 
-const { text = '', open } = Astro.props;
+const { text = '', open, page } = Astro.props;
 ---
 
 <section class="toolkit" aria-labelledby="toolkit-title">
@@ -26,7 +28,7 @@ const { text = '', open } = Astro.props;
           <span class="desc">{t.description}</span>
         </summary>
         <div class="body">
-          <ToolView tool={t.id} text={text} />
+          <ToolView tool={t.id} text={text} page={page} />
         </div>
       </details>
     ))

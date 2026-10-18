@@ -1,0 +1,24 @@
+---
+title: Grid reference
+lesson: polybius
+order: 1
+difficulty: 1
+ciphertext: "44 23 15 / 11 33 43 52 15 42 / 24 43 / 13 11 43 44 31 15"
+cipher: { plaintext: "THE ANSWER IS CASTLE", steps: [{ type: polybius }] }
+answers: [CASTLE]
+partials:
+  - answer: "THE ANSWER IS CASTLE"
+    reply: "Decoded. The answer is the last word."
+hints:
+  - "Pairs of digits, and no digit is bigger than 5."
+  - "Put the alphabet in a 5×5 grid, I and J sharing a square. Each pair is a row and a column."
+  - "44 is row 4, column 4: T. 23 is H, 15 is E."
+writeup: |
+  Pairs of digits from 1 to 5 point to a Polybius square. Each pair is a row, then a column, in a 5×5 grid of the alphabet.
+
+  `44 23 15` is THE, and the line reads `THE ANSWER IS CASTLE`.
+
+  Digits that never go above 5, always in pairs, are the Polybius square's fingerprint.
+---
+
+An old orienteering map with a list of grid references in the margin. None of them match anything on the map.

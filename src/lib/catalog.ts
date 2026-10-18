@@ -44,6 +44,48 @@ export const TOOLS: Tool[] = [
     description: 'Turn the inner ring to any shift, encrypt or decrypt text, and try all 25 shifts at once.',
     lesson: 'caesar',
   },
+  {
+    id: 'substitution',
+    name: 'Substitution workbench',
+    description: 'Letter counts, a grid for your guesses and a live preview. Fills in Atbash or a keyword alphabet.',
+    lesson: 'substitution',
+  },
+  {
+    id: 'polybius',
+    name: 'Polybius square',
+    description: 'The 5×5 square, with an optional keyword, for Polybius pairs and tap code.',
+    lesson: 'polybius',
+  },
+  {
+    id: 'vigenere',
+    name: 'Vigenère workbench',
+    description: 'Encrypt and decrypt with a key, and find an unknown key from repeats and letter counts.',
+    lesson: 'vigenere',
+  },
+  {
+    id: 'transposition',
+    name: 'Transposition',
+    description: 'Rail fence with any number of rails, and columns under a keyword, with the shape drawn out.',
+    lesson: 'transposition',
+  },
+  {
+    id: 'bacon',
+    name: 'Bacon decoder',
+    description: 'Reads A/B text, any two symbols, or capitals hidden in ordinary text.',
+    lesson: 'bacon',
+  },
+  {
+    id: 'pigpen',
+    name: 'Pigpen key',
+    description: 'The pigpen key, a board of symbols to click, and a way to draw your own messages.',
+    lesson: 'pigpen',
+  },
+  {
+    id: 'book',
+    name: 'Book cipher helper',
+    description: 'Numbers the lines, words and letters of a text and looks up the references.',
+    lesson: 'book-ciphers',
+  },
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);

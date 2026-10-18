@@ -1,0 +1,24 @@
+---
+title: The station ledger
+lesson: substitution
+order: 3
+difficulty: 4
+ciphertext: "VTVFW IJGJLPB OGIJVF ZVVSI G CVRMVF. OPIJ PQ LJ LI RACC: JFGLBI, JLOVI, JYV SFLUV PQ UPGC. XAJ PB JYV CGIJ SGMV PQ JYLI PBV, IPOVXPRW YGI KFLJJVB G ILBMCV CLBV LB G RLQQVFVBJ YGBR. LJ IGWI JYV ZVW JP JYV ILMBGC XPN LI ABRVF JYV JYLFR IJVS, GBR JYGJ JYV KPFR JP MLTV GJ JYV RPPF LI IVOGSYPFV."
+cipher: { plaintext: "EVERY STATION MASTER KEEPS A LEDGER. MOST OF IT IS DULL: TRAINS, TIMES, THE PRICE OF COAL. BUT ON THE LAST PAGE OF THIS ONE, SOMEBODY HAS WRITTEN A SINGLE LINE IN A DIFFERENT HAND. IT SAYS THE KEY TO THE SIGNAL BOX IS UNDER THE THIRD STEP, AND THAT THE WORD TO GIVE AT THE DOOR IS SEMAPHORE.", steps: [{ type: substitution, key: GXURVQMYLEZCOBPSDFIJATKNWH }] }
+answers: [SEMAPHORE]
+partials:
+  - answer: "UNDER THE THIRD STEP"
+    reply: "That's where the key is. What's the word to give at the door?"
+hints:
+  - "There's no keyword to find. Count the letters and look at the short words."
+  - "The most common letter is V, and JYV appears again and again. Try E and THE."
+  - "G on its own is A. LJ is a two-letter word starting with I. Fill those in and the rest follows."
+writeup: |
+  No keyword, so this is frequency analysis. V is the most common letter and stands for E; the three-letter `JYV` appears seven times and is THE. G on its own is A.
+
+  With T, H, E and A in place, half-words appear: `IJGJLPB` is S T A T I O N once you guess the S, I, O and N. Each new word gives letters for others. The last line says the word to give at the door is SEMAPHORE.
+
+  Start with the most common letter and the most common short word. Each word you solve gives you letters for three others.
+---
+
+The last page of a ledger from a closed railway station. The handwriting changes for one paragraph, and every letter in it is wrong.

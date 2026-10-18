@@ -1,0 +1,24 @@
+---
+title: The night porter
+lesson: vigenere
+order: 3
+difficulty: 5
+ciphertext: "KHZ EETHDZR ZN OLR SANIZVNO SS KHZ SYU LDFERRT LNJ NJ AVEDJAF RNY SACY JRR UOJV. GYE FIL KO OLR UOJV VJ KZTG SY OLR EIBLG GOMXRI, AIH GYE IMTYT KSEKEM ORVPN MG FN V GURII EEFUIH UZS IIPB. HZ WNPS OLNK NJFBUY CEF RSFIQ WOM MG ZN OARETT CRRRN. XURT DW AFT OVHV. SJQRFNZ EFBEY JBI IO PNJT RMAKEM, EAU SJQRFNZ IYJE VWXVD ASE ZT OLR NEZO NWTZV GYAO. FBKH JJ GYEH ANETZH GYE NEZV BJB. GYE WSK ZS ZQCKY ISJ. KHZ SACY OLVEG GISK IIWVUE DW N TAMH JZTC SAV WJVQ FN DX, NED OLR NOMH VJ OWWVUIVR."
+cipher: { plaintext: "THE ARCHIVE IN THE BASEMENT OF THE OLD LIBRARY HAS NO WINDOWS AND ONLY ONE DOOR. THE KEY TO THE DOOR IS KEPT BY THE NIGHT PORTER, AND THE NIGHT PORTER KEEPS IT ON A CHAIN AROUND HIS NECK. HE SAYS THAT NOBODY HAS ASKED FOR IT IN TWENTY YEARS. THAT IS NOT TRUE. SOMEONE ASKED FOR IT LAST WINTER, AND SOMEONE ELSE ASKED FOR IT THE WEEK AFTER THAT. BOTH OF THEM WANTED THE SAME BOX. THE BOX IS EMPTY NOW. THE ONLY THING LEFT INSIDE IS A CARD WITH ONE WORD ON IT, AND THE WORD IS OBSIDIAN.", steps: [{ type: vigenere, key: RAVEN }] }
+answers: [OBSIDIAN]
+partials:
+  - answer: "RAVEN"
+    reply: "That's the key. What does the message say?"
+hints:
+  - "No key is given anywhere. The text is long enough to find it from the letters alone."
+  - "Find repeated chunks and the gaps between them. Most gaps share one factor: the key length."
+  - "The key has five letters. Split the text into five columns and solve each as a Caesar shift."
+writeup: |
+  There's no key in the puzzle, so it has to come from the ciphertext. The message is long and repetitive, which is exactly what breaks Vigenère: phrases like THE NIGHT PORTER and ASKED FOR IT fall under the same part of the key more than once and encrypt identically.
+
+  The gaps between those repeats are almost all multiples of 5. Splitting the text into five columns gives five Caesar ciphers, and frequency analysis on each gives the shifts R, A, V, E, N. With RAVEN as the key, the text ends `THE WORD IS OBSIDIAN.`
+
+  Long messages are a Vigenère cipher's enemy. Every repeat is a clue to the key length.
+---
+
+A sheet of typing paper found in the archive's returns tray. No key, no note, no signature. Just this.

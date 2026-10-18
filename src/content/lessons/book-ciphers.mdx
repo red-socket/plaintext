@@ -1,0 +1,55 @@
+---
+title: Book ciphers
+track: classical
+order: 8
+summary: The key is a whole text that both sides own. The numbers point into it.
+minutes: 10
+tool: book
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import BookTool from '../../components/tools/BookTool.svelte';
+
+<Step n={1} title="Numbers that point into a text">
+
+A **book cipher** uses a text that both sides have: a book, a page, a newspaper, a song. The message is a list of references into it. With `line.word`, the reference 2.4 means the fourth word of the second line.
+
+Take this short text:
+
+> The cat sat on the mat\
+> and the dog lay by the door.
+
+<QuickCheck id="book-lay" answer="LAY" note="Line 2 is 'and the dog lay by the door'. Its fourth word is lay.">In the text above, which word is 2.4?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Other schemes">
+
+Books cipher in many ways. Common ones:
+
+- **page.line.word**, or just **line.word** for a single page;
+- **word.letter**: count words through the whole text, then letters within the word, to spell a message one letter at a time;
+- **first letters** of the words the numbers point to.
+
+The famous Beale ciphers of the 1880s use word numbers; one of the three was solved with the Declaration of Independence as the key. The other two are still unsolved.
+
+<QuickCheck id="book-letter" answer="A" note="Word 3 of the text is sat, and its second letter is A.">In the same text, with word.letter, what is 3.2?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Finding the book">
+
+Without the right text, a book cipher is unbreakable. Fair puzzles always tell you which text it is, though often indirectly: a title, an author, a quotation, a date, a picture of a shelf. The helper below numbers any text you paste in.
+
+<BookTool client:visible source={'The cat sat on the mat\nand the dog lay by the door.'} text="2.4 1.2" />
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Groups of two or three numbers** joined by dots or dashes, where one number can be large.
+- The puzzle mentions or shows **a book, a page, a letter or a song**.
+- Numbers never go above the number of lines or words in that text.
+
+</Step>
