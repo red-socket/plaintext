@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../lib/url';
   import { onMount } from 'svelte';
   import { exportCode, importCode, isLessonDone, isSolved, mergeProgress, progress, resetProgress, type Progress } from '../lib/progress';
 
@@ -63,7 +64,7 @@
 <section class="block" aria-labelledby="summary-title">
   <h2 id="summary-title">So far</h2>
   {#if empty}
-    <p>Nothing yet. <a href={`/learn/${lessons[0]?.id ?? ''}`}>Start the first lesson</a> and your progress will show up here.</p>
+    <p>Nothing yet. <a href={url(`/learn/${lessons[0]?.id ?? ''}`)}>Start the first lesson</a> and your progress will show up here.</p>
   {:else}
     <p class="summary">
       {lessonsDone.length} of {lessons.length} lesson{lessons.length === 1 ? '' : 's'} complete.
@@ -76,7 +77,7 @@
           {@const s = p.puzzles[z.id]}
           <li class:done={s?.solvedAt}>
             <span class="box" aria-hidden="true"></span>
-            <a href={`/puzzles/${z.id}`}>{z.title}</a>
+            <a href={url(`/puzzles/${z.id}`)}>{z.title}</a>
             <span class="dots" aria-hidden="true"></span>
             <span class="meta">
               {#if s?.solvedAt}Solved.{s.hints === 0 ? ' No hints.' : ` ${s.hints} hint${s.hints === 1 ? '' : 's'}.`}{:else if s?.hints}Not solved, {s.hints} hint{s.hints === 1 ? '' : 's'} seen.{:else}Not started.{/if}

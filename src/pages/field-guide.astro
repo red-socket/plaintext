@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { GUIDE_GROUPS, TRACKS, type GuideGroup } from '../lib/catalog';
@@ -12,7 +13,7 @@ const groups = (Object.keys(GUIDE_GROUPS) as GuideGroup[])
 function source(e: (typeof entries)[number]) {
   if (e.data.lesson) {
     const l = lessons.find((x) => x.id === e.data.lesson!.id);
-    if (l) return { href: `/learn/${l.id}`, text: `Lesson: ${l.data.title}` };
+    if (l) return { href: url(`/learn/${l.id}`), text: `Lesson: ${l.data.title}` };
   }
   const t = TRACKS.find((x) => x.id === e.data.track);
   return t ? { text: `Track ${t.number}: ${t.title}. Lesson not written yet.` } : null;

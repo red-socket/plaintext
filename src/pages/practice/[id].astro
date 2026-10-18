@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import { getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Practice from '../../components/Practice.svelte';
@@ -16,7 +17,7 @@ const lesson = (await getEntry('lessons', lessonId))!;
 <Base title={title} description={description}>
   <div class="practice-page page">
     <header class="prose">
-      <p class="meta"><a href={`/learn/${lesson.id}`}>{lesson.data.title}</a></p>
+      <p class="meta"><a href={url(`/learn/${lesson.id}`)}>{lesson.data.title}</a></p>
       <h1>{title}</h1>
       <p>A new message every time. Nothing here is saved or scored; it's just practice.</p>
     </header>

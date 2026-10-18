@@ -1,4 +1,5 @@
 /** Tracks and tools: the fixed structure that content files point into. */
+import { url } from './url';
 
 export type Track = { id: string; number: number; title: string; blurb: string };
 
@@ -197,14 +198,14 @@ export type GuideGroup = keyof typeof GUIDE_GROUPS;
 /** Generated practice pages, by lesson. */
 export const PRACTICE: Record<string, { href: string; title: string; cipher: 'caesar' | 'vigenere'; tool: string; description: string }> = {
   caesar: {
-    href: '/practice/caesar',
+    href: url('/practice/caesar'),
     title: 'Caesar practice',
     cipher: 'caesar',
     tool: 'caesar-wheel',
     description: 'Endless Caesar cipher messages to decode, with or without the key.',
   },
   vigenere: {
-    href: '/practice/vigenere',
+    href: url('/practice/vigenere'),
     title: 'Vigenère practice',
     cipher: 'vigenere',
     tool: 'vigenere',

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../../lib/url';
   import { findEmbedded, hexdump, identify, imageEnd, readZip, strings, type ZipEntry } from '../../lib/files';
 
   interface Props {
@@ -63,7 +64,7 @@
 <div class="tool-panel">
   <div class="row">
     <label class="tool-field"><span>Open any file (read in your browser, never uploaded)</span><input type="file" onchange={onPick} /></label>
-    {#if file}<button type="button" class="btn quiet" onclick={() => fromUrl(file)}>Open the file on this page</button>{/if}
+    {#if file}<button type="button" class="btn quiet" onclick={() => fromUrl(url(file))}>Open the file on this page</button>{/if}
   </div>
 
   {#if bytes}

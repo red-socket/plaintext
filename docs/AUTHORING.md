@@ -164,6 +164,7 @@ One file per lesson: `src/content/lessons/<id>.mdx`. Lessons are short steps, ea
 - Put a `<QuickCheck>` in most steps. Finishing every quick check completes the lesson and unlocks its tool, so every lesson needs at least one.
 - Embed the lesson's tool where it helps, e.g. `<CipherWheel client:visible shift={3} />`.
 - End with a step on **how to spot it**: the signs that tell a solver to try this technique. Then add or update the matching entry in the Field Guide.
+- Link to other pages and files from the site root, as Markdown links: `[field guide](/field-guide#letters)`. The site is served under `/plaintext` on GitHub Pages and the build adds that prefix to Markdown links. A tool's `file` prop (`file="/files/lessons/qr.png"`) is handled by the tool. A raw `<a href="/…">` in MDX is not, so use Markdown links.
 
 ### Quick checks
 

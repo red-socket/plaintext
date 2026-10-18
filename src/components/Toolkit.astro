@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /**
  * The player's unlocked tools under a puzzle or practice page, grouped by track, each in a
  * collapsible panel. Which tools are unlocked lives in the browser, so the script decides what to show.
@@ -51,7 +52,7 @@ const groups = TRACKS.map((t) => ({ track: t, tools: TOOLS.filter((tool) => trac
     ))
   }
   <p class="kit-empty filing" hidden>No tools yet. Finishing a lesson earns you its tool, and it appears here on every puzzle.</p>
-  <p class="kit-more meta" hidden><span></span> <a href="/toolkit">See your toolkit</a>.</p>
+  <p class="kit-more meta" hidden><span></span> <a href={url('/toolkit')}>See your toolkit</a>.</p>
 </section>
 
 <script>

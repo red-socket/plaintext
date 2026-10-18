@@ -2,6 +2,8 @@
 
 A game-first platform for learning cryptography and informatics: encodings, classic ciphers, hidden data and how computers store things, taught through puzzles in the style of ARGs and puzzle hunts.
 
+Play it at **[red-socket.github.io/plaintext](https://red-socket.github.io/plaintext/)**.
+
 Want to write a puzzle? Start with [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/AUTHORING.md](docs/AUTHORING.md).
 
 Made by [Red Socket](https://github.com/red-socket).
@@ -16,7 +18,7 @@ npm run check    # types + tests
 npm run verify   # types, tests and build (what CI runs)
 ```
 
-Built with [Astro](https://astro.build).
+Built with [Astro](https://astro.build). Pushing to `main` deploys to GitHub Pages (`.github/workflows/pages.yml`). Pages serves the site under `/plaintext`, so that build sets `BASE_PATH=/plaintext`; other hosts build from the root as usual.
 
 ## Licence
 

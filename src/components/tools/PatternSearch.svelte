@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../../lib/url';
   import { onMount } from 'svelte';
   interface Props {
     pattern?: string;
@@ -15,7 +16,7 @@
   async function load() {
     if (words || loading) return;
     loading = true;
-    const text = await (await fetch('/files/words.txt')).text();
+    const text = await (await fetch(url('/files/words.txt'))).text();
     words = text.trim().split('\n');
     loading = false;
   }
@@ -63,7 +64,7 @@
       <ul class="matches">{#each result.matches.slice(0, SHOWN) as w}<li>{w}</li>{/each}</ul>
     {/if}
   {/if}
-  <p class="meta">Searches 38,015 common English words from SCOWL by Kevin Atkinson (<a href="/files/words-COPYRIGHT.txt">licence</a>). "Whole words only" adds ^ and $ for you.</p>
+  <p class="meta">Searches 38,015 common English words from SCOWL by Kevin Atkinson (<a href={url('/files/words-COPYRIGHT.txt')}>licence</a>). "Whole words only" adds ^ and $ for you.</p>
 </div>
 
 <style>

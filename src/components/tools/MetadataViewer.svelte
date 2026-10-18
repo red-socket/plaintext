@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../../lib/url';
   import { readMetadata, type Metadata } from '../../lib/metadata';
 
   interface Props {
@@ -38,7 +39,7 @@
     <span>Open a JPEG or PNG. Nothing is uploaded: the file is read in your browser.</span>
     <input type="file" accept="image/jpeg,image/png" onchange={onPick} />
   </label>
-  {#if file && /\.(jpe?g|png)$/i.test(file) && !name}<button type="button" class="btn quiet" onclick={() => fromUrl(file)}>Read the file on this page</button>{/if}
+  {#if file && /\.(jpe?g|png)$/i.test(file) && !name}<button type="button" class="btn quiet" onclick={() => fromUrl(url(file))}>Read the file on this page</button>{/if}
 
   <p class="tool-error" aria-live="polite">{error}</p>
   {#if meta && meta.format !== 'unknown'}

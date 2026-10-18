@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import LessonComplete from '../../components/LessonComplete.svelte';
@@ -28,7 +29,7 @@ const number = lessonNumber(lesson, ordered);
     <header class="lesson-head">
       <div>
         <nav class="crumbs filing" aria-label="Breadcrumb">
-          <a href="/#tracks">Learn</a> <span aria-hidden="true">/</span> <a href="/#tracks">Track {track.number}: {track.title}</a>
+          <a href={url('/#tracks')}>Learn</a> <span aria-hidden="true">/</span> <a href={url('/#tracks')}>Track {track.number}: {track.title}</a>
         </nav>
         <p class="filing">Lesson {number}, about {lesson.data.minutes} minutes</p>
         <h1>{lesson.data.title}</h1>
@@ -47,8 +48,8 @@ const number = lessonNumber(lesson, ordered);
         client:load
         lessonId={lesson.id}
         toolName={tool?.name}
-        firstPuzzle={first && { href: `/puzzles/${first.id}`, title: first.data.title }}
-        next={nextLesson && { href: `/learn/${nextLesson.id}`, title: nextLesson.data.title }}
+        firstPuzzle={first && { href: url(`/puzzles/${first.id}`), title: first.data.title }}
+        next={nextLesson && { href: url(`/learn/${nextLesson.id}`), title: nextLesson.data.title }}
       />
     </div>
 

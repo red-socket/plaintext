@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../lib/url';
   import { onMount } from 'svelte';
   import { isLessonDone, progress, type Progress } from '../lib/progress';
 
@@ -36,7 +37,7 @@
       <p class="stamp" aria-hidden="true">Cleared</p>
     </div>
     {#if toolName}
-      <p>The <strong>{toolName}</strong> is now in your <a href="/toolkit">toolkit</a>. It's there on every puzzle page from now on.</p>
+      <p>The <strong>{toolName}</strong> is now in your <a href={url('/toolkit')}>toolkit</a>. It's there on every puzzle page from now on.</p>
     {/if}
     {#if firstPuzzle}
       <p><a class="btn" href={firstPuzzle.href}>Start the puzzles: {firstPuzzle.title}</a></p>

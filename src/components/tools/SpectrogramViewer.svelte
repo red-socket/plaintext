@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url as siteUrl } from '../../lib/url';
   import { spectrogram } from '../../lib/audio';
   import { loadAudio } from './audioLoad';
 
@@ -85,7 +86,7 @@
 <div class="tool-panel">
   <div class="row">
     <label class="tool-field"><span>Open a sound file (read in your browser)</span><input type="file" accept="audio/*,.wav" onchange={onPick} /></label>
-    {#if file && /\.(wav|mp3|ogg|flac)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => fromUrl(file)} disabled={busy}>Open the sound on this page</button>{/if}
+    {#if file && /\.(wav|mp3|ogg|flac)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => fromUrl(siteUrl(file))} disabled={busy}>Open the sound on this page</button>{/if}
   </div>
   <p class="tool-error" aria-live="polite">{error}</p>
   {#if busy}<p class="meta">Reading the sound…</p>{/if}

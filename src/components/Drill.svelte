@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../lib/url';
   import { onMount } from 'svelte';
   import { pigpenDrawing, pigpenGlyph } from '../lib/classical';
   import { DRILL_TECHNIQUES, lookalikes, makeDrillRound, type DrillRound, type DrillTechnique } from '../lib/drill';
@@ -113,8 +114,8 @@
           <p class="meta">From a short sample, it could also have been {similar.join(', ')}. From a short sample they look the same. In a real puzzle, try ROT13 and every Caesar shift first, then look for a keyword (Vigenère), then count letters (substitution).</p>
         {/if}
         <p class="links meta">
-          <a href={`/field-guide#${round.technique}`}>Field guide entry</a>
-          {#if entry.lesson}<a href={`/learn/${entry.lesson.id}`}>Lesson: {entry.lesson.title}</a>{/if}
+          <a href={url(`/field-guide#${round.technique}`)}>Field guide entry</a>
+          {#if entry.lesson}<a href={url(`/learn/${entry.lesson.id}`)}>Lesson: {entry.lesson.title}</a>{/if}
         </p>
         <button type="button" class="btn" bind:this={nextBtn} onclick={next}>Next sample</button>
       </section>

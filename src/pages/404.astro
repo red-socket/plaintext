@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 ---
 
@@ -7,7 +8,7 @@ import Base from '../layouts/Base.astro';
     <div class="prose nf">
       <p class="ciphertext">CNTR ABG SBHAQ</p>
       <h1>Page not found</h1>
-      <p>That address doesn't lead anywhere. The line above is ROT13, if you want something to do on the way <a href="/">home</a>.</p>
+      <p>That address doesn't lead anywhere. The line above is ROT13, if you want something to do on the way <a href={url('/')}>home</a>.</p>
     </div>
   </div>
 </Base>

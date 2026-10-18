@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,7 +13,7 @@ const { puzzles } = Astro.props;
   {
     puzzles.map((p, i) => (
       <li data-puzzle-id={p.id}>
-        <a href={`/puzzles/${p.id}`}>
+        <a href={url(`/puzzles/${p.id}`)}>
           <span class="box" aria-hidden="true" />
           <span class="n">{i + 1}</span>
           <span class="t">{p.data.title}</span>

@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url';
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Puzzle from '../../components/Puzzle.svelte';
@@ -21,14 +22,14 @@ const lesson = puzzle.data.lesson ? await getEntry(puzzle.data.lesson) : undefin
 const kase = puzzle.data.case ? await getEntry(puzzle.data.case) : undefined;
 // Where this puzzle lives: a lesson's practice puzzles, or a case's files.
 const parent = lesson
-  ? { href: `/learn/${lesson.id}`, title: lesson.data.title, noun: 'puzzle' }
-  : { href: `/cases/${kase!.id}`, title: `Case ${kase!.data.number}: ${kase!.data.title}`, noun: 'file' };
+  ? { href: url(`/learn/${lesson.id}`), title: lesson.data.title, noun: 'puzzle' }
+  : { href: url(`/cases/${kase!.id}`), title: `Case ${kase!.data.number}: ${kase!.data.title}`, noun: 'file' };
 const siblings = lesson ? await lessonPuzzles(lesson.id) : await casePuzzles(kase!.id);
 const index = siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!);
 const nextPuzzle = siblings[index + 1];
 const track = lesson && TRACKS.find((t) => t.id === lesson.data.track)!;
 const filing = lesson ? `Lesson ${lessonNumber(lesson, await sortedLessons())}, puzzle ${index + 1}` : `Case ${kase!.data.number}, file ${index + 1}`;
-const crumb = lesson ? { href: '/#tracks', title: `Track ${track!.number}: ${track!.title}` } : { href: '/#tracks', title: 'Cases' };
+const crumb = lesson ? { href: url('/#tracks'), title: `Track ${track!.number}: ${track!.title}` } : { href: url('/#tracks'), title: 'Cases' };
 
 // Short, all-capital letter ciphers get a worksheet: one box per letter with room for working under it.
 const ct = puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : '';
@@ -79,16 +80,16 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
       puzzle.data.files.length > 0 && (
         <div class="files">
           {puzzle.data.files.map((f) => {
-            const url = `/${f.path}`;
+            const href = url(f.path);
             const isImage = /\.(png|jpe?g|gif|webp)$/i.test(f.path);
             const isAudio = /\.(wav|mp3|ogg|flac)$/i.test(f.path);
             return (
               <figure class="file">
-                {isImage && <img src={url} alt={f.label} loading="lazy" />}
-                {isAudio && <audio controls preload="none" src={url} />}
+                {isImage && <img src={href} alt={f.label} loading="lazy" />}
+                {isAudio && <audio controls preload="none" src={href} />}
                 <figcaption>
                   <span>{f.label}</span>
-                  <a href={url} download>
+                  <a href={href} download>
                     Download {f.path.split('/').pop()}
                   </a>
                 </figcaption>
@@ -151,7 +152,7 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
       id={puzzle.id}
       entries={entries}
       hints={puzzle.data.hints}
-      next={nextPuzzle && { href: `/puzzles/${nextPuzzle.id}`, title: nextPuzzle.data.title }}
+      next={nextPuzzle && { href: url(`/puzzles/${nextPuzzle.id}`), title: nextPuzzle.data.title }}
       back={{ href: parent.href, title: parent.title }}
     />
 
@@ -159,7 +160,7 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
       text={puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : ''}
       open={lesson?.data.tool}
       page={puzzle.data.page}
-      file={puzzle.data.files[0] && `/${puzzle.data.files[0].path}`}
+      file={puzzle.data.files[0] && url(puzzle.data.files[0].path)}
     />
   </article>
 </Base>

@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 /** Shows a tool only after its lesson is complete. Progress lives in the browser, so the check runs there. */
 import { toolById } from '../lib/catalog';
 
@@ -15,7 +16,7 @@ if (!tool) throw new Error(`Unknown tool ${toolId}`);
 <div class="tool-gate" data-lesson={tool.lesson} data-unlocked="false">
   <div class="locked">
     <p>
-      Locked. Finish the <a href={`/learn/${tool.lesson}`}>{lessonTitle}</a> lesson to add it to your toolkit.
+      Locked. Finish the <a href={url(`/learn/${tool.lesson}`)}>{lessonTitle}</a> lesson to add it to your toolkit.
     </p>
   </div>
   <div class="unlocked">

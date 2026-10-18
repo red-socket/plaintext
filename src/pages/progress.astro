@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url';
 import Base from '../layouts/Base.astro';
 import ProgressPanel from '../components/ProgressPanel.svelte';
 import { casePuzzles, lessonPuzzles, sortedCases, sortedLessons } from '../lib/content';
@@ -8,7 +9,7 @@ const lessons = await Promise.all(
     kind: 'lesson' as const,
     id: l.id,
     title: l.data.title,
-    href: `/learn/${l.id}`,
+    href: url(`/learn/${l.id}`),
     puzzles: (await lessonPuzzles(l.id)).map((p) => ({ id: p.id, title: p.data.title })),
   })),
 );
@@ -17,7 +18,7 @@ const cases = await Promise.all(
     kind: 'case' as const,
     id: c.id,
     title: `Case ${c.data.number}: ${c.data.title}`,
-    href: `/cases/${c.id}`,
+    href: url(`/cases/${c.id}`),
     puzzles: (await casePuzzles(c.id)).map((p) => ({ id: p.id, title: p.data.title })),
   })),
 );

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { url } from '../../lib/url';
   import { MARTIN_M1, sstvDecode } from '../../lib/audio';
   import { loadAudio } from './audioLoad';
 
@@ -59,7 +60,7 @@
 <div class="tool-panel">
   <div class="row">
     <label class="tool-field"><span>Open an SSTV recording (read in your browser)</span><input type="file" accept="audio/*,.wav" onchange={onPick} disabled={busy} /></label>
-    {#if file && /\.(wav|mp3|ogg|flac)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => fromUrl(file)} disabled={busy}>Decode the sound on this page</button>{/if}
+    {#if file && /\.(wav|mp3|ogg|flac)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => fromUrl(url(file))} disabled={busy}>Decode the sound on this page</button>{/if}
   </div>
   <p class="meta" aria-live="polite">{status}</p>
   <canvas bind:this={canvas} class:empty={!lines} aria-label="Decoded picture"></canvas>
