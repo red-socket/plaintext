@@ -1,0 +1,22 @@
+---
+title: The telegram
+case: clerks-desk
+order: 1
+difficulty: 2
+ciphertext: "-- . . - / .- - / .-.. --- .-- / - .. -.. . / ... - --- .--. / - .... . / .-- --- .-. -.. / .. ... / - .. -.. ."
+cipher: { plaintext: "MEET AT LOW TIDE STOP THE WORD IS TIDE", steps: [{ type: morse }] }
+answers: [TIDE]
+partials:
+  - answer: "MEET AT LOW TIDE STOP THE WORD IS TIDE"
+    reply: "That's the whole telegram. Which word is the one you need?"
+hints:
+  - "Look at the characters: dots, dashes and slashes."
+  - "It's Morse code. Slashes separate words."
+  - "The message ends by telling you its word."
+writeup: |
+  Dots, dashes and slashes are Morse code. The operator copied the signal as it came in and never decoded it.
+
+  It reads `MEET AT LOW TIDE STOP THE WORD IS TIDE`. Telegrams used STOP in place of a full stop, because punctuation cost extra.
+---
+
+A telegram form, folded twice, never delivered. The operator wrote down the signal as it came in and didn't bother decoding it.

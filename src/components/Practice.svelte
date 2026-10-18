@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { judge, makeRound, type PracticeMode, type Round, type Verdict } from '../lib/practice';
+  import { judge, makeRound, PRACTICE_MODES, type PracticeCipher, type PracticeMode, type Round, type Verdict } from '../lib/practice';
 
-  const MODES: { id: PracticeMode; label: string; help: string }[] = [
-    { id: 'given', label: 'Shift given', help: 'You get the shift. Practise decoding quickly and accurately.' },
-    { id: 'unknown', label: 'Unknown shift', help: 'No key. Find the shift from the shape of the words, or try them all.' },
-    { id: 'rot13', label: 'ROT13', help: 'Always 13. Learn to read GUR as THE on sight.' },
-  ];
+  interface Props {
+    cipher?: PracticeCipher;
+  }
+  let { cipher = 'caesar' }: Props = $props();
 
+  const MODES = $derived(PRACTICE_MODES[cipher]);
   let mode = $state<PracticeMode>('given');
   let round = $state<Round | null>(null);
   let value = $state('');
@@ -19,9 +19,9 @@
   const newSeed = () => crypto.getRandomValues(new Uint32Array(1))[0];
 
   function next() {
-    let r = makeRound(newSeed(), mode);
+    let r = makeRound(newSeed(), mode, cipher);
     // Never the same message twice in a row.
-    while (round && r.plaintext === round.plaintext) r = makeRound(newSeed(), mode);
+    while (round && r.plaintext === round.plaintext) r = makeRound(newSeed(), mode, cipher);
     round = r;
     value = '';
     verdict = null;
@@ -60,7 +60,9 @@
     <figure class="cipher-block">
       <p class="ciphertext">{round.ciphertext}</p>
       <figcaption class="meta">
-        {#if mode === 'given'}Shift: <strong class="mono">{round.shift}</strong>{:else if mode === 'rot13'}Shift: <strong class="mono">13</strong>{:else}Shift: unknown{/if}
+        {#if round.cipher === 'vigenere'}
+          {#if round.candidates}Key: one of {#each round.candidates as k, i}<strong class="mono">{k}</strong>{i < round.candidates.length - 1 ? ', ' : ''}{/each}{:else}Key: <strong class="mono">{round.key}</strong>{/if}
+        {:else if mode === 'given'}Shift: <strong class="mono">{round.shift}</strong>{:else if mode === 'rot13'}Shift: <strong class="mono">13</strong>{:else}Shift: unknown{/if}
       </figcaption>
     </figure>
 

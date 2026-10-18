@@ -23,7 +23,7 @@ One file per puzzle: `src/content/puzzles/<id>.mdx`. The file name is the puzzle
 | Field | Required | What it is |
 | --- | --- | --- |
 | `title` | yes | Short and concrete: "Postcard from Gaul", not "Caesar Challenge 1". |
-| `lesson` | yes | The lesson id this puzzle practises. |
+| `lesson` or `case` | one of them | The lesson this puzzle practises, or the case it's a file in. Never both. |
 | `order` | yes | Position in the lesson's puzzle list. |
 | `difficulty` | yes | 1–5. See below. |
 | `ciphertext` | no | Shown in a large violet block with a copy button. Leave it out if the puzzle is an image, a sound or prose. |
@@ -113,6 +113,16 @@ The writeup explains the intended path in two to four short paragraphs:
 - Every hint helps a little more than the last.
 - You've added partials for the two or three most likely wrong turns.
 - The ciphertext has no typos. (`cipher` catches this for supported ciphers.)
+
+## Cases
+
+A case is a short story told through several puzzles, the *files*, in mixed techniques with nothing to say which. The last file is usually a *meta*: a puzzle built from the answers to the others.
+
+- One file per case: `src/content/cases/<id>.mdx` with `title`, `number`, `summary` and `after` (who it's for, e.g. "Best after Tracks 1 and 2"). The body is the story.
+- Each file is an ordinary puzzle with `case: <id>` instead of `lesson`. `order` sets the file order.
+- Only use techniques that some lesson teaches. The challenge is spotting which one, not meeting something new.
+- Hints for a file should start by pointing at what to notice, before naming a technique.
+- A meta needs no ciphertext. Its prompt says how to combine the answers, indirectly; its writeup ends the story.
 
 ## Lessons
 

@@ -10,10 +10,10 @@
     entries: SealedEntry[];
     hints: string[];
     next?: { href: string; title: string };
-    lesson: { href: string; title: string };
+    back: { href: string; title: string };
   }
 
-  let { id, entries, hints, next, lesson }: Props = $props();
+  let { id, entries, hints, next, back }: Props = $props();
 
   const scope = `puzzle/${id}`;
 
@@ -115,7 +115,7 @@
         {#if next}
           <a class="btn" href={next.href}>Next puzzle: {next.title}</a>
         {:else}
-          <a class="btn" href={lesson.href}>Back to {lesson.title}</a>
+          <a class="btn" href={back.href}>Back to {back.title}</a>
         {/if}
       </p>
     </section>

@@ -3,10 +3,11 @@
   import { exportCode, importCode, isLessonDone, isSolved, mergeProgress, progress, resetProgress, type Progress } from '../lib/progress';
 
   interface Props {
-    lessons: { id: string; title: string; puzzles: { id: string; title: string }[] }[];
+    groups: { kind: 'lesson' | 'case'; id: string; title: string; href: string; puzzles: { id: string; title: string }[] }[];
   }
 
-  let { lessons }: Props = $props();
+  let { groups }: Props = $props();
+  const lessons = $derived(groups.filter((g) => g.kind === 'lesson'));
 
   let p = $state<Progress>(progress.get());
   let code = $state('');
@@ -17,7 +18,7 @@
 
   onMount(() => progress.subscribe((next) => (p = next)));
 
-  const allPuzzles = $derived(lessons.flatMap((l) => l.puzzles));
+  const allPuzzles = $derived(groups.flatMap((g) => g.puzzles));
   const solved = $derived(allPuzzles.filter((z) => isSolved(p, z.id)));
   const clean = $derived(solved.filter((z) => (p.puzzles[z.id]?.hints ?? 0) === 0));
   const lessonsDone = $derived(lessons.filter((l) => isLessonDone(p, l.id)));
@@ -68,10 +69,10 @@
       {lessonsDone.length} of {lessons.length} lesson{lessons.length === 1 ? '' : 's'} complete.
       {solved.length} of {allPuzzles.length} puzzles solved{solved.length ? `, ${clean.length} without hints` : ''}.
     </p>
-    {#each lessons as lesson}
-      <h3><a href={`/learn/${lesson.id}`}>{lesson.title}</a>{#if isLessonDone(p, lesson.id)}<span class="tag">Complete</span>{/if}</h3>
+    {#each groups.filter((g) => g.puzzles.length || (g.kind === 'lesson' && isLessonDone(p, g.id))) as group}
+      <h3><a href={group.href}>{group.title}</a>{#if group.kind === 'lesson' && isLessonDone(p, group.id)}<span class="tag">Complete</span>{/if}</h3>
       <ul>
-        {#each lesson.puzzles as z}
+        {#each group.puzzles as z}
           {@const s = p.puzzles[z.id]}
           <li>
             <a href={`/puzzles/${z.id}`}>{z.title}</a>

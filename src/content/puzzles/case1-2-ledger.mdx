@@ -1,0 +1,28 @@
+---
+title: The ledger margin
+case: clerks-desk
+order: 2
+difficulty: 3
+ciphertext: "VYS KLQES AF VYS JAPX WK SP FDSD"
+cipher: { plaintext: "THE STONE IN THE RING IS AN OPAL", steps: [{ type: vigenere, key: CROSS }] }
+answers: [OPAL]
+partials:
+  - answer: "THE STONE IN THE RING IS AN OPAL"
+    reply: "Decoded. The word you need is the stone."
+  - answer: "CROSS"
+    reply: "That's the key. Use it."
+  - answer: "ARTHUR"
+    reply: "Right idea, wrong name. Look at the desk itself."
+hints:
+  - "Letters only, normal word lengths, but no Caesar shift works and the letter counts are flat."
+  - "A different shift for every letter needs a keyword. What name is on the desk?"
+  - "It's Vigenère, and the key is the surname on the brass nameplate: CROSS."
+writeup: |
+  Letters only, in normal word shapes, but no shift turns it into English and no letter dominates. That points to Vigenère, which needs a key. The brass nameplate on the desk says A. CROSS.
+
+  With CROSS as the key, the margin reads `THE STONE IN THE RING IS AN OPAL`.
+
+  When a cipher needs a key, look at what's physically in front of you. Puzzle makers love names on doors and desks.
+---
+
+The office ledger, opened at the last page Arthur filled in. In the margin, in his small neat hand, a line that isn't accounts. His brass nameplate, **A. CROSS**, is screwed to the front of the desk.

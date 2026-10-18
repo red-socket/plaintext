@@ -103,6 +103,19 @@ export const GUIDE_GROUPS = {
 export type GuideGroup = keyof typeof GUIDE_GROUPS;
 
 /** Generated practice pages, by lesson. */
-export const PRACTICE: Record<string, { href: string; title: string }> = {
-  caesar: { href: '/practice/caesar', title: 'Caesar practice' },
+export const PRACTICE: Record<string, { href: string; title: string; cipher: 'caesar' | 'vigenere'; tool: string; description: string }> = {
+  caesar: {
+    href: '/practice/caesar',
+    title: 'Caesar practice',
+    cipher: 'caesar',
+    tool: 'caesar-wheel',
+    description: 'Endless Caesar cipher messages to decode, with or without the key.',
+  },
+  vigenere: {
+    href: '/practice/vigenere',
+    title: 'Vigenère practice',
+    cipher: 'vigenere',
+    tool: 'vigenere',
+    description: 'Endless Vigenère messages to decode, with the key or a choice of four.',
+  },
 };

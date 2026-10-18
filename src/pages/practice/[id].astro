@@ -1,23 +1,29 @@
 ---
+import { getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Practice from '../../components/Practice.svelte';
 import Toolkit from '../../components/Toolkit.astro';
-import { getEntry } from 'astro:content';
+import { PRACTICE } from '../../lib/catalog';
 
-const lesson = (await getEntry('lessons', 'caesar'))!;
+export function getStaticPaths() {
+  return Object.entries(PRACTICE).map(([lessonId, p]) => ({ params: { id: p.cipher }, props: { lessonId, ...p } }));
+}
+
+const { lessonId, title, cipher, tool, description } = Astro.props;
+const lesson = (await getEntry('lessons', lessonId))!;
 ---
 
-<Base title="Caesar practice" description="Endless Caesar cipher messages to decode, with or without the key.">
+<Base title={title} description={description}>
   <div class="practice-page page">
     <header class="prose">
       <p class="meta"><a href={`/learn/${lesson.id}`}>{lesson.data.title}</a></p>
-      <h1>Caesar practice</h1>
+      <h1>{title}</h1>
       <p>A new message every time. Nothing here is saved or scored; it's just practice.</p>
     </header>
 
-    <Practice client:load />
+    <Practice client:load cipher={cipher} />
 
-    <Toolkit open="caesar-wheel" />
+    <Toolkit open={tool} />
   </div>
 </Base>
 

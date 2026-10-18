@@ -3,6 +3,7 @@
  * practice has no writeup to protect and no record to keep.
  */
 import { caesarEncrypt } from './caesar';
+import { vigenereEncrypt } from './classical';
 import { normalizeAnswer } from './normalize';
 
 /** Small, fast, seedable PRNG (mulberry32). Same seed, same rounds. */
@@ -60,15 +61,47 @@ export const PHRASES = [
   'THE PARCEL ARRIVES ON FRIDAY BY BOAT',
 ] as const;
 
-export type PracticeMode = 'given' | 'unknown' | 'rot13';
+export type PracticeCipher = 'caesar' | 'vigenere';
 
-export type Round = { plaintext: string; ciphertext: string; shift: number; mode: PracticeMode };
+/** Caesar: shift given, unknown, or ROT13. Vigenère: key given, or one of four candidate keys. */
+export type PracticeMode = 'given' | 'unknown' | 'rot13' | 'candidates';
 
-export function makeRound(seed: number, mode: PracticeMode): Round {
+export const PRACTICE_MODES: Record<PracticeCipher, { id: PracticeMode; label: string; help: string }[]> = {
+  caesar: [
+    { id: 'given', label: 'Shift given', help: 'You get the shift. Practise decoding quickly and accurately.' },
+    { id: 'unknown', label: 'Unknown shift', help: 'No key. Find the shift from the shape of the words, or try them all.' },
+    { id: 'rot13', label: 'ROT13', help: 'Always 13. Learn to read GUR as THE on sight.' },
+  ],
+  vigenere: [
+    { id: 'given', label: 'Key given', help: 'You get the keyword. Practise the shifting until it is automatic.' },
+    { id: 'candidates', label: 'Pick the key', help: 'The key is one of four words. Try them; the right one reads as English.' },
+  ],
+};
+
+export const KEYWORDS = ['LEMON', 'RAVEN', 'ORCHID', 'CANDLE', 'HARBOUR', 'MIRROR', 'SPARROW', 'COPPER', 'LANTERN', 'THISTLE', 'QUARTZ', 'WILLOW'] as const;
+
+export type Round = {
+  cipher: PracticeCipher;
+  mode: PracticeMode;
+  plaintext: string;
+  ciphertext: string;
+  shift?: number;
+  key?: string;
+  /** For "pick the key": four keywords, one of them right. */
+  candidates?: string[];
+};
+
+export function makeRound(seed: number, mode: PracticeMode, cipher: PracticeCipher = 'caesar'): Round {
   const r = rng(seed);
   const plaintext = PHRASES[Math.floor(r() * PHRASES.length)];
+  if (cipher === 'vigenere') {
+    const pool = [...KEYWORDS].map((k) => ({ k, s: r() })).sort((a, b) => a.s - b.s).map((x) => x.k);
+    const key = pool[0];
+    const candidates = mode === 'candidates' ? pool.slice(0, 4).map((k) => ({ k, s: r() })).sort((a, b) => a.s - b.s).map((x) => x.k) : undefined;
+    return { cipher, mode, plaintext, ciphertext: vigenereEncrypt(plaintext, key), key, candidates };
+  }
   const shift = mode === 'rot13' ? 13 : 1 + Math.floor(r() * 25);
-  return { plaintext, ciphertext: caesarEncrypt(plaintext, shift), shift, mode };
+  return { cipher, mode, plaintext, ciphertext: caesarEncrypt(plaintext, shift), shift };
 }
 
 export type Verdict = { kind: 'solved' } | { kind: 'close'; text: string } | { kind: 'wrong'; text: string };
@@ -77,7 +110,8 @@ export function judge(round: Round, guess: string): Verdict {
   const g = normalizeAnswer(guess);
   const target = normalizeAnswer(round.plaintext);
   if (g === target) return { kind: 'solved' };
-  if (g === String(round.shift)) return { kind: 'close', text: 'That’s the shift. Now decode the message with it.' };
+  if (round.shift !== undefined && g === String(round.shift)) return { kind: 'close', text: 'That’s the shift. Now decode the message with it.' };
+  if (round.key && g === round.key) return { kind: 'close', text: 'That’s the key. Now decode the message with it.' };
   if (g.length >= 4 && target.startsWith(g)) return { kind: 'close', text: 'Right so far. Type the whole message.' };
   return { kind: 'wrong', text: 'Not quite. Check a few letters against the wheel.' };
 }

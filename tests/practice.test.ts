@@ -17,7 +17,7 @@ describe('makeRound', () => {
       const r = makeRound(seed, 'unknown');
       expect(r.shift).toBeGreaterThanOrEqual(1);
       expect(r.shift).toBeLessThanOrEqual(25);
-      expect(caesarDecrypt(r.ciphertext, r.shift)).toBe(r.plaintext);
+      expect(caesarDecrypt(r.ciphertext, r.shift!)).toBe(r.plaintext);
       expect(r.ciphertext).not.toBe(r.plaintext);
     }
   });
@@ -46,5 +46,24 @@ describe('judge', () => {
 
   it('rejects the ciphertext itself', () => {
     expect(judge(round, round.ciphertext).kind).toBe('wrong');
+  });
+});
+
+describe('Vigenère practice', () => {
+  it('makes solvable rounds; candidates include the key', async () => {
+    const { vigenereDecrypt } = await import('../src/lib/classical');
+    for (let seed = 0; seed < 300; seed++) {
+      const given = makeRound(seed, 'given', 'vigenere');
+      expect(vigenereDecrypt(given.ciphertext, given.key!)).toBe(given.plaintext);
+      const pick = makeRound(seed, 'candidates', 'vigenere');
+      expect(pick.candidates).toHaveLength(4);
+      expect(pick.candidates).toContain(pick.key);
+      expect(new Set(pick.candidates).size).toBe(4);
+    }
+  });
+
+  it('nudges when the key is typed instead of the message', () => {
+    const r = makeRound(5, 'given', 'vigenere');
+    expect(judge(r, r.key!.toLowerCase()).kind).toBe('close');
   });
 });

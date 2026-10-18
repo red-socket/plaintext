@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Drill from '../components/Drill.svelte';
+
+const guide = await getCollection('fieldGuide');
+const lessons = await getCollection('lessons');
+const entries = Object.fromEntries(
+  guide.map((e) => {
+    const l = e.data.lesson && lessons.find((x) => x.id === e.data.lesson!.id);
+    return [e.id, { name: e.data.name, tells: e.data.tells, try: e.data.try, lesson: l ? { id: l.id, title: l.data.title } : undefined }];
+  }),
+);
+---
+
+<Base title="What is it?" description="Look at a sample and say which cipher or encoding it is. The step every real puzzle starts with.">
+  <div class="drill-page page">
+    <header class="prose">
+      <h1>What is it?</h1>
+      <p>Real puzzles don't tell you which cipher they used. Look at the sample, decide what it is, and see the signs you could have used. Number keys 1 to 4 pick an answer.</p>
+    </header>
+    <Drill client:load entries={entries} />
+  </div>
+</Base>
+
+<style>
+  .drill-page {
+    display: grid;
+    gap: 2rem;
+  }
+  header {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 2rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+</style>

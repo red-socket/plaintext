@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import DecodeLine from '../components/DecodeLine.astro';
 import { TRACKS } from '../lib/catalog';
-import { sortedLessons } from '../lib/content';
+import { sortedCases, sortedLessons } from '../lib/content';
 
 const lessons = await sortedLessons();
+const cases = await sortedCases();
 const first = lessons[0];
 ---
 
@@ -49,6 +50,32 @@ const first = lessons[0];
         })
       }
     </ol>
+  </section>
+
+  {
+    cases.length > 0 && (
+      <section class="cases page" aria-labelledby="cases-title">
+        <h2 id="cases-title">Cases</h2>
+        <p class="lead">Story puzzles that mix everything, with nothing to say which technique comes next.</p>
+        <ul>
+          {cases.map((c) => (
+            <li>
+              <span class="n">{c.data.number}</span>
+              <div>
+                <h3><a href={`/cases/${c.id}`}>{c.data.title}</a></h3>
+                <p>{c.data.summary}</p>
+                <p class="meta">{c.data.after}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class="drill-cta page" aria-labelledby="drill-title">
+    <h2 id="drill-title">What is it?</h2>
+    <p>The skill under every puzzle: look at a sample and say what it is. <a href="/drill">Practise spotting ciphers and encodings</a>.</p>
   </section>
 </Base>
 
@@ -116,6 +143,47 @@ const first = lessons[0];
   .lessons .meta {
     font-weight: 400;
     margin-left: 0.4rem;
+  }
+  .cases,
+  .drill-cta {
+    margin-top: 4rem;
+  }
+  .cases h2,
+  .drill-cta h2 {
+    margin-bottom: 0.75rem;
+  }
+  .lead {
+    max-width: var(--measure);
+    margin-bottom: 1.5rem;
+  }
+  .cases ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--ink);
+  }
+  .cases li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cases li p {
+    max-width: var(--measure);
+    margin-top: 0.25rem;
+  }
+  .cases .n {
+    font-family: var(--mono);
+    font-size: var(--step-1);
+    color: var(--violet);
+    line-height: 1.2;
+  }
+  .cases h3 {
+    font-size: var(--step-1);
+  }
+  .drill-cta p {
+    max-width: var(--measure);
   }
   .track > div > .meta {
     margin-top: 0.5rem;

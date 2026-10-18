@@ -26,6 +26,7 @@ const path = Astro.url.pathname;
       <a class="wordmark" href="/" aria-label="Plaintext, home">plaintext</a>
       <nav aria-label="Main">
         <a href="/#tracks" aria-current={path === '/' ? 'page' : undefined}>Learn</a>
+        <a href="/drill" aria-current={path.startsWith('/drill') ? 'page' : undefined}>What is it?</a>
         <a href="/field-guide" aria-current={path.startsWith('/field-guide') ? 'page' : undefined}>Field guide</a>
         <a href="/toolkit" aria-current={path.startsWith('/toolkit') ? 'page' : undefined}>Toolkit</a>
         <a href="/progress" aria-current={path.startsWith('/progress') ? 'page' : undefined}>Progress</a>

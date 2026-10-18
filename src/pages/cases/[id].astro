@@ -1,0 +1,62 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PuzzleList from '../../components/PuzzleList.astro';
+import { casePuzzles } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((kase) => ({ params: { id: kase.id }, props: { kase } }));
+}
+
+const { kase } = Astro.props;
+const { Content } = await render(kase);
+const files = await casePuzzles(kase.id);
+const first = files[0];
+---
+
+<Base title={`Case ${kase.data.number}: ${kase.data.title}`} description={kase.data.summary}>
+  <article class="case page">
+    <header>
+      <p class="meta">Case {kase.data.number}</p>
+      <h1>{kase.data.title}</h1>
+      <p class="meta">{kase.data.after}</p>
+    </header>
+
+    <div class="story prose"><Content /></div>
+
+    <section class="files" aria-labelledby="files-title">
+      <h2 id="files-title">The files</h2>
+      <PuzzleList puzzles={files} />
+      {first && <p><a class="btn" href={`/puzzles/${first.id}`}>Open the first file</a></p>}
+    </section>
+  </article>
+</Base>
+
+<style>
+  .case {
+    display: grid;
+    gap: 2rem;
+  }
+  header {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 2rem;
+    max-width: var(--measure);
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .story {
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+  .files {
+    display: grid;
+    gap: 1rem;
+    max-width: var(--measure);
+  }
+  .files h2 {
+    font-size: var(--step-2);
+  }
+</style>

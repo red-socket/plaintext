@@ -1,13 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProgressPanel from '../components/ProgressPanel.svelte';
-import { lessonPuzzles, sortedLessons } from '../lib/content';
+import { casePuzzles, lessonPuzzles, sortedCases, sortedLessons } from '../lib/content';
 
 const lessons = await Promise.all(
   (await sortedLessons()).map(async (l) => ({
+    kind: 'lesson' as const,
     id: l.id,
     title: l.data.title,
+    href: `/learn/${l.id}`,
     puzzles: (await lessonPuzzles(l.id)).map((p) => ({ id: p.id, title: p.data.title })),
+  })),
+);
+const cases = await Promise.all(
+  (await sortedCases()).map(async (c) => ({
+    kind: 'case' as const,
+    id: c.id,
+    title: `Case ${c.data.number}: ${c.data.title}`,
+    href: `/cases/${c.id}`,
+    puzzles: (await casePuzzles(c.id)).map((p) => ({ id: p.id, title: p.data.title })),
   })),
 );
 ---
@@ -18,7 +29,7 @@ const lessons = await Promise.all(
       <h1>Your progress</h1>
       <p>There are no accounts. Everything you've done is saved in this browser.</p>
     </header>
-    <ProgressPanel client:load lessons={lessons} />
+    <ProgressPanel client:load groups={[...lessons, ...cases]} />
   </div>
 </Base>
 

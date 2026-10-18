@@ -48,12 +48,25 @@ const step = z.discriminatedUnion('type', [
 /** How the ciphertext was made, so the build can check the puzzle is solvable. */
 const cipher = z.object({ plaintext: z.string(), steps: z.array(step).min(1) });
 
+const cases = defineCollection({
+  loader: glob({ pattern: '*.mdx', base: './src/content/cases' }),
+  schema: z.object({
+    title: z.string(),
+    number: z.number().int().positive(),
+    summary: z.string(),
+    /** Who it's for, e.g. "Best after Tracks 1 and 2". */
+    after: z.string(),
+  }),
+});
+
 const puzzles = defineCollection({
   loader: glob({ pattern: '*.mdx', base: './src/content/puzzles' }),
   schema: z
     .object({
       title: z.string(),
-      lesson: reference('lessons'),
+      /** A puzzle belongs to a lesson or to a case, never both. */
+      lesson: reference('lessons').optional(),
+      case: reference('cases').optional(),
       order: z.number().int(),
       difficulty: z.number().int().min(1).max(5),
       ciphertext: z.string().optional(),
@@ -67,6 +80,9 @@ const puzzles = defineCollection({
       writeup: z.string(),
     })
     .superRefine((p, ctx) => {
+      if (!p.lesson === !p.case) {
+        ctx.addIssue({ code: 'custom', path: ['lesson'], message: 'Give either `lesson` or `case`' });
+      }
       if (p.cipher && p.ciphertext === undefined) {
         ctx.addIssue({ code: 'custom', path: ['ciphertext'], message: 'A puzzle with `cipher` needs `ciphertext`' });
       }
@@ -107,4 +123,4 @@ const fieldGuide = defineCollection({
     .refine((e) => e.lesson || e.track, 'Give a lesson or a track'),
 });
 
-export const collections = { lessons, puzzles, fieldGuide };
+export const collections = { lessons, cases, puzzles, fieldGuide };

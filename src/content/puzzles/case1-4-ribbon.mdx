@@ -1,0 +1,24 @@
+---
+title: The typewriter ribbon
+case: clerks-desk
+order: 4
+difficulty: 3
+ciphertext: "V0lSRSBUSEUgTU9ORVkgRUFTVA=="
+cipher: { plaintext: "WIRE THE MONEY EAST", steps: [{ type: base64 }] }
+answers: [EAST]
+partials:
+  - answer: "WIRE THE MONEY EAST"
+    reply: "That's the whole instruction. Which way is the money going?"
+hints:
+  - "Capitals, lowercase letters and digits, and the length is a multiple of 4."
+  - "It's Base64."
+  - "Decode it as Base64. The answer is the direction."
+writeup: |
+  Mixed case, digits and a length that divides by four: Base64. In 1934 that's an anachronism, but Arthur's sister swears the ribbon is genuine, and we'll leave it there.
+
+  Decoded, it reads `WIRE THE MONEY EAST`.
+---
+
+The ribbon from Arthur's typewriter. Someone has unwound the last few inches and copied out the characters struck into it, in order.
+
+Which way is the money going?

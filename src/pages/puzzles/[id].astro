@@ -5,7 +5,7 @@ import Puzzle from '../../components/Puzzle.svelte';
 import Toolkit from '../../components/Toolkit.astro';
 import MorsePlayer from '../../components/MorsePlayer.svelte';
 import Pigpen from '../../components/Pigpen.astro';
-import { lessonPuzzles } from '../../lib/content';
+import { casePuzzles, lessonPuzzles } from '../../lib/content';
 import { sealAll, type Payload } from '../../lib/seal';
 
 export async function getStaticPaths() {
@@ -15,8 +15,13 @@ export async function getStaticPaths() {
 
 const { puzzle } = Astro.props;
 const { Content } = await render(puzzle);
-const lesson = (await getEntry(puzzle.data.lesson))!;
-const siblings = await lessonPuzzles(lesson.id);
+const lesson = puzzle.data.lesson ? await getEntry(puzzle.data.lesson) : undefined;
+const kase = puzzle.data.case ? await getEntry(puzzle.data.case) : undefined;
+// Where this puzzle lives: a lesson's practice puzzles, or a case's files.
+const parent = lesson
+  ? { href: `/learn/${lesson.id}`, title: lesson.data.title, noun: 'puzzle' }
+  : { href: `/cases/${kase!.id}`, title: `Case ${kase!.data.number}: ${kase!.data.title}`, noun: 'file' };
+const siblings = lesson ? await lessonPuzzles(lesson.id) : await casePuzzles(kase!.id);
 const nextPuzzle = siblings[siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!) + 1];
 
 // Answers and writeups are sealed here, at build time. The page only ever sees the sealed entries.
@@ -30,7 +35,7 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
   <article class="puzzle-page page">
     <header>
       <p class="meta">
-        <a href={`/learn/${lesson.id}`}>{lesson.data.title}</a>, puzzle {puzzle.data.order} of {siblings.length}
+        <a href={parent.href}>{parent.title}</a>, {parent.noun} {siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!) + 1} of {siblings.length}
       </p>
       <h1>{puzzle.data.title}</h1>
       <p class="difficulty meta" aria-label={`Difficulty ${puzzle.data.difficulty} of 5`}>
@@ -88,10 +93,10 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
       entries={entries}
       hints={puzzle.data.hints}
       next={nextPuzzle && { href: `/puzzles/${nextPuzzle.id}`, title: nextPuzzle.data.title }}
-      lesson={{ href: `/learn/${lesson.id}`, title: lesson.data.title }}
+      back={{ href: parent.href, title: parent.title }}
     />
 
-    <Toolkit text={puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : ''} open={lesson.data.tool} page={puzzle.data.page} />
+    <Toolkit text={puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : ''} open={lesson?.data.tool} page={puzzle.data.page} />
   </article>
 </Base>
 
