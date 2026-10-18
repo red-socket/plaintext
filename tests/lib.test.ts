@@ -58,3 +58,10 @@ describe('seal / open', () => {
     expect(JSON.stringify(entries)).not.toMatch(/aqueduct|shift back/i);
   });
 });
+
+describe('display form of answers', () => {
+  it('a sealed solve can carry the answer as written, spaces and all', async () => {
+    const entries = await sealAll('p9', [{ answer: 'Red Sands', payload: { type: 'solve', display: 'RED SANDS' } }]);
+    expect(await open('p9', 'redsands', entries)).toEqual({ type: 'solve', display: 'RED SANDS' });
+  });
+});

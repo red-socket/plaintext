@@ -16,7 +16,7 @@ const { id, answer, note } = Astro.props;
 const answers = Array.isArray(answer) ? answer : [answer];
 const entries = await sealAll(
   `check/${id}`,
-  answers.map((a) => ({ answer: a, payload: { type: 'solve' as const, note } })),
+  answers.map((a) => ({ answer: a, payload: { type: 'solve' as const, note, display: a.toUpperCase() } })),
 );
 ---
 

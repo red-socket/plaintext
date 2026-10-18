@@ -14,7 +14,8 @@ import { normalizeAnswer } from './normalize';
 export type SealedEntry = { h: string; iv: string; ct: string };
 
 export type Payload =
-  | { type: 'solve'; writeup?: string; note?: string }
+  /** `display` is the accepted answer as written by the author ("RED SANDS"), for showing back to the player. */
+  | { type: 'solve'; writeup?: string; note?: string; display?: string }
   | { type: 'partial'; reply: string };
 
 const enc = new TextEncoder();

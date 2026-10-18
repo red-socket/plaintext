@@ -23,7 +23,7 @@
     if (payload?.type === 'solve') {
       status = 'solved';
       message = payload.note ?? '';
-      value = normalizeAnswer(answer);
+      value = payload.display ?? normalizeAnswer(answer);
       if (!silent) progress.update((p) => (p.checks[id] = normalizeAnswer(answer)));
     } else if (payload?.type === 'partial') {
       status = 'partial';

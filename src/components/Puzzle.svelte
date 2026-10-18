@@ -36,7 +36,7 @@
 
   async function reveal(answer: string) {
     const payload = await open(scope, answer, entries);
-    if (payload?.type === 'solve') solved = { answer: normalizeAnswer(answer), writeup: payload.writeup ?? '' };
+    if (payload?.type === 'solve') solved = { answer: payload.display ?? normalizeAnswer(answer), writeup: payload.writeup ?? '' };
   }
 
   async function submit(e: SubmitEvent) {
@@ -48,7 +48,7 @@
     busy = false;
 
     if (payload?.type === 'solve') {
-      solved = { answer: guess, writeup: payload.writeup ?? '' };
+      solved = { answer: payload.display ?? guess, writeup: payload.writeup ?? '' };
       hintsAtSolve = hintsShown;
       feedback = null;
       progress.update((p) => {

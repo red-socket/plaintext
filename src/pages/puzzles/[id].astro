@@ -26,7 +26,7 @@ const nextPuzzle = siblings[siblings.indexOf(siblings.find((p) => p.id === puzzl
 
 // Answers and writeups are sealed here, at build time. The page only ever sees the sealed entries.
 const entries = await sealAll(`puzzle/${puzzle.id}`, [
-  ...puzzle.data.answers.map((answer) => ({ answer, payload: { type: 'solve', writeup: puzzle.data.writeup } as Payload })),
+  ...puzzle.data.answers.map((answer) => ({ answer, payload: { type: 'solve', writeup: puzzle.data.writeup, display: answer.toUpperCase() } as Payload })),
   ...puzzle.data.partials.map((p) => ({ answer: p.answer, payload: { type: 'partial', reply: p.reply } as Payload })),
 ]);
 ---
