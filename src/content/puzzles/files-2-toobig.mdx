@@ -1,0 +1,18 @@
+---
+title: Too big for a photo
+lesson: file-signatures
+order: 2
+difficulty: 3
+files: [{ path: files/files-2-toobig/harbour.jpg, label: "harbour.jpg" }]
+answers: [ANCHOR]
+hints:
+  - "It's a perfectly good photo. Is it the right size for one?"
+  - "Look at the bytes: does the file end where the picture ends?"
+  - "There's a ZIP after the end of the JPEG. Open it."
+writeup: |
+  The picture opens normally, because viewers stop at the JPEG's end marker. But the file carries on after it, and the bytes there start with `PK`: a ZIP archive. Inside is secret.txt, which says `The answer is ANCHOR.`
+
+  Gluing an archive to the end of an image is one of the oldest ways to hide a file in plain sight.
+---
+
+Another harbour photo from the same sender. This time, your email warned it was unusually large.

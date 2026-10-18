@@ -1,0 +1,22 @@
+---
+title: Points of code
+lesson: unicode
+order: 2
+difficulty: 2
+ciphertext: "U+0041 U+004E U+0053 U+0057 U+0045 U+0052 U+003A U+0020 U+1F419"
+cipher: { plaintext: "ANSWER: 🐙", steps: [{ type: codepoints }] }
+answers: [OCTOPUS]
+partials:
+  - answer: "ANSWER"
+    reply: "Keep going: the last character is the answer, and it isn't a letter."
+hints:
+  - "U+ followed by hex is a Unicode code point."
+  - "Turn each code point into its character. The character inspector reads them."
+  - "The last one, U+1F419, is an emoji. Which animal is it?"
+writeup: |
+  Each `U+…` is a Unicode code point. The first seven are ASCII, `ANSWER: `, and the last, `U+1F419`, is far outside it: the 🐙 emoji.
+
+  Emoji live above U+1F000 and take four bytes in UTF-8.
+---
+
+A note left in a shared document, all in one line. What's the answer?

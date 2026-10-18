@@ -1,0 +1,54 @@
+---
+title: What's really in a file
+track: computers
+order: 2
+summary: A file's name can lie. Its first bytes don't. And one file can hide another inside it.
+minutes: 12
+tool: hex-viewer
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import HexViewer from '../../components/tools/HexViewer.svelte';
+
+<Step n={1} title="Bytes, not names">
+
+A file's extension, the `.png` or `.txt`, is just part of its name. What the file actually is depends on its bytes, and most formats start with a fixed **signature** (or *magic bytes*) so programs can tell:
+
+- **PNG**: `89 50 4E 47`, which ends in the letters PNG.
+- **JPEG**: `FF D8 FF`.
+- **PDF**: `25 50 44 46`, the text `%PDF`.
+- **ZIP**: `50 4B 03 04`, which starts with PK, after Phil Katz, who invented the format. Word documents, Java programs and Android apps are all ZIPs inside.
+- **GIF**: the text `GIF89a`.
+
+<HexViewer client:visible file="/files/lessons/mystery.dat" />
+
+<QuickCheck id="files-mystery" answer="GIF" note="It starts with the text GIF89a.">Open the sample, mystery.dat. What kind of file is it really?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Files inside files">
+
+Image viewers stop reading at the image's end marker and ignore anything after it. Stick a ZIP on the end of a JPEG and you get a file that opens as a photo in a viewer *and* as an archive in an unzipper. The giveaway is size: a small picture in a big file.
+
+<QuickCheck id="files-pk" answer="PK" note="50 4B in hex: P and K.">Which two letters start every ZIP file?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Readable text in unreadable files">
+
+Programs, firmware and data files are mostly bytes that aren't text, but messages, passwords and names often sit inside them as plain readable runs. The Unix command for listing them is the first thing analysts reach for, and the viewer's "Readable text" tab does the same.
+
+<QuickCheck id="files-strings" answer="STRINGS" note="strings prints every run of printable characters in a file.">What's the name of the Unix command that prints the readable text in any file?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- A file that **won't open** in the program its name suggests, or opens as nonsense.
+- An image far **bigger than its picture** needs.
+- Words, names or paths when you **look at the raw bytes**.
+
+Open the file in a hex viewer first: the signature, the readable text and any hidden files are all there.
+
+</Step>

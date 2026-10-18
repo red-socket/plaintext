@@ -1,0 +1,20 @@
+---
+title: Which one?
+lesson: hashes
+order: 1
+difficulty: 2
+page: "anchor, compass, lantern, rope, sextant, telescope"
+ciphertext: "d1068beeb96a6a79937661d5cc9f290dddaa5730e64b7ab2b238078a1194c614"
+cipher: { plaintext: "compass", steps: [{ type: sha256 }] }
+answers: [COMPASS]
+hints:
+  - "64 hex characters: that's a SHA-256 hash. You can't decode it."
+  - "But you can guess. Hash each of the six words."
+  - "They're all lowercase. Hash them exactly as written."
+writeup: |
+  64 hex characters is the length of a SHA-256 hash, which can't be decoded. But there are only six candidates. Hashing each and comparing shows the match is `compass`.
+
+  A hash with a short list of candidates is no protection at all.
+---
+
+A ship's quartermaster left six items in a chest, and a note saying which one is the key: only its fingerprint.

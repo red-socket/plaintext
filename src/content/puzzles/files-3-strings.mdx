@@ -1,0 +1,21 @@
+---
+title: Firmware
+lesson: file-signatures
+order: 3
+difficulty: 3
+files: [{ path: files/files-3-strings/firmware.bin, label: "firmware.bin" }]
+answers: [KINGFISHER]
+partials:
+  - answer: "ADMIN"
+    reply: "That's the user name. What's the password?"
+hints:
+  - "It isn't any known file type. It's raw data."
+  - "Look for readable text among the bytes."
+  - "One of the readable lines starts PASSWORD=."
+writeup: |
+  The file has no signature: it's a raw dump of a router's memory. Among the noise are runs of readable text, a bootloader version, a copyright line, `user=admin`, and `PASSWORD=KINGFISHER`.
+
+  Real devices have shipped with passwords sitting in their firmware like this. Looking for readable text is always worth a try.
+---
+
+A dump of the memory chip from a second-hand router. The seller forgot the admin password.

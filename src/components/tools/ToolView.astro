@@ -18,6 +18,10 @@ import MetadataViewer from './MetadataViewer.svelte';
 import SpectrogramViewer from './SpectrogramViewer.svelte';
 import SstvDecoder from './SstvDecoder.svelte';
 import TextReader from './TextReader.svelte';
+import CharInspector from './CharInspector.svelte';
+import CodeScanner from './CodeScanner.svelte';
+import HashCalculator from './HashCalculator.svelte';
+import HexViewer from './HexViewer.svelte';
 
 interface Props {
   tool: string;
@@ -49,3 +53,7 @@ const { tool, text = '', page = '', file } = Astro.props;
 {tool === 'image-inspector' && <ImageInspector client:visible file={file} />}
 {tool === 'spectrogram' && <SpectrogramViewer client:visible file={file} />}
 {tool === 'sstv' && <SstvDecoder client:visible file={file} />}
+{tool === 'char-inspector' && <CharInspector client:visible text={text} />}
+{tool === 'hex-viewer' && <HexViewer client:visible file={file} />}
+{tool === 'hash-calculator' && <HashCalculator client:visible text={text} source={page} />}
+{tool === 'code-scanner' && <CodeScanner client:visible file={file} />}

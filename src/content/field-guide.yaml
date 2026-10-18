@@ -185,7 +185,7 @@
     - Hex characters in one block of a fixed length. 32 characters is MD5, 40 is SHA-1, 64 is SHA-256.
     - Nothing in the puzzle tells you how to reverse it, because you can't.
   try: "A hash can't be decoded, only matched. Search for it online, or hash your guesses and compare: this one is the MD5 of \"hello\"."
-  track: computers
+  lesson: hashes
 
 - id: braille
   name: Braille
@@ -279,3 +279,34 @@
     - Space stations, radio amateurs or old TV in the story.
   try: Decode it with an SSTV decoder. If one mode gives noise, try others.
   lesson: sstv
+
+- id: mojibake
+  name: Garbled accents (mojibake)
+  group: plain-text
+  example: "The chefâ€™s cafÃ© serves crÃ¨me brÃ»lÃ©e."
+  tells:
+    - "Pairs like Ã© or Ã¨ where one accented letter should be."
+    - "â€™ and â€œ where apostrophes and quotes should be."
+  try: Read the text's bytes as UTF-8 instead of Windows-1252. If it's still garbled, do it again.
+  lesson: unicode
+
+- id: file-signature
+  name: File signatures
+  group: files
+  example: "A file called report.txt that starts with the bytes 89 50 4E 47: a PNG."
+  tells:
+    - A file that won't open, or opens as nonsense, in the program its name suggests.
+    - An image file far bigger than its picture needs.
+    - Readable words when you look at the raw bytes.
+  try: Look at the first bytes in a hex viewer, then search the whole file for other signatures and readable text.
+  lesson: file-signatures
+
+- id: qr-code
+  name: QR codes and barcodes
+  group: pictures
+  example: "A square of black and white dots with three big squares in its corners."
+  tells:
+    - Three square markers in the corners of a dotted square.
+    - Bars of different widths in a row, maybe without the numbers printed under them.
+  try: Scan it. Damaged and inverted QR codes often still read, and barcode digits may be another code.
+  lesson: qr-codes

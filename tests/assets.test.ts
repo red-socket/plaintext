@@ -103,3 +103,56 @@ describe('SSTV puzzles', () => {
     }, 30000);
   }
 });
+
+describe('file puzzles', () => {
+  it('report.txt is really a PNG', async () => {
+    const { identify } = await import('../src/lib/files');
+    expect(identify(file('files-1-extension/report.txt'))?.ext).toBe('png');
+    expect(identify(file('lessons/mystery.dat'))?.ext).toBe('gif');
+  });
+
+  it('harbour.jpg carries a ZIP after its end', async () => {
+    const { findEmbedded, imageEnd, readZip } = await import('../src/lib/files');
+    const bytes = file('files-2-toobig/harbour.jpg');
+    const end = imageEnd(bytes)!;
+    expect(end).toBeLessThan(bytes.length);
+    const zip = findEmbedded(bytes).find((e) => e.sig.ext === 'zip')!;
+    expect(zip.offset).toBe(end);
+    const [entry] = await readZip(bytes, zip.offset);
+    expect(entry.name).toBe('secret.txt');
+    expect(new TextDecoder().decode(entry.data)).toContain('The answer is ANCHOR.');
+  });
+
+  it('firmware.bin hides a password among its strings', async () => {
+    const { strings } = await import('../src/lib/files');
+    expect(strings(file('files-3-strings/firmware.bin'), 8).map((s) => s.text)).toContain('PASSWORD=KINGFISHER');
+  });
+});
+
+describe('code puzzles', () => {
+  const qr = async (path: string) => {
+    const jsQR = (await import('jsqr')).default;
+    const { width, height, rgba } = readPng(`public/files/${path}`);
+    return jsQR(new Uint8ClampedArray(rgba), width, height, { inversionAttempts: 'attemptBoth' })?.data;
+  };
+
+  it('the scratched QR code still reads', async () => {
+    expect(await qr('codes-1-scratched/poster.png')).toBe('THE ANSWER IS MOSAIC');
+  });
+
+  it('the negative QR code reads when inverted', async () => {
+    expect(await qr('codes-2-negative/sticker.png')).toBe('ROT13: GUR NAFJRE VF CEVFZ');
+    expect(await qr('lessons/qr.png')).toBe('Hello from Plaintext');
+  });
+
+  it('the receipt barcode pairs up into GARDEN', async () => {
+    const { eanFromRow } = await import('../src/lib/barcode');
+    const { a1z26Decode } = await import('../src/lib/encodings');
+    const { width, height, rgba } = readPng('public/files/codes-3-receipt/barcode.png');
+    const y = Math.floor(height / 2);
+    const row = Array.from({ length: width }, (_, x) => rgba[(y * width + x) * 4]);
+    const digits = eanFromRow(row)!;
+    expect(digits).toBe('0701180405141');
+    expect(a1z26Decode(digits.slice(0, 12).match(/../g)!.join('-'))).toBe('GARDEN');
+  });
+});

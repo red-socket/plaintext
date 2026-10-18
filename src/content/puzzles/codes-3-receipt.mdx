@@ -1,0 +1,23 @@
+---
+title: The receipt
+lesson: qr-codes
+order: 3
+difficulty: 2
+files: [{ path: files/codes-3-receipt/barcode.png, label: "barcode.png" }]
+answers: [GARDEN]
+partials:
+  - answer: "0701180405141"
+    reply: "Those are the digits. They mean something more."
+  - answer: "070118040514"
+    reply: "Those are the digits. Try them in pairs."
+hints:
+  - "It's an EAN-13 barcode. Scan it to get thirteen digits."
+  - "The last digit is a check digit. The other twelve make six pairs."
+  - "Every pair is 26 or less. Try A1Z26."
+writeup: |
+  The barcode reads `0701180405141`. The last digit, 1, is the check digit; the other twelve split into pairs, `07 01 18 04 05 14`, all 26 or less. As A1Z26 they spell `GARDEN`.
+
+  A code's output is often the input to another code.
+---
+
+A receipt from a garden centre that doesn't exist. The printed numbers under the barcode have faded.

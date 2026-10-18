@@ -64,6 +64,9 @@ Each step is applied to the output of the one before. Available steps (from `src
 | `{ type: book, mode: line-word, source: *page }` | References to the first appearance of each word (or letter, with `word-letter`). Use a YAML anchor so `source` is the puzzle's `page`. |
 | `{ type: upper }` | Uppercase. Useful with `display: pigpen`. |
 | `{ type: zero-width, cover: "…" }` | Hides the text as invisible zero-width characters after the cover's first letter. |
+| `{ type: mojibake }` | UTF-8 misread as Windows-1252: café becomes `cafÃ©`. Use twice for doubly garbled text. |
+| `{ type: codepoints }` | Each character as `U+0041`. |
+| `{ type: md5 }`, `{ type: sha256 }` | The hash of the text, in lowercase hex. |
 | `{ type: reverse }` | The whole string backwards. |
 | `{ type: map, map: { "0": "□", "1": "■" } }` | Replaces single characters; anything else passes through. |
 
@@ -85,7 +88,7 @@ import InvisibleInk from '../../components/InvisibleInk.astro';
 
 ### Images and sounds
 
-Puzzle files are generated, never drawn by hand, so they can be rebuilt and checked. `scripts/make_assets.py` (Python with numpy and Pillow) writes every image and sound to `public/files/`, and `tests/assets.test.ts` decodes each one with the same code the browser tools use. To add one:
+Puzzle files are generated, never drawn by hand, so they can be rebuilt and checked. `scripts/make_assets.py` (Python with numpy, Pillow and segno) writes every image and sound to `public/files/`, and `tests/assets.test.ts` decodes each one with the same code the browser tools use. To add one:
 
 1. Add a function to `scripts/make_assets.py` and run `python3 scripts/make_assets.py`.
 2. Add a test to `tests/assets.test.ts` proving the file decodes to what the puzzle needs.

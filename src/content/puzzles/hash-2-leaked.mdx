@@ -1,0 +1,25 @@
+---
+title: The leaked password
+lesson: hashes
+order: 2
+difficulty: 3
+page: |
+  Aunt Hilda's kitchen always smelled of oranges. Every January she made
+  marmalade in the big copper pan, enough jars to last the whole family
+  until the next winter. She kept her recipe in a tin on the dresser,
+  next to the radio and a photograph of the lighthouse where she grew up.
+  When the bank asked her for a password, she chose the first thing she saw.
+ciphertext: "ca15ebf2ad44962132b8d244291ea4bc"
+cipher: { plaintext: "marmalade", steps: [{ type: md5 }] }
+answers: [MARMALADE]
+hints:
+  - "32 hex characters: an MD5 hash. Guess, don't decode."
+  - "She chose the first thing she saw in her kitchen. The story lists them."
+  - "Try every word in the story, in lowercase."
+writeup: |
+  It's an MD5 hash, so the way in is guessing. The story is the word list: hashing its words one by one, `marmalade` matches.
+
+  This is how real password leaks are cracked: not by breaking the hash, but by guessing words people are likely to choose.
+---
+
+A bank's database leaked, with every password stored as an MD5 hash. Here's Aunt Hilda's, and a bit about Aunt Hilda.

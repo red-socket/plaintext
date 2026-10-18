@@ -1,0 +1,43 @@
+---
+title: QR codes and barcodes
+track: computers
+order: 4
+summary: Black and white patterns that machines read, which survive more damage than you'd think.
+minutes: 10
+tool: code-scanner
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import CodeScanner from '../../components/tools/CodeScanner.svelte';
+
+<Step n={1} title="Barcodes">
+
+The barcode on almost everything you buy is an **EAN-13**: thirteen digits drawn as 95 thin stripes, black or white. The first digit isn't drawn at all; it's hidden in which of two patterns the next six digits use. The last digit is a check digit, so a misread is caught.
+
+<CodeScanner client:visible file="/files/lessons/barcode.png" />
+
+<QuickCheck id="codes-barcode" answer={["7", "SEVEN"]} note="It reads 9780306406157, an ISBN-13 as a barcode.">Scan the sample barcode. What is its last digit?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="QR codes">
+
+**QR codes** were invented in 1994 by Masahiro Hara at Denso Wave, a Japanese car-parts maker, to track parts on assembly lines. The three big squares in the corners tell a scanner where the code is and which way up.
+
+Most of the rest isn't the message. It's **error correction**: extra data that lets the code be read even when part of it is missing. At the highest level, a QR code survives losing about 30 percent of itself. Codes printed white on black still read too.
+
+<CodeScanner client:visible file="/files/lessons/qr.png" />
+
+<QuickCheck id="codes-qr" answer="HELLO FROM PLAINTEXT" note="A QR code can hold text, not just web addresses.">Scan the sample QR code. What does it say?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="How to spot it">
+
+- **Three square markers** in the corners of a dotted square: a QR code, even if it's damaged, drawn in pixel art, or inverted.
+- **Stripes of different widths** in a row: a barcode, even without numbers printed under it.
+
+Scan first, then look at what comes out: it may be another code.
+
+</Step>

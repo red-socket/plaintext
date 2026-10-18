@@ -4,6 +4,8 @@
  */
 import { caesarEncrypt } from './caesar';
 import { zeroWidthHide } from './hidden';
+import { toMojibake } from './unicode';
+import { md5, sha256 } from './digest';
 import {
   atbash,
   baconEncode,
@@ -53,6 +55,12 @@ export type Step =
   /** References into a source text: "line.word" or "word.letter", first appearance. */
   | { type: 'book'; source: string; mode: BookMode }
   | { type: 'upper' }
+  /** UTF-8 bytes misread as Windows-1252: café becomes cafÃ©. */
+  | { type: 'mojibake' }
+  | { type: 'md5' }
+  | { type: 'sha256' }
+  /** Each character as its Unicode code point, U+0041. */
+  | { type: 'codepoints' }
   /** Hides the text as invisible zero-width characters inside a cover sentence. */
   | { type: 'zero-width'; cover: string }
   /** Reverses the whole string. */
@@ -102,6 +110,14 @@ export function applyStep(text: string, step: Step): string {
       return bookEncode(text, step.source, step.mode);
     case 'upper':
       return text.toUpperCase();
+    case 'mojibake':
+      return toMojibake(text);
+    case 'md5':
+      return md5(text);
+    case 'sha256':
+      return sha256(text);
+    case 'codepoints':
+      return [...text].map((c) => 'U+' + c.codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')).join(' ');
     case 'zero-width':
       return zeroWidthHide(text, step.cover);
     case 'reverse':

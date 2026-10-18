@@ -45,6 +45,10 @@ const step = z.discriminatedUnion('type', [
   z.object({ type: z.literal('book'), source: z.string(), mode: z.enum(['line-word', 'word-letter']) }),
   z.object({ type: z.literal('upper') }),
   z.object({ type: z.literal('zero-width'), cover: z.string() }),
+  z.object({ type: z.literal('mojibake') }),
+  z.object({ type: z.literal('codepoints') }),
+  z.object({ type: z.literal('md5') }),
+  z.object({ type: z.literal('sha256') }),
   z.object({ type: z.literal('reverse') }),
   z.object({ type: z.literal('map'), map: z.record(z.string(), z.string()) }),
 ]);

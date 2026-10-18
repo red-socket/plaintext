@@ -1,0 +1,22 @@
+---
+title: The garbled menu
+lesson: unicode
+order: 1
+difficulty: 2
+ciphertext: "Todayâ€™s special: crÃ¨me brÃ»lÃ©e. The answer is SOUFFLÃ‰."
+cipher: { plaintext: "Today’s special: crème brûlée. The answer is SOUFFLÉ.", steps: [{ type: mojibake }] }
+answers: [SOUFFLE]
+partials:
+  - answer: "SOUFFLA"
+    reply: "That last letter is still garbled. Fix the whole text first."
+hints:
+  - "The text is nearly English, but the accents and the apostrophe have fallen apart."
+  - "Ã and â€ are the signs of mojibake: UTF-8 read as Windows-1252."
+  - "Turn the characters back into bytes and read them as UTF-8. The character inspector does it in one click."
+writeup: |
+  `Ã¨`, `Ã»` and `â€™` are mojibake: UTF-8 bytes shown as if they were Windows-1252. Reading them back as UTF-8 gives `Today’s special: crème brûlée. The answer is SOUFFLÉ.`
+
+  The garbled last letter, `Ã‰`, was É all along.
+---
+
+The online menu of a French restaurant, after someone moved the website to a new server.

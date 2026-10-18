@@ -1,0 +1,20 @@
+---
+title: The smudged ISBN
+lesson: hashes
+order: 3
+difficulty: 2
+ciphertext: "ISBN 0-14-04?9-26-4"
+answers: ["4", "FOUR"]
+hints:
+  - "The last digit of an ISBN-10 is a check digit, calculated from the others."
+  - "Multiply the digits by 10, 9, 8 … 1 (the check digit counts once) and add them. The total must divide by 11."
+  - "The smudged digit is the sixth, so it's multiplied by 5. Which digit makes the total a multiple of 11?"
+writeup: |
+  An ISBN-10's digits, multiplied by 10, 9, 8 down to 1, add up to a multiple of 11. With the smudged sixth digit as x, the total is 123 + 5x. Only x = 4 makes it divisible by 11: 123 + 20 = 143, which is 13 × 11.
+
+  The full ISBN is 0-14-044926-4. Check digits catch one wrong digit, and they can fill in one missing digit too.
+---
+
+A library card for a book that went missing decades ago. The coffee ring has made one digit of its number unreadable. The book is in locker number *that digit*.
+
+Which locker?

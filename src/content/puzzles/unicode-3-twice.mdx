@@ -1,0 +1,19 @@
+---
+title: Garbled twice
+lesson: unicode
+order: 3
+difficulty: 3
+ciphertext: "Meet me at the cafÃƒÂ©. The answer is NAÃƒÂVE."
+cipher: { plaintext: "Meet me at the café. The answer is NAÏVE.", steps: [{ type: mojibake }, { type: mojibake }] }
+answers: [NAIVE]
+hints:
+  - "It looks like mojibake, but worse."
+  - "Fix it as mojibake once. Is it clean yet?"
+  - "It was garbled twice, so fix it twice."
+writeup: |
+  Fixing it once turns `ÃƒÂ©` into `Ã©`, which is still mojibake. The text was garbled twice, probably by two programs in a row, each reading UTF-8 as Windows-1252. Fixing it a second time gives `Meet me at the café. The answer is NAÏVE.`
+
+  When a fix leaves the same kind of mess behind, apply it again.
+---
+
+An email forwarded through two old mail servers before it reached you.

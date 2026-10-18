@@ -4,7 +4,8 @@ Builds the image and sound files for the "Hidden in plain sight" track.
     python3 scripts/make_assets.py
 
 Writes to public/files/ (served with the site) and tests/fixtures/ (reference images the tests
-compare decoded output against). Deterministic: same output every run. Needs numpy and Pillow.
+compare decoded output against). Deterministic: same output every run. Needs numpy, Pillow and
+segno (for QR codes): pip install numpy pillow segno
 """
 from pathlib import Path
 import io
@@ -308,12 +309,115 @@ def sstv_assets():
         Image.fromarray(rgb).save(FIX / fixture)
 
 
+# ── How computers store things ─────────────────────────────────────────
+
+
+def word_image(word: str, w: int = 480, h: int = 240) -> Image.Image:
+    img = Image.new('RGB', (w, h), (245, 242, 230))
+    d = ImageDraw.Draw(img)
+    f = font(64)
+    tw = d.textlength(word, font=f)
+    d.text(((w - tw) / 2, h / 2 - 40), word, fill=(30, 30, 60), font=f)
+    d.rectangle([10, 10, w - 10, h - 10], outline=(30, 30, 60), width=3)
+    return img
+
+
+def file_assets():
+    import zipfile
+
+    # 1. Wrong extension: a PNG pretending to be a text file.
+    buf = io.BytesIO()
+    word_image('TELESCOPE').save(buf, format='PNG')
+    out('files-1-extension/report.txt').write_bytes(buf.getvalue())
+
+    # 2. Too big: a JPEG with a ZIP stuck on the end. Viewers stop at the JPEG's end marker.
+    jpg = io.BytesIO()
+    scene(640, 420).save(jpg, format='JPEG', quality=85)
+    z = io.BytesIO()
+    with zipfile.ZipFile(z, 'w', zipfile.ZIP_DEFLATED) as zf:
+        info = zipfile.ZipInfo('secret.txt', date_time=(1987, 8, 14, 16, 2, 0))
+        info.compress_type = zipfile.ZIP_DEFLATED
+        zf.writestr(info, 'If you are reading this, you looked past the end of the picture.\nThe answer is ANCHOR.\n')
+    out('files-2-toobig/harbour.jpg').write_bytes(jpg.getvalue() + z.getvalue())
+
+    # 3. Strings attached: random bytes with readable text buried in them.
+    data = bytearray(rng.integers(0, 256, 6000, dtype=np.uint8).tobytes())
+    for offset, text in [(64, 'BOOTLOADER v2.1.4'), (900, 'Copyright (c) Halloran Systems'), (1700, '/etc/init.d/startup'),
+                         (2600, 'user=admin'), (2640, 'PASSWORD=KINGFISHER'), (4100, 'Factory reset: hold button 10s'), (5200, 'CHECKSUM OK')]:
+        b = text.encode()
+        data[offset - 1] = 0
+        data[offset:offset + len(b)] = b
+        data[offset + len(b)] = 0
+    out('files-3-strings/firmware.bin').write_bytes(bytes(data))
+
+    # Lesson sample: a GIF in disguise.
+    buf = io.BytesIO()
+    word_image('GIF', 240, 120).save(buf, format='GIF')
+    out('lessons/mystery.dat').write_bytes(buf.getvalue())
+
+
+EAN_L = ['0001101', '0011001', '0010011', '0111101', '0100011', '0110001', '0101111', '0111011', '0110111', '0001011']
+EAN_G = ['0100111', '0110011', '0011011', '0100001', '0011101', '0111001', '0000101', '0010001', '0001001', '0010111']
+EAN_R = ['1110010', '1100110', '1101100', '1000010', '1011100', '1001110', '1010000', '1000100', '1001000', '1110100']
+EAN_PARITY = ['LLLLLL', 'LLGLGG', 'LLGGLG', 'LLGGGL', 'LGLLGG', 'LGGLLG', 'LGGGLL', 'LGLGLG', 'LGLGGL', 'LGGLGL']
+
+
+def ean13(twelve: str) -> str:
+    """Module pattern for 12 digits plus check digit. Same tables as src/lib/barcode.ts."""
+    s = sum(int(c) * (3 if i % 2 else 1) for i, c in enumerate(twelve))
+    d = twelve + str((10 - s % 10) % 10)
+    bits = '101' + ''.join((EAN_L if p == 'L' else EAN_G)[int(c)] for p, c in zip(EAN_PARITY[int(d[0])], d[1:7]))
+    return bits + '01010' + ''.join(EAN_R[int(c)] for c in d[7:]) + '101'
+
+
+def barcode_image(twelve: str, module: int = 4) -> Image.Image:
+    bits = ean13(twelve)
+    quiet = 12 * module
+    img = Image.new('RGB', (len(bits) * module + 2 * quiet, 160), (255, 255, 255))
+    d = ImageDraw.Draw(img)
+    for i, b in enumerate(bits):
+        if b == '1':
+            d.rectangle([quiet + i * module, 20, quiet + (i + 1) * module - 1, 140], fill=(0, 0, 0))
+    return img
+
+
+def code_assets():
+    import segno
+
+    def qr_image(text: str, scale: int = 10) -> Image.Image:
+        buf = io.BytesIO()
+        segno.make(text, error='h', micro=False).save(buf, kind='png', scale=scale, border=4)
+        return Image.open(io.BytesIO(buf.getvalue())).convert('RGB')
+
+    # 1. Scratched: a high-error-correction QR code with part of it painted over.
+    img = qr_image('THE ANSWER IS MOSAIC')
+    d = ImageDraw.Draw(img)
+    w, h = img.size
+    # Damage stays in the data area: clear of the three corner squares and the timing lines.
+    d.ellipse([w * 0.47, h * 0.47, w * 0.66, h * 0.62], fill=(120, 90, 60))
+    d.line([(w * 0.42, h * 0.72), (w * 0.62, h * 0.8)], fill=(255, 255, 255), width=8)
+    img.save(out('codes-1-scratched/poster.png'))
+
+    # 2. Negative: white on black, and the content is another layer.
+    img = qr_image('ROT13: GUR NAFJRE VF CEVFZ')
+    Image.fromarray(255 - np.array(img)).save(out('codes-2-negative/sticker.png'))
+
+    # 3. Receipt: an EAN-13 barcode whose digits pair up into letters (A1Z26).
+    barcode_image('070118040514').save(out('codes-3-receipt/barcode.png'))
+
+    # Lesson samples.
+    qr_image('Hello from Plaintext').save(out('lessons/qr.png'))
+    barcode_image('978030640615').save(out('lessons/barcode.png'))
+
+
 if __name__ == '__main__':
     FIX.mkdir(parents=True, exist_ok=True)
     metadata_assets()
     pixel_assets()
     sound_assets()
     sstv_assets()
+    file_assets()
+    code_assets()
     for p in sorted(PUB.rglob('*')):
         if p.is_file():
             print(f'{p.relative_to(ROOT)}  {p.stat().st_size // 1024} KB')

@@ -1,0 +1,18 @@
+---
+title: The report
+lesson: file-signatures
+order: 1
+difficulty: 2
+files: [{ path: files/files-1-extension/report.txt, label: "report.txt" }]
+answers: [TELESCOPE]
+hints:
+  - "Open it as text and it's nonsense. Is it really text?"
+  - "Look at the first bytes in a hex viewer."
+  - "It starts with 89 50 4E 47: it's a PNG. Show it as an image."
+writeup: |
+  As text, report.txt is gibberish. Its first bytes are `89 50 4E 47`, the PNG signature: it's an image with the wrong name. Shown as a picture, it says `TELESCOPE`.
+
+  Renaming a file doesn't change it. Trust the bytes, not the extension.
+---
+
+An attachment called report.txt. Your text editor shows gibberish.

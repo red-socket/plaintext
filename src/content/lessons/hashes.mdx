@@ -1,0 +1,53 @@
+---
+title: Hashes and check digits
+track: computers
+order: 3
+summary: One-way fingerprints that can't be decoded but can be guessed, and the digits that catch typos.
+minutes: 10
+tool: hash-calculator
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import HashCalculator from '../../components/tools/HashCalculator.svelte';
+
+<Step n={1} title="Fingerprints">
+
+A **hash** turns any input, a word or a whole film, into a fixed-length fingerprint. Change one letter and the fingerprint changes completely. And there's no way back: a hash is not an encoding, and nothing decodes it.
+
+Common ones, by length in hex: **MD5** is 32 characters, **SHA-1** is 40, **SHA-256** is 64.
+
+<QuickCheck id="hash-md5-length" answer={["32", "THIRTY TWO"]} note="MD5 is 128 bits: 32 hex characters.">How many hex characters long is an MD5 hash?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Cracking by guessing">
+
+You can't reverse a hash, but you can guess: hash each candidate and see if it matches. That works because people choose ordinary words, and it's how leaked password hashes get cracked. In puzzles, the candidates are usually somewhere nearby: a list, a poem, a story.
+
+<HashCalculator client:visible text="hello" />
+
+<QuickCheck id="hash-guess" answer="HELLO" note="Hash each one and compare: only hello gives 5d41….">Which of these words has the MD5 hash `5d41402abc4b2a76b9719d911017c592`: *hello*, *world* or *plain*?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Check digits">
+
+The last digit of an ISBN or a barcode isn't part of the number; it's calculated from the others, so a typo shows up as a mismatch.
+
+- **ISBN-10**: multiply the first nine digits by 10, 9, 8… down to 2, add them up, and pick the last digit to make the total divisible by 11. A check digit of 10 is written **X**.
+- **ISBN-13 and barcodes (EAN-13)**: multiply digits alternately by 1 and 3, and pick the last digit to make the total divisible by 10.
+
+That also means a missing digit can be worked out.
+
+<QuickCheck id="hash-isbn" answer={["2", "TWO"]} note="0×10 + 3×9 + 0×8 + 6×7 + 4×6 + 0×5 + 6×4 + 1×3 + 5×2 = 130, and 130 + 2 = 132 = 12 × 11.">What is the check digit of the ISBN-10 that starts 0-306-40615?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **A block of hex of a fixed length**, 32, 40 or 64 characters, that won't decode to anything.
+- A puzzle that gives you a hash **and a list of words**, or a text full of words.
+- A long number with one digit **smudged or missing**: work it out from the check digit.
+
+</Step>

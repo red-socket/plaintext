@@ -1,0 +1,50 @@
+---
+title: Unicode and UTF-8
+track: computers
+order: 1
+summary: How computers write every letter, accent and emoji, and why text sometimes turns into Ã© garbage.
+minutes: 10
+tool: char-inspector
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import CharInspector from '../../components/tools/CharInspector.svelte';
+
+<Step n={1} title="Beyond ASCII">
+
+ASCII has 128 characters: enough for English, not for é, ß, Ж, 日 or 🙂. **Unicode** gives every character in every script its own number, a **code point**, written like `U+00E9` (that's é). There's room for over a million, and about 150,000 are in use.
+
+The first 128 code points are the same as ASCII, so A is still 65: `U+0041` in hex.
+
+<QuickCheck id="unicode-a" answer={["U+0041", "0041", "41"]} note="65 in decimal is 41 in hex, written U+0041.">Capital A is 65 in decimal. What is its code point, in the form U+…?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="UTF-8: one to four bytes">
+
+A code point still has to be stored as bytes. **UTF-8**, the encoding almost everything uses now, takes one to four bytes per character: ASCII characters keep their single byte, accented letters take two, most other scripts three, and emoji four. Old ASCII text is already valid UTF-8, which is why it won.
+
+<CharInspector client:visible text="Aé€🙂" />
+
+<QuickCheck id="unicode-emoji" answer={["4", "FOUR"]} note="F0 9F 99 82: four bytes.">How many bytes does 🙂 take in UTF-8?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Mojibake">
+
+When a program reads UTF-8 bytes as an older encoding like Windows-1252, every multi-byte character falls apart into two or three wrong ones: é becomes `Ã©`, and a curly apostrophe becomes `â€™`. The Japanese call it **mojibake**, "character transformation".
+
+It's reversible: turn the wrong characters back into their bytes and read them as UTF-8. The inspector offers to do it whenever it sees the telltale pairs.
+
+<QuickCheck id="unicode-cafe" answer={["CAFE", "CAFÉ"]} note="Ã© is the two bytes of é, misread.">Fix `cafÃ©`. What word is it?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Ã, Â or â€** next to other odd characters: mojibake. If fixing it once leaves more, it was garbled twice.
+- **U+ followed by hex digits**: code points.
+- Text that looks fine but is **longer in bytes** than in letters: there's something outside ASCII in it.
+
+</Step>

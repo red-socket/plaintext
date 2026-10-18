@@ -122,6 +122,30 @@ export const TOOLS: Tool[] = [
     description: 'Turns a Martin M1 slow-scan television recording back into its picture.',
     lesson: 'sstv',
   },
+  {
+    id: 'char-inspector',
+    name: 'Character inspector',
+    description: 'Code points and UTF-8 bytes for every character, text from code points, and a fix for garbled accents.',
+    lesson: 'unicode',
+  },
+  {
+    id: 'hex-viewer',
+    name: 'Hex viewer',
+    description: 'Any file as bytes: what it really is, readable text inside it, and other files hidden in it.',
+    lesson: 'file-signatures',
+  },
+  {
+    id: 'hash-calculator',
+    name: 'Hash calculator',
+    description: 'MD5, SHA-1 and SHA-256 of any text, cracking a hash from a list of guesses, and check digits.',
+    lesson: 'hashes',
+  },
+  {
+    id: 'code-scanner',
+    name: 'Code scanner',
+    description: 'Reads QR codes, even damaged or inverted ones, and EAN-13 barcodes from a picture.',
+    lesson: 'qr-codes',
+  },
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);
