@@ -1,0 +1,21 @@
+---
+title: Nothing to see here
+lesson: page-source
+order: 1
+difficulty: 1
+answers: [LANTERN]
+hints:
+  - "This page has more in it than it shows."
+  - "Look at the page's source."
+  - "Press Ctrl+U (⌥⌘U on a Mac) and search for an HTML comment, which starts with <!--."
+writeup: |
+  The page's HTML contains a comment, `<!-- The answer is LANTERN -->`, which browsers never draw.
+
+  On any puzzle web page, viewing the source is one of the first things to do. Search it for `<!--`.
+---
+
+import SourceComment from '../../components/SourceComment.astro';
+
+<SourceComment text="The answer is LANTERN" />
+
+This page is blank on purpose. Or is it?

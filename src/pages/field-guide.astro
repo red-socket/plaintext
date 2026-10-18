@@ -54,7 +54,7 @@ function source(e: (typeof entries)[number]) {
                   <h3 id={`${e.id}-name`}>
                     <a href={`#${e.id}`}>{e.data.name}</a>
                   </h3>
-                  {g.id === 'pictures' ? <p class="example described">{e.data.example}</p> : <p class="example ciphertext">{e.data.example}</p>}
+                  {['pictures', 'plain-text', 'files'].includes(g.id) ? <p class="example described">{e.data.example}</p> : <p class="example ciphertext">{e.data.example}</p>}
                 </div>
                 <div class="detail">
                   <div>

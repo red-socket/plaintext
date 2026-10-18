@@ -1,0 +1,23 @@
+---
+title: Three colours
+lesson: image-bits
+order: 2
+difficulty: 3
+files: [{ path: files/pixels-2-channels/harbour.png, label: "harbour.png" }]
+answers: [KESTREL]
+partials:
+  - answer: "NOT HERE"
+    reply: "Exactly what it says. Try another colour."
+  - answer: "TRY BLUE"
+    reply: "Good advice. Take it."
+hints:
+  - "The picture looks normal. Look at its bits."
+  - "Look at the lowest bit plane of each colour channel, one at a time."
+  - "Red says one thing, green another. Blue has the answer."
+writeup: |
+  The picture looks ordinary, but the lowest bit of each colour channel has been replaced with a drawing. Red's lowest bit plane says `NOT HERE`, green's says `TRY BLUE`, and blue's says `KESTREL`.
+
+  Check every channel and every low bit plane. Puzzle makers love a decoy in the first place you look.
+---
+
+A picture of a harbour, sent as a PNG. The sender asks if you can see the bird.

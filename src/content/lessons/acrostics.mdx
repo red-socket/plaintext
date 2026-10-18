@@ -1,0 +1,51 @@
+---
+title: Acrostics and null ciphers
+track: hidden
+order: 1
+summary: A message hidden in plain words, read down the page or every few letters instead of across.
+minutes: 8
+tool: text-reader
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import TextReader from '../../components/tools/TextReader.svelte';
+
+<Step n={1} title="Read down, not across">
+
+An **acrostic** hides a word in the first letters of each line. Poets have done it for thousands of years; Lewis Carroll ended *Through the Looking-Glass* with a poem whose first letters spell the full name of the real Alice.
+
+> Cold the wind across the moor,\
+> Over hill and under door;\
+> Darkness gathers, rain will fall,\
+> Every window shuttered all.
+
+<QuickCheck id="acrostic-code" answer="CODE" note="C, O, D, E: the first letter of each line.">What word do the first letters of the lines spell?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Null ciphers">
+
+A **null cipher** hides a message in an innocent text by a rule: the first letter of every word, the second letter, every fifth word. Spies liked them because ciphertext looks suspicious and a chatty letter home doesn't.
+
+<QuickCheck id="acrostic-seven" answer="SEVEN" note="Send, every, vessel, east, now.">Read the first letter of each word: *Send every vessel east now.*</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Every rule you can think of">
+
+When a text feels slightly forced, try the cheap rules one after another: first letters of lines, of words, last letters, second letters, every second or third letter, only the capitals. The reader below does each one instantly.
+
+<TextReader client:visible text={'the Old Wharf Lies empty'} />
+
+<QuickCheck id="acrostic-capitals" answer="OWL" note="Old, Wharf, Lies: the only capitals.">Read only the capitals in *the Old Wharf Lies empty*.</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- A poem or letter that's **slightly stilted**, as if words were picked for their letters.
+- **Odd capitals**, or lines that start oddly.
+- A puzzle that tells you to read **carefully** or **between the lines**.
+
+</Step>

@@ -1,0 +1,10 @@
+---
+/** Writes an HTML comment into the page: invisible on screen, there in the page source. */
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+const safe = text.replace(/--/g, '- -');
+---
+
+<Fragment set:html={`<!-- ${safe} -->`} />

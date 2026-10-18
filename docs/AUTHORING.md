@@ -29,7 +29,9 @@ One file per puzzle: `src/content/puzzles/<id>.mdx`. The file name is the puzzle
 | `ciphertext` | no | Shown in a large violet block with a copy button. Leave it out if the puzzle is an image, a sound or prose. |
 | `cipher` | no | How the ciphertext was made: `{ plaintext: "…", steps: [...] }`. The build applies the steps in order and fails unless the result is exactly `ciphertext`. Always include it when the puzzle has a ciphertext. See [Cipher steps](#cipher-steps). |
 | `display` | no | `text` (default) shows the ciphertext. `morse-audio` hides it and gives a play button that sends it as sound. `pigpen` draws it as pigpen symbols. |
-| `page` | no | A page of text shown with the puzzle, line breaks kept. The source for book ciphers; also passed to the book cipher helper. |
+| `page` | no | A page of text shown with the puzzle, line breaks kept. The source for book ciphers; also passed to the book cipher helper and the text reader. |
+| `files` | no | Files shown with the puzzle: `[{ path: files/<puzzle-id>/name.png, label: "…" }]`, relative to `public/`. Images and sounds get a preview and a download link; the first file is offered to the tools that open files. The build fails if a file is missing. |
+| `extract` | no | For text hidden in text: `{ from: page, method: line-first, expect: BEACON }`. The build reads the `page` or `ciphertext` that way and fails unless it gives `expect`. Methods: `line-first`, `line-last`, `word-first`, `word-last`, `word-nth` (with `n`), `every-nth` (with `n` and optional `offset`), `capitals`. |
 | `answers` | yes | Every answer you'll accept. Case, spaces, punctuation and accents are ignored, so `Lighthouse keeper!` and `LIGHTHOUSEKEEPER` are the same. Add real alternatives (`THE LIGHTHOUSE KEEPER`), not typos. |
 | `partials` | no | Wrong turns you can predict, each with a reply. See below. |
 | `hints` | yes | In order, from a nudge to nearly the whole method. Three is the norm. |
@@ -61,12 +63,35 @@ Each step is applied to the output of the one before. Available steps (from `src
 | `{ type: bacon-case, cover: "…" }` | Hides the message in the capitals of a cover text, which needs exactly five letters per hidden letter. |
 | `{ type: book, mode: line-word, source: *page }` | References to the first appearance of each word (or letter, with `word-letter`). Use a YAML anchor so `source` is the puzzle's `page`. |
 | `{ type: upper }` | Uppercase. Useful with `display: pigpen`. |
+| `{ type: zero-width, cover: "…" }` | Hides the text as invisible zero-width characters after the cover's first letter. |
 | `{ type: reverse }` | The whole string backwards. |
 | `{ type: map, map: { "0": "□", "1": "■" } }` | Replaces single characters; anything else passes through. |
 
 A layered puzzle is just several steps: `steps: [{ type: caesar, shift: 13 }, { type: hex }, { type: base64 }]`.
 
 To get the ciphertext, write the `cipher` with `ciphertext: ""`, run `npm run build`, and copy the expected value from the error message.
+
+### Hidden in the page
+
+Two components put things in the page itself. Import them at the top of the puzzle's body:
+
+```mdx
+import SourceComment from '../../components/SourceComment.astro';
+import InvisibleInk from '../../components/InvisibleInk.astro';
+
+<SourceComment text="The answer is LANTERN" />  {/* an HTML comment, visible only in the source */}
+<InvisibleInk>The answer is CHALK.</InvisibleInk>  {/* text in the background colour */}
+```
+
+### Images and sounds
+
+Puzzle files are generated, never drawn by hand, so they can be rebuilt and checked. `scripts/make_assets.py` (Python with numpy and Pillow) writes every image and sound to `public/files/`, and `tests/assets.test.ts` decodes each one with the same code the browser tools use. To add one:
+
+1. Add a function to `scripts/make_assets.py` and run `python3 scripts/make_assets.py`.
+2. Add a test to `tests/assets.test.ts` proving the file decodes to what the puzzle needs.
+3. List the file under the puzzle's `files`.
+
+Keep files small: PNG for anything with hidden pixels (JPEG destroys low bits), mono WAV at the lowest sample rate that works.
 
 ### Difficulty
 

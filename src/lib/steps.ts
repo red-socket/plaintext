@@ -3,6 +3,7 @@
  * The content schema re-runs these at build time and fails if the result isn't the ciphertext.
  */
 import { caesarEncrypt } from './caesar';
+import { zeroWidthHide } from './hidden';
 import {
   atbash,
   baconEncode,
@@ -52,6 +53,8 @@ export type Step =
   /** References into a source text: "line.word" or "word.letter", first appearance. */
   | { type: 'book'; source: string; mode: BookMode }
   | { type: 'upper' }
+  /** Hides the text as invisible zero-width characters inside a cover sentence. */
+  | { type: 'zero-width'; cover: string }
   /** Reverses the whole string. */
   | { type: 'reverse' }
   /** Replaces single characters, e.g. { "0": "□", "1": "■" }. Others pass through. */
@@ -99,6 +102,8 @@ export function applyStep(text: string, step: Step): string {
       return bookEncode(text, step.source, step.mode);
     case 'upper':
       return text.toUpperCase();
+    case 'zero-width':
+      return zeroWidthHide(text, step.cover);
     case 'reverse':
       return [...text].reverse().join('');
     case 'map':

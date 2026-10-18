@@ -1,0 +1,15 @@
+---
+/** Text in the background colour: invisible until selected, in light and dark themes alike. */
+---
+
+<span class="invisible-ink"><slot /></span>
+
+<style>
+  .invisible-ink {
+    color: var(--paper);
+  }
+  .invisible-ink::selection {
+    color: var(--on-highlight);
+    background: var(--highlight);
+  }
+</style>

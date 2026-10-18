@@ -86,6 +86,42 @@ export const TOOLS: Tool[] = [
     description: 'Numbers the lines, words and letters of a text and looks up the references.',
     lesson: 'book-ciphers',
   },
+  {
+    id: 'text-reader',
+    name: 'Text reader',
+    description: 'Reads first, last or n-th letters of lines and words, every n-th letter, or only the capitals.',
+    lesson: 'acrostics',
+  },
+  {
+    id: 'invisible-ink',
+    name: 'Invisible ink finder',
+    description: 'Shows zero-width characters and trailing whitespace, and decodes messages made of them.',
+    lesson: 'page-source',
+  },
+  {
+    id: 'metadata',
+    name: 'Metadata viewer',
+    description: 'Reads EXIF, GPS and comments from JPEGs and text chunks from PNGs, in your browser.',
+    lesson: 'metadata',
+  },
+  {
+    id: 'image-inspector',
+    name: 'Image inspector',
+    description: 'Colour channels, bit planes, contrast stretching, and messages hidden in the lowest bits.',
+    lesson: 'image-bits',
+  },
+  {
+    id: 'spectrogram',
+    name: 'Spectrogram viewer',
+    description: 'Draws a sound as a picture of its pitches over time, to find what is hidden in it.',
+    lesson: 'spectrograms',
+  },
+  {
+    id: 'sstv',
+    name: 'SSTV decoder',
+    description: 'Turns a Martin M1 slow-scan television recording back into its picture.',
+    lesson: 'sstv',
+  },
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);
@@ -98,6 +134,8 @@ export const GUIDE_GROUPS = {
   'two-symbols': 'Two symbols only',
   mixed: 'Letters, digits and symbols',
   pictures: 'Shapes and pictures',
+  'plain-text': 'Ordinary text that seems too ordinary',
+  files: 'Images, sounds and files',
 } as const;
 
 export type GuideGroup = keyof typeof GUIDE_GROUPS;

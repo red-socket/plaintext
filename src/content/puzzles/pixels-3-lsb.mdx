@@ -1,0 +1,21 @@
+---
+title: Least significant
+lesson: image-bits
+order: 3
+difficulty: 3
+files: [{ path: files/pixels-3-lsb/pier.png, label: "pier.png" }]
+answers: [PELICAN]
+partials:
+  - answer: "THE ANSWER IS PELICAN"
+    reply: "Found it. The answer is the bird."
+hints:
+  - "The picture looks normal, and no bit plane draws anything."
+  - "The lowest bits might hold text, not a picture."
+  - "Read the lowest bits of red, green and blue as text: the image inspector's Read hidden text."
+writeup: |
+  No bit plane shows a picture, because this time the low bits hold text. Read the lowest bit of red, green and blue for each pixel in turn, eight bits to a character, and the first 21 characters are `THE ANSWER IS PELICAN`, followed by a zero byte.
+
+  A low bit plane that looks like static in one band at the top of the image, and smooth below, is a sign of an LSB message.
+---
+
+Another harbour picture, with a pier this time. Nothing seems different.

@@ -1,0 +1,56 @@
+---
+title: Metadata
+track: hidden
+order: 3
+summary: Files carry notes about themselves, like when, where and with what a photo was taken.
+minutes: 10
+tool: metadata
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import MetadataViewer from '../../components/tools/MetadataViewer.svelte';
+
+<Step n={1} title="Files that describe themselves">
+
+A photo from a camera or phone usually carries **EXIF** data inside the file: the camera model, the date and time, the exposure settings, sometimes a description or comment, and often the **GPS position**. None of it shows in the picture.
+
+Open the sample photo below and read what it says about itself.
+
+<MetadataViewer client:visible file="/files/lessons/harbour.jpg" />
+
+<QuickCheck id="metadata-artist" answer="PLAINTEXT" note="The Artist field in the EXIF data.">Who is listed as the artist of the sample photo?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Where it was taken">
+
+Phones store latitude and longitude with almost every photo. Latitude says how far north or south; longitude, how far east or west. Put the two into a map and you're standing where the photographer stood.
+
+It's also why many sites strip metadata from uploads. Puzzle files you download directly usually keep theirs.
+
+<QuickCheck id="metadata-latitude" answer={["NORTH SOUTH", "NORTH AND SOUTH", "NS"]} note="Latitude is north–south, longitude is east–west.">Does latitude measure north–south or east–west?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Other files, other notes">
+
+Every format has its own place for notes:
+
+- **PNG** images have text chunks, named `tEXt`, `zTXt` and `iTXt`, which can hold anything.
+- **PDF** and **Word** files record an author, a title and the software that made them.
+- **MP3** files have ID3 tags: artist, album, comments, even pictures.
+- Even the **file name** can be a clue.
+
+<QuickCheck id="metadata-png" answer="PNG" note="tEXt chunks are part of the PNG format.">Which image format stores notes in chunks called tEXt?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- A puzzle that gives you **a file**, not just a picture.
+- A question about **where, when or who** that the picture itself can't answer.
+
+Open every file in a metadata viewer before doing anything clever. It takes seconds.
+
+</Step>

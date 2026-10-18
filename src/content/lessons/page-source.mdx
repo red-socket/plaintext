@@ -1,0 +1,62 @@
+---
+title: Hidden in the page
+track: hidden
+order: 2
+summary: Comments in the source, text the colour of the background, and characters with no width at all.
+minutes: 10
+tool: invisible-ink
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import InvisibleInk from '../../components/InvisibleInk.astro';
+import InvisibleInkTool from '../../components/tools/InvisibleInkTool.svelte';
+import { zeroWidthHide } from '../../lib/hidden';
+
+export const sample = zeroWidthHide('Hi', 'Look closely at this sentence.');
+
+<Step n={1} title="The page under the page">
+
+Every web page is a text file of HTML that your browser draws. The file can hold things the drawing doesn't show, and online puzzles hide clues there more than anywhere else: **comments** (`<!-- like this -->`), hidden elements, odd file names, notes in scripts.
+
+To see it, **view the source**: Ctrl+U on Windows and Linux, ⌥⌘U on a Mac, or type `view-source:` before the address. Search it with Ctrl+F.
+
+<QuickCheck id="source-shortcut" answer="U" note="Ctrl+U opens the source in most desktop browsers.">On Windows and Linux, Ctrl plus which letter shows a page's source?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Same colour as the background">
+
+The oldest trick on the web: text coloured exactly like the page behind it. It's there, it just doesn't show. **Select all** (Ctrl+A) and it lights up. <InvisibleInk>The word is MOTH.</InvisibleInk>
+
+<QuickCheck id="source-moth" answer="MOTH" note="It was at the end of the paragraph, in the background colour.">Select the text of this step. What's the hidden word?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Characters with no width">
+
+Unicode has characters that take up no space at all, such as the **zero-width space** and the **zero-width non-joiner**. Use one for 0 and the other for 1, and a whole message can sit invisibly inside an ordinary sentence. Copying the sentence copies them too.
+
+The sentence in the box below has something in it. The finder shows every invisible character in red and decodes them.
+
+<InvisibleInkTool client:visible text={sample} />
+
+<QuickCheck id="source-zw" answer="HI" note="16 invisible characters: two bytes, H and i.">What does the sentence hide?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Spaces at the ends of lines">
+
+A related trick hides bits in **trailing whitespace**: spaces and tabs after the last word of each line, where no one looks. Space is 0, tab is 1. The finder reads these too.
+
+</Step>
+
+<Step n={5} title="How to spot it">
+
+- A web page that **says nothing useful** on screen.
+- Copied text that's **longer than it looks**, or a cursor that sticks between letters.
+- Gaps, oddly long lines, or a page that scrolls further than its content.
+
+Select all, view the source, and paste anything suspicious into the finder.
+
+</Step>

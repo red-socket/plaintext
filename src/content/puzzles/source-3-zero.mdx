@@ -1,0 +1,22 @@
+---
+title: The plain sentence
+lesson: page-source
+order: 3
+difficulty: 3
+ciphertext: "T\u200b\u200c\u200b\u200b\u200b\u200b\u200b\u200c\u200b\u200c\u200b\u200b\u200c\u200c\u200c\u200b\u200b\u200c\u200b\u200c\u200b\u200b\u200c\u200c\u200b\u200c\u200b\u200c\u200b\u200c\u200c\u200c\u200b\u200c\u200b\u200b\u200b\u200c\u200b\u200c\u200b\u200c\u200b\u200c\u200b\u200b\u200c\u200b\u200b\u200b\u200c\u200c\u200c\u200b\u200c\u200b\u200b\u200b\u200c\u200b\u200b\u200b\u200b\u200b\u200b\u200c\u200b\u200b\u200b\u200c\u200c\u200c\u200b\u200c\u200b\u200b\u200c\u200b\u200b\u200b\u200b\u200c\u200b\u200b\u200c\u200c\u200c\u200c\u200b\u200c\u200b\u200c\u200b\u200b\u200c\u200c\u200b\u200c\u200b\u200c\u200b\u200c\u200b\u200bhere is nothing hidden in this sentence."
+cipher: { plaintext: "ANSWER: GHOST", steps: [{ type: zero-width, cover: "There is nothing hidden in this sentence." }] }
+answers: [GHOST]
+partials:
+  - answer: "THERE IS NOTHING HIDDEN IN THIS SENTENCE"
+    reply: "That's what it says. What's in it?"
+hints:
+  - "Copy the sentence and paste it somewhere. Is it as long as it looks?"
+  - "It contains characters with no width."
+  - "Paste it into the invisible ink finder: zero-width space is 0, zero-width non-joiner is 1."
+writeup: |
+  The sentence holds 104 zero-width characters after its first letter. Read as bits, zero-width space for 0 and zero-width non-joiner for 1, they're 13 bytes: `ANSWER: GHOST`.
+
+  If copied text behaves oddly, with the cursor sticking or the character count too high, look for characters you can't see.
+---
+
+A sentence from an anonymous email. The sender says it's perfectly ordinary.

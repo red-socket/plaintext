@@ -3,6 +3,9 @@ import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { GUIDE_GROUPS, TOOLS, TRACKS, type GuideGroup } from './lib/catalog';
 import { normalizeAnswer } from './lib/normalize';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { extract } from './lib/hidden';
 import { applySteps } from './lib/steps';
 
 const answer = z.string().refine((a) => normalizeAnswer(a) !== '', 'Answer has no letters or digits');
@@ -41,6 +44,7 @@ const step = z.discriminatedUnion('type', [
   z.object({ type: z.literal('bacon-case'), cover: z.string(), variant: z.union([z.literal(24), z.literal(26)]).optional() }),
   z.object({ type: z.literal('book'), source: z.string(), mode: z.enum(['line-word', 'word-letter']) }),
   z.object({ type: z.literal('upper') }),
+  z.object({ type: z.literal('zero-width'), cover: z.string() }),
   z.object({ type: z.literal('reverse') }),
   z.object({ type: z.literal('map'), map: z.record(z.string(), z.string()) }),
 ]);
@@ -73,6 +77,18 @@ const puzzles = defineCollection({
       display: z.enum(['text', 'morse-audio', 'pigpen']).default('text'),
       /** A page of text shown with the puzzle, e.g. the source for a book cipher. Line breaks are kept. */
       page: z.string().optional(),
+      /** Files shown with the puzzle (images and sounds get a preview), relative to public/. */
+      files: z.array(z.object({ path: z.string(), label: z.string() })).default([]),
+      /** For hidden-in-text puzzles: reading `from` this way must give `expect`. Checked at build time. */
+      extract: z
+        .object({
+          from: z.enum(['page', 'ciphertext']),
+          method: z.enum(['line-first', 'line-last', 'word-first', 'word-last', 'word-nth', 'every-nth', 'capitals']),
+          n: z.number().int().positive().optional(),
+          offset: z.number().int().positive().optional(),
+          expect: z.string(),
+        })
+        .optional(),
       cipher: cipher.optional(),
       answers: z.array(answer).min(1),
       partials: z.array(z.object({ answer, reply: z.string() })).default([]),
@@ -97,6 +113,17 @@ const puzzles = defineCollection({
         if (made !== p.ciphertext) {
           ctx.addIssue({ code: 'custom', path: ['ciphertext'], message: `Does not match cipher; expected "${made}"` });
         }
+      }
+      if (p.extract) {
+        const src = p.extract.from === 'page' ? p.page : p.ciphertext;
+        const got = src ? extract(src, p.extract.method, p.extract.n, p.extract.offset) : '';
+        if (normalizeAnswer(got) !== normalizeAnswer(p.extract.expect)) {
+          ctx.addIssue({ code: 'custom', path: ['extract'], message: `Reading the ${p.extract.from} gives "${got}", not "${p.extract.expect}"` });
+        }
+      }
+      for (const f of p.files) {
+        // Relative to this file, not the working directory, which differs between dev and build.
+        if (!existsSync(fileURLToPath(new URL(`../public/${f.path}`, import.meta.url)))) ctx.addIssue({ code: 'custom', path: ['files'], message: `No file at public/${f.path}` });
       }
       const solves = new Set(p.answers.map(normalizeAnswer));
       for (const partial of p.partials) {

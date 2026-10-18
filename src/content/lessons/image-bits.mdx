@@ -1,0 +1,56 @@
+---
+title: Hidden in the pixels
+track: hidden
+order: 4
+summary: Change a pixel's colour by one step and nobody can see it. That one step can carry a message.
+minutes: 12
+tool: image-inspector
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import ImageInspector from '../../components/tools/ImageInspector.svelte';
+
+<Step n={1} title="Pixels are numbers">
+
+Each pixel in a colour image is three numbers: how much **red**, **green** and **blue**, each from 0 to 255. Your eye can't tell 128 from 129. That gap is where messages hide.
+
+<QuickCheck id="pixels-values" answer="256" note="0 to 255 is 256 values, one byte.">How many different values can one colour channel of a pixel have?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Bit planes">
+
+Each of those numbers is eight bits. Take one bit from every pixel, say the lowest bit of blue, and you get a black-and-white picture called a **bit plane**. In an ordinary photo the lowest planes look like static. If someone drew something there, it jumps out.
+
+Open the sample and switch the view to a bit plane. Try each channel at bit 0.
+
+<ImageInspector client:visible file="/files/lessons/pixels.png" />
+
+<QuickCheck id="pixels-plane" answer="PIXEL" note="The lowest bit of the blue channel draws the word; the picture itself looks unchanged.">What word does the blue channel's lowest bit plane show?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Text in the lowest bits">
+
+The same space can hold text: take the lowest bit of each colour of each pixel in turn, eight at a time, and read them as characters. This is **LSB steganography** (least significant bit), and it's the most common way to hide a message in an image. The inspector's "Read hidden text" does exactly this.
+
+<QuickCheck id="pixels-lsb" answer="HIDDEN IN THE PIXELS" note="Red, green and blue low bits, pixel by pixel, until a zero byte.">What message is hidden in the sample's lowest bits?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Why it's always PNG">
+
+JPEG saves space by throwing away detail you can't see, and the lowest bits are the first to go. Hidden pixels need a format that keeps every value exactly: **PNG**, GIF or BMP. Contrast stretching can also reveal shapes drawn just one shade off their background.
+
+</Step>
+
+<Step n={5} title="How to spot it">
+
+- A **PNG** with nothing obviously interesting in it.
+- Flat areas of colour that are **slightly uneven** when you zoom in.
+- A puzzle that says *look closer* about an image.
+
+Check each channel with contrast stretched, then the lowest bit planes, then try reading the low bits as text.
+
+</Step>

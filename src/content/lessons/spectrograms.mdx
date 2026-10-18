@@ -1,0 +1,46 @@
+---
+title: Pictures in sound
+track: hidden
+order: 5
+summary: Draw a sound as pitch against time and some recordings turn out to be pictures.
+minutes: 10
+tool: spectrogram
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import SpectrogramViewer from '../../components/tools/SpectrogramViewer.svelte';
+
+<Step n={1} title="Sound as a picture">
+
+A **spectrogram** draws a sound as a picture: time runs left to right, pitch runs bottom to top, and brightness shows how loud each pitch is. A whistle is a bright line; speech is a set of shifting bands; a drum hit is a vertical smear.
+
+<SpectrogramViewer client:visible file="/files/lessons/spectrogram-hello.wav" />
+
+<QuickCheck id="spectro-hello" answer="HELLO" note="Each lit pixel of the word is a short tone at that pitch.">Open the sample. What word does it draw?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Drawing with sound">
+
+If a spectrogram turns sound into a picture, you can go the other way: choose a picture, and play a tone for every bright pixel. Heard, it's hiss and warble. Seen, it's a face or a word.
+
+Aphex Twin hid a face in a track on the *Windowlicker* single in 1999, and Nine Inch Nails hid images in songs as part of the *Year Zero* ARG in 2007. Puzzle hunts have done it ever since.
+
+</Step>
+
+<Step n={3} title="Too high to hear">
+
+Young adults hear up to about **20 kHz**, and the limit drops with age. A message at 17 or 18 kHz is silent to most people over thirty, but clear on a spectrogram. When you look, raise the top frequency all the way.
+
+<QuickCheck id="spectro-limit" answer={["20", "TWENTY", "20KHZ"]} note="About 20 kHz, and less as you get older.">Roughly the highest pitch young adults can hear, in kHz?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Noise, chirps or warbling** with no rhythm or tune.
+- A sound file where you'd expect an image, or a puzzle that says **look**, not listen.
+- Silence that's suspiciously long: something may be above your hearing.
+
+</Step>

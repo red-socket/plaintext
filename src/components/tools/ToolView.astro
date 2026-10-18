@@ -12,15 +12,23 @@ import PolybiusTool from './PolybiusTool.svelte';
 import SubstitutionTool from './SubstitutionTool.svelte';
 import TranspositionTool from './TranspositionTool.svelte';
 import VigenereTool from './VigenereTool.svelte';
+import ImageInspector from './ImageInspector.svelte';
+import InvisibleInkTool from './InvisibleInkTool.svelte';
+import MetadataViewer from './MetadataViewer.svelte';
+import SpectrogramViewer from './SpectrogramViewer.svelte';
+import SstvDecoder from './SstvDecoder.svelte';
+import TextReader from './TextReader.svelte';
 
 interface Props {
   tool: string;
   text?: string;
-  /** A source text (for the book cipher helper). */
+  /** A source text (for the book cipher helper and text reader). */
   page?: string;
+  /** A file URL (for tools that open images or sounds). */
+  file?: string;
 }
 
-const { tool, text = '', page = '' } = Astro.props;
+const { tool, text = '', page = '', file } = Astro.props;
 ---
 
 {tool === 'caesar-wheel' && <CipherWheel client:visible shift={text ? 0 : 3} mode={text ? 'decrypt' : 'encrypt'} text={text} />}
@@ -35,3 +43,9 @@ const { tool, text = '', page = '' } = Astro.props;
 {tool === 'bacon' && <BaconTool client:visible text={text} />}
 {tool === 'pigpen' && <PigpenTool client:visible />}
 {tool === 'book' && <BookTool client:visible text={text} source={page} />}
+{tool === 'text-reader' && <TextReader client:visible text={page || text} />}
+{tool === 'invisible-ink' && <InvisibleInkTool client:visible text={text} />}
+{tool === 'metadata' && <MetadataViewer client:visible file={file} />}
+{tool === 'image-inspector' && <ImageInspector client:visible file={file} />}
+{tool === 'spectrogram' && <SpectrogramViewer client:visible file={file} />}
+{tool === 'sstv' && <SstvDecoder client:visible file={file} />}

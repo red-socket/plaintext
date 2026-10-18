@@ -56,6 +56,30 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     }
 
     {
+      puzzle.data.files.length > 0 && (
+        <div class="files">
+          {puzzle.data.files.map((f) => {
+            const url = `/${f.path}`;
+            const isImage = /\.(png|jpe?g|gif|webp)$/i.test(f.path);
+            const isAudio = /\.(wav|mp3|ogg|flac)$/i.test(f.path);
+            return (
+              <figure class="file">
+                {isImage && <img src={url} alt={f.label} loading="lazy" />}
+                {isAudio && <audio controls preload="none" src={url} />}
+                <figcaption>
+                  <span>{f.label}</span>
+                  <a href={url} download>
+                    Download {f.path.split('/').pop()}
+                  </a>
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      )
+    }
+
+    {
       puzzle.data.page && (
         <figure class="book-page">
           {puzzle.data.page
@@ -96,7 +120,12 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
       back={{ href: parent.href, title: parent.title }}
     />
 
-    <Toolkit text={puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : ''} open={lesson?.data.tool} page={puzzle.data.page} />
+    <Toolkit
+      text={puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : ''}
+      open={lesson?.data.tool}
+      page={puzzle.data.page}
+      file={puzzle.data.files[0] && `/${puzzle.data.files[0].path}`}
+    />
   </article>
 </Base>
 
@@ -149,6 +178,36 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     margin-left: 0.4rem;
   }
 
+  .files {
+    display: grid;
+    gap: 1rem;
+  }
+  .file {
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+  }
+  .file img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+    image-rendering: auto;
+  }
+  .file audio {
+    width: 100%;
+  }
+  .file figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
   .book-page {
     margin: 0;
     padding: 1.5rem 1.75rem;

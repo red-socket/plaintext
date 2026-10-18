@@ -1,0 +1,50 @@
+---
+title: Slow-scan television
+track: hidden
+order: 6
+summary: A picture sent as a minute of warbling tones, line by line. Radio amateurs and space stations still use it.
+minutes: 12
+tool: sstv
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import SstvDecoder from '../../components/tools/SstvDecoder.svelte';
+
+<Step n={1} title="Pictures by radio">
+
+**Slow-scan television** (SSTV) sends a still picture as sound, one line at a time. Copthorne Macdonald developed it in the late 1950s so radio amateurs could swap pictures over ordinary voice channels. A picture takes a minute or two.
+
+It's still in use: the International Space Station sends SSTV pictures during special events, and anyone with a cheap radio can receive them.
+
+</Step>
+
+<Step n={2} title="Brightness is pitch">
+
+Each pixel becomes a tone between **1500 Hz (black)** and **2300 Hz (white)**. Every line starts with a short **1200 Hz sync pulse**, which is the regular clicking you hear. Before the picture, a header of steady tones says which **mode** follows: how big the picture is and how its colours are sent.
+
+The most common amateur mode, **Martin M1**, sends 256 lines of 320 pixels, each line as green, then blue, then red. It takes just under two minutes.
+
+<QuickCheck id="sstv-white" answer={["2300", "2300 HZ"]} note="Pitch rises with brightness: 1500 Hz is black, 2300 Hz is white.">In SSTV, which frequency means white: 1500 Hz or 2300 Hz?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Decoding">
+
+The sample below is the start of a Martin M1 picture, 64 lines long. Decode it.
+
+<SstvDecoder client:visible file="/files/lessons/sstv-radio.wav" />
+
+<QuickCheck id="sstv-radio" answer="RADIO" note="The decoder reads the frequency of each pixel and draws it.">What word is in the picture?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- A minute or more of **fast warbling** that starts with **two steady tones**.
+- **Regular clicks**, a few per second: one per line.
+- Space stations, radio amateurs or old television in the story.
+
+If one mode decodes to noise, the picture is probably in another. This decoder reads Martin M1; dedicated programs read them all.
+
+</Step>

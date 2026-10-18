@@ -1,0 +1,18 @@
+---
+title: Fog
+lesson: image-bits
+order: 1
+difficulty: 2
+files: [{ path: files/pixels-1-fog/fog.png, label: "fog.png" }]
+answers: [OTTER]
+hints:
+  - "It looks like a flat grey square. Is every pixel really the same?"
+  - "Some pixels are one shade lighter than the rest."
+  - "Stretch the contrast of any channel, or look at the lowest bit plane."
+writeup: |
+  Every pixel is grey 128, except the ones that make up a word, which are 129: one step lighter, too little to see. Stretching the contrast turns 128 into black and 129 into white, and so does the lowest bit plane. The word is `OTTER`.
+
+  A suspiciously flat image is worth stretching. Nothing is that flat by accident.
+---
+
+A photo of thick fog, according to the sender. It looks like a grey square.

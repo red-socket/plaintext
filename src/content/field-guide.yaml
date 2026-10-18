@@ -216,3 +216,66 @@
     - Stick figures, clock hands or flags in poses that repeat.
   try: Look up each pair of positions in a semaphore chart. If nothing reads, mirror the figures; it's easy to read them from the wrong side.
   track: encodings
+
+- id: acrostic
+  name: Acrostics and null ciphers
+  group: plain-text
+  example: "Bright the lamp on the far stone, / Every night it burns alone…"
+  tells:
+    - A poem or letter that's a little stilted, as if words were chosen for their letters.
+    - Lines or words that start with capitals in an odd pattern.
+    - The puzzle says to read carefully, or between the lines.
+  try: Read the first letter of each line, then of each word, then the last letters. Then every second or third letter.
+  lesson: acrostics
+
+- id: invisible-text
+  name: Invisible text
+  group: plain-text
+  example: "A sentence that's longer than it looks when you copy it."
+  tells:
+    - Copied text is longer than what you can see, or the cursor sticks between letters.
+    - Selecting all reveals text in the background colour.
+    - A web page that says nothing useful on screen.
+  try: Select all, view the page source, and paste the text into the invisible ink finder.
+  lesson: page-source
+
+- id: metadata
+  name: Metadata
+  group: files
+  example: "A photo whose EXIF says where and when it was taken."
+  tells:
+    - A puzzle gives you a file, not just a picture of it.
+    - A question about where, when or who, that the picture itself can't answer.
+  try: Open the file in a metadata viewer. Read every field, especially comments, descriptions and GPS.
+  lesson: metadata
+
+- id: hidden-pixels
+  name: Hidden pixels
+  group: files
+  example: "A plain-looking PNG with a message in the lowest bit of each colour."
+  tells:
+    - A PNG (not a JPEG, which would destroy the bits) with nothing obvious in it.
+    - Large flat areas of colour that are suspiciously slightly uneven.
+  try: Look at each colour channel with the contrast stretched, then at the lowest bit planes, then try reading the low bits as text.
+  lesson: image-bits
+
+- id: spectrogram
+  name: Pictures in sound
+  group: files
+  example: "Hiss and warbling that draws a word when you look at its pitches."
+  tells:
+    - Noise, chirps or warbling with no rhythm or tune.
+    - A sound file where you'd expect a picture, or a puzzle that says "look", not "listen".
+  try: Open it in a spectrogram viewer and look across all frequencies, including ones too high to hear.
+  lesson: spectrograms
+
+- id: sstv
+  name: Slow-scan television
+  group: files
+  example: "A long, warbling screech that starts with two steady tones."
+  tells:
+    - A minute or two of fast warbling between about 1100 and 2300 Hz.
+    - "Regular clicks, a few per second: one per line of the picture."
+    - Space stations, radio amateurs or old TV in the story.
+  try: Decode it with an SSTV decoder. If one mode gives noise, try others.
+  lesson: sstv
