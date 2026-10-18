@@ -68,7 +68,6 @@
     font-size: var(--step--1);
     padding: 0.45rem 0.5rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   .out {

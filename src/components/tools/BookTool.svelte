@@ -77,7 +77,6 @@
     padding: 0.75rem 1rem;
     background: var(--paper);
     border: 1px solid var(--rule);
-    border-radius: 3px;
     font-size: var(--step--1);
     line-height: 2;
   }
@@ -94,7 +93,7 @@
   .w sup {
     font-family: var(--mono);
     font-size: 0.6rem;
-    color: var(--violet);
+    color: var(--teal);
     margin-right: 0.1rem;
   }
 </style>

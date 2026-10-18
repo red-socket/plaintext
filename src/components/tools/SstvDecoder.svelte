@@ -80,8 +80,7 @@
     width: 100%;
     max-width: 40rem;
     image-rendering: pixelated;
-    border-radius: 3px;
-    background: #16151f;
+    background: var(--bar);
   }
   canvas.empty {
     display: none;

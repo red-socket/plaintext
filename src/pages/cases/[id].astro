@@ -15,7 +15,7 @@ const files = await casePuzzles(kase.id);
 const first = files[0];
 ---
 
-<Base title={`Case ${kase.data.number}: ${kase.data.title}`} description={kase.data.summary}>
+<Base title={`Case ${kase.data.number}: ${kase.data.title}`} description={kase.data.summary} filing={`Case ${kase.data.number}`}>
   <article class="case page">
     <header>
       <p class="meta">Case {kase.data.number}</p>
@@ -41,11 +41,8 @@ const first = files[0];
   header {
     display: grid;
     gap: 0.6rem;
-    padding-top: 2rem;
+    padding-top: 2.5rem;
     max-width: var(--measure);
-  }
-  h1 {
-    font-size: var(--step-4);
   }
   .story {
     font-size: var(--step-1);

@@ -67,7 +67,6 @@
     font-family: var(--mono);
     padding: 0.4rem 0.5rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   .sides {
@@ -80,7 +79,6 @@
     gap: 0.4rem;
     padding: 0.75rem 1rem;
     border: 1px solid var(--rule);
-    border-radius: 4px;
     background: var(--paper);
   }
   .side h3,

@@ -154,7 +154,7 @@
     padding-left: 1.2rem;
   }
   .warn {
-    color: var(--pencil);
+    color: var(--red);
     font-weight: 600;
   }
   .link {
@@ -165,19 +165,18 @@
     color: inherit;
     font-size: inherit;
     text-decoration: underline;
-    text-decoration-color: var(--violet);
+    text-decoration-color: var(--teal);
     cursor: pointer;
   }
   .preview {
     max-width: 100%;
     max-height: 22rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     justify-self: start;
   }
   .zip {
     padding: 0.75rem 1rem;
-    border-left: 3px solid var(--highlight);
+    border-left: 3px solid var(--mark);
     background: var(--paper);
   }
   .zip pre {
@@ -196,7 +195,7 @@
   }
   .tabs button.on {
     color: var(--ink);
-    border-bottom-color: var(--violet);
+    border-bottom-color: var(--teal);
   }
   .dump {
     font-family: var(--mono);
@@ -206,7 +205,6 @@
     padding: 0.5rem 0.75rem;
     background: var(--paper);
     border: 1px solid var(--rule);
-    border-radius: 3px;
     white-space: pre;
   }
   .dump .o {
@@ -214,7 +212,7 @@
     margin-right: 1.25rem;
   }
   .dump .h {
-    color: var(--violet);
+    color: var(--teal);
     margin-right: 1.25rem;
     display: inline-block;
     min-width: 47ch;
@@ -238,7 +236,6 @@
     margin: 0 0.3rem;
     padding: 0.2rem 0.4rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
     font-family: var(--mono);
   }

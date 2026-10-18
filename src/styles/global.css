@@ -1,27 +1,36 @@
-@import '@fontsource-variable/literata/opsz.css';
-@import '@fontsource-variable/literata/opsz-italic.css';
-@import '@fontsource-variable/martian-mono/standard.css';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/archivo/wdth-italic.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/600.css';
 
 /*
- * Spirit-duplicator palette: cool paper, violet-black ink, ditto violet for ciphertext,
- * highlighter yellow for anything decoded or solved, red pencil for mistakes.
+ * A training manual, declassified for the public: cool duplicating paper, blue-black ink,
+ * typed notes and your own working in faded teal, signal red for stamps, focus and verdicts.
+ * Anything not yet given away sits under a redaction bar.
  */
 :root {
-  --paper: #edeff3;
-  --paper-raised: #f7f8fa;
-  --ink: #1c1a2e;
-  --ink-soft: #4d4a63;
-  --rule: #c9cbd6;
-  --violet: #5a36b0;
-  --violet-faint: #e3def3;
-  --highlight: #f2dd4a;
-  --on-highlight: #1c1a2e;
-  --pencil: #b8324a;
+  --paper: #e8eae2;
+  --field: #f7f7f2;
+  --ink: #172033;
+  --ink-soft: #3a4457;
+  --rule: #8c9589;
+  --red: #a8261c;
+  --teal: #25615f;
+  --bar: #121a29;
+  --on-bar: #f7f7f2;
+  --bar-edge: transparent;
+  --tint: rgba(37, 97, 95, 0.1);
+  --mark: rgba(37, 97, 95, 0.16);
+  --on-mark: #1d4e4c;
+  --residue: rgba(23, 32, 51, 0.07);
+  --gridline: rgba(37, 97, 95, 0.09);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .09 0 0 0 0 .12 0 0 0 0 .2 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
-  --serif: 'Literata Variable', Georgia, serif;
-  --mono: 'Martian Mono Variable', ui-monospace, monospace;
+  --sans: 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 
-  /* Scale: 1.25 steps from an 18px base */
+  /* Scale from an 18px base */
   --step--1: 0.875rem;
   --step-0: 1.125rem;
   --step-1: 1.375rem;
@@ -35,31 +44,43 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --paper: #16151f;
-    --paper-raised: #1f1d2b;
-    --ink: #e6e3f1;
-    --ink-soft: #a9a5bf;
-    --rule: #3a3750;
-    --violet: #b3a0ff;
-    --violet-faint: #2c2547;
-    --highlight: #e5cf3c;
-    --on-highlight: #16151f;
-    --pencil: #ff8095;
+    --paper: #171e2b;
+    --field: #10161f;
+    --ink: #e3e6dc;
+    --ink-soft: #b4bbc4;
+    --rule: #4e5a6a;
+    --red: #f07b6f;
+    --teal: #7cc4bf;
+    --bar: #020407;
+    --on-bar: #e3e6dc;
+    --bar-edge: rgba(227, 230, 220, 0.14);
+    --tint: rgba(124, 196, 191, 0.12);
+    --mark: rgba(124, 196, 191, 0.18);
+    --on-mark: #a6dcd8;
+    --residue: rgba(227, 230, 220, 0.07);
+    --gridline: rgba(124, 196, 191, 0.08);
+    --grain: none;
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --paper: #16151f;
-  --paper-raised: #1f1d2b;
-  --ink: #e6e3f1;
-  --ink-soft: #a9a5bf;
-  --rule: #3a3750;
-  --violet: #b3a0ff;
-  --violet-faint: #2c2547;
-  --highlight: #e5cf3c;
-  --on-highlight: #16151f;
-  --pencil: #ff8095;
+  --paper: #171e2b;
+  --field: #10161f;
+  --ink: #e3e6dc;
+  --ink-soft: #b4bbc4;
+  --rule: #4e5a6a;
+  --red: #f07b6f;
+  --teal: #7cc4bf;
+  --bar: #020407;
+  --on-bar: #e3e6dc;
+  --bar-edge: rgba(227, 230, 220, 0.14);
+  --tint: rgba(124, 196, 191, 0.12);
+  --mark: rgba(124, 196, 191, 0.18);
+  --on-mark: #a6dcd8;
+  --residue: rgba(227, 230, 220, 0.07);
+  --gridline: rgba(124, 196, 191, 0.08);
+  --grain: none;
   color-scheme: dark;
 }
 
@@ -75,32 +96,37 @@ html {
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--grain) var(--paper);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: var(--step-0);
   line-height: 1.6;
-  font-optical-sizing: auto;
+  font-stretch: 100%;
 }
 
+/* Headings are condensed and heavy, like a manual's section titles. */
 h1,
 h2,
 h3 {
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  line-height: 1.05;
   margin: 0;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: var(--step-3);
+  font-size: clamp(2.6rem, 1.6rem + 4vw, 4.75rem);
+  font-stretch: 68%;
+  line-height: 0.95;
 }
 h2 {
-  font-size: var(--step-2);
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+  font-stretch: 78%;
 }
 h3 {
   font-size: var(--step-1);
+  font-weight: 700;
+  font-stretch: 92%;
 }
 
 p {
@@ -110,36 +136,39 @@ p {
 
 a {
   color: inherit;
-  text-decoration-color: var(--violet);
-  text-decoration-thickness: 0.08em;
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 0.18em;
 }
 a:hover {
-  text-decoration-thickness: 0.16em;
+  color: var(--red);
 }
 
 :focus-visible {
-  outline: 3px solid var(--violet);
-  outline-offset: 2px;
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
 }
 
 code,
 kbd,
 .mono {
   font-family: var(--mono);
-  font-size: 0.82em;
+  font-size: 0.86em;
 }
 
 code {
-  color: var(--violet);
+  padding: 0.05em 0.25em;
+  background: var(--residue);
   word-break: break-word;
 }
 
+/* Decoded text and results: your own working, in teal. */
 mark,
 .marked {
-  color: var(--on-highlight);
-  background: linear-gradient(100deg, transparent 0.15em, var(--highlight) 0.25em, var(--highlight) calc(100% - 0.25em), transparent calc(100% - 0.1em));
-  padding: 0 0.2em;
+  color: var(--on-mark);
+  background: var(--mark);
+  font-weight: 600;
+  padding: 0 0.25em;
+  box-shadow: inset 0 -2px 0 var(--teal);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
@@ -147,19 +176,33 @@ mark,
 blockquote {
   margin: 0;
   padding-left: 1rem;
-  border-left: 3px solid var(--rule);
+  border-left: 3px solid var(--ink);
   color: var(--ink-soft);
   font-style: italic;
 }
 
-/* Ciphertext: the one thing on every page written in violet ink */
+/* Ciphertext: the material you were given, typed in ink */
 .ciphertext {
   font-family: var(--mono);
+  font-weight: 600;
   font-size: clamp(1rem, 0.85rem + 0.9vw, 1.35rem);
   line-height: 1.9;
-  letter-spacing: 0.06em;
-  color: var(--violet);
+  letter-spacing: 0.1em;
+  color: var(--ink);
   overflow-wrap: anywhere;
+}
+
+/* Typed marginal notes */
+.note {
+  font-family: var(--mono);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--teal);
+  border-left: 3px solid var(--teal);
+  padding: 0.1rem 0 0.1rem 0.9rem;
+}
+.note b {
+  font-weight: 600;
 }
 
 /* Buttons and inputs */
@@ -174,59 +217,79 @@ select {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4em;
-  font-family: var(--serif);
-  font-size: var(--step--1);
-  font-weight: 600;
-  padding: 0.5em 1em;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 3rem;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  font-stretch: 90%;
+  line-height: 1.15;
+  padding: 0.4em 1.15em;
   border: 2px solid var(--ink);
-  border-radius: 3px;
+  border-radius: 0;
   background: var(--ink);
   color: var(--paper);
   cursor: pointer;
   text-decoration: none;
 }
 .btn:hover {
-  background: var(--violet);
-  border-color: var(--violet);
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--field);
 }
 .btn.quiet {
   background: transparent;
   color: var(--ink);
 }
 .btn.quiet:hover {
-  border-color: var(--violet);
-  color: var(--violet);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* Text-style buttons for small actions */
+.link {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.18em;
+}
+.link:hover {
+  color: var(--red);
+}
+
+/* Answer boxes: a form field, typed in capitals */
 .answer-input {
   font-family: var(--mono);
-  font-size: var(--step-0);
-  letter-spacing: 0.04em;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   width: 100%;
   min-width: 0;
-  padding: 0.4em 0.1em;
-  border: 0;
-  border-bottom: 2px solid var(--ink);
+  min-height: 3rem;
+  padding: 0.35em 0.65em;
+  border: 2px solid var(--ink);
   border-radius: 0;
-  background: transparent;
+  background: var(--field);
 }
 .answer-input::placeholder {
   text-transform: none;
   color: var(--ink-soft);
-  font-family: var(--serif);
-  font-style: italic;
+  opacity: 0.75;
+  font-weight: 400;
+  font-size: 0.9375rem;
   letter-spacing: 0;
-}
-.answer-input:focus-visible {
-  outline: none;
-  border-bottom-color: var(--violet);
-  box-shadow: 0 2px 0 var(--violet);
 }
 
 .sr-only {
@@ -241,9 +304,9 @@ select {
 /* Page frame */
 .page {
   width: 100%;
-  max-width: 64rem;
+  max-width: 68rem;
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
 }
 
 .prose {
@@ -264,8 +327,88 @@ select {
 }
 
 .meta {
+  font-family: var(--mono);
   color: var(--ink-soft);
   font-size: var(--step--1);
+}
+
+/* Section numbers and small filing labels */
+.filing {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
+/* Redaction bars: covered text you can lift, and plain bars standing in for text not yet shown */
+.redaction {
+  display: block;
+  height: 0.95em;
+  width: var(--w, 80%);
+  background: var(--bar);
+  box-shadow: inset 0 0 0 1px var(--bar-edge);
+  margin: 0.45em 0;
+}
+.lifted {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.12em;
+  background: var(--residue);
+}
+.lifted::after {
+  content: '';
+  position: absolute;
+  inset: 0.08em -0.04em 0.04em;
+  background: var(--bar);
+  box-shadow: inset 0 0 0 1px var(--bar-edge);
+  transform-origin: 0 100%;
+  transition:
+    transform 0.8s cubic-bezier(0.55, 0, 0.15, 1),
+    opacity 0.5s 0.3s;
+}
+.lifted.off::after {
+  transform: translate(3%, -120%) rotate(-5deg);
+  opacity: 0;
+}
+
+/* The rubber stamp: red ink, two rules, slightly crooked */
+.stamp {
+  display: inline-block;
+  transform: rotate(-4deg);
+  color: var(--red);
+  border: 3px solid currentColor;
+  padding: 0.5rem 0.8rem 0.45rem;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.15;
+  font-stretch: 78%;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 3px var(--paper),
+    inset 0 0 0 4.5px currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3.2 2.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3.2 2.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+}
+.stamp small {
+  display: block;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  margin-bottom: 2px;
+}
+
+/* Squared worksheet paper */
+.squared {
+  background-image:
+    linear-gradient(var(--gridline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gridline) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -282,9 +425,8 @@ select {
   display: grid;
   gap: 1rem;
   padding: 1.25rem;
-  background: var(--paper-raised);
-  border: 1px solid var(--rule);
-  border-radius: 6px;
+  background: var(--field);
+  border: 2px solid var(--ink);
   min-width: 0;
 }
 .tool-modes {
@@ -303,7 +445,7 @@ select {
 }
 .tool-modes input,
 .tool-panel input[type='checkbox'] {
-  accent-color: var(--violet);
+  accent-color: var(--ink);
   width: 1.05rem;
   height: 1.05rem;
 }
@@ -313,30 +455,27 @@ select {
   min-width: 0;
 }
 .tool-field > span {
-  font-size: var(--step--1);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
   color: var(--ink-soft);
 }
 .tool-field textarea,
 .tool-field input[type='text'] {
   font-family: var(--mono);
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
   line-height: 1.6;
   padding: 0.6rem 0.7rem;
   background: var(--paper);
-  border: 1px solid var(--rule);
-  border-radius: 3px;
+  border: 1.5px solid var(--ink);
+  border-radius: 0;
   resize: vertical;
   width: 100%;
   min-width: 0;
 }
-.tool-field textarea:focus-visible,
-.tool-field input[type='text']:focus-visible {
-  outline: 2px solid var(--violet);
-  outline-offset: 0;
-}
 .tool-error {
-  color: var(--pencil);
-  font-size: var(--step--1);
+  color: var(--red);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
   min-height: 1.4em;
 }
 .tool-grid {
@@ -351,12 +490,11 @@ select {
 .chart {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
-  border-top: 1px solid var(--rule);
-  border-left: 1px solid var(--rule);
-  border-radius: 3px;
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
   overflow: hidden;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
 }
 .chart > * {
   display: flex;
@@ -364,16 +502,16 @@ select {
   align-items: baseline;
   padding: 0.3rem 0.45rem;
   background: var(--paper);
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
   white-space: nowrap;
 }
 .chart b {
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 600;
 }
 .chart span {
-  color: var(--violet);
+  color: var(--teal);
 }
 
 /* Tools inside lesson steps sit in a wrapper the prose spacing rule skips. */
@@ -384,22 +522,24 @@ select {
 }
 
 input[type='file'] {
-  font-family: var(--serif);
-  font-size: var(--step--1);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
   color: var(--ink-soft);
 }
 input[type='file']::file-selector-button {
-  font: inherit;
-  font-weight: 600;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 700;
+  font-stretch: 90%;
   margin-right: 0.75rem;
-  padding: 0.4em 0.9em;
+  padding: 0.45em 1em;
   border: 2px solid var(--ink);
-  border-radius: 3px;
+  border-radius: 0;
   background: transparent;
   color: var(--ink);
   cursor: pointer;
 }
 input[type='file']::file-selector-button:hover {
-  border-color: var(--violet);
-  color: var(--violet);
+  background: var(--ink);
+  color: var(--paper);
 }

@@ -1,0 +1,218 @@
+---
+/**
+ * Ciphertext laid out one letter to a box, with a space under each for your working.
+ * Arrow keys move between boxes; only one box is a tab stop, so the sheet is one stop for keyboard users.
+ * Working is kept in this browser per puzzle. It isn't progress, so it isn't in the export code.
+ */
+interface Props {
+  id: string;
+  text: string;
+}
+
+const { id, text } = Astro.props;
+const words = text.split(/\s+/).filter(Boolean);
+const total = text.replace(/[^A-Z]/g, '').length;
+let n = 0;
+---
+
+<div class="sheet-wrap" data-worksheet={id}>
+  <div class="worksheet squared">
+    {
+      words.map((w) => (
+        <span class="wd">
+          {[...w].map((ch) =>
+            /[A-Z]/.test(ch) ? (
+              <span class="cell">
+                <b aria-hidden="true">{ch}</b>
+                <input
+                  maxlength="1"
+                  autocomplete="off"
+                  spellcheck="false"
+                  tabindex={n === 0 ? 0 : -1}
+                  data-c={ch}
+                  aria-label={`Under ${ch}, letter ${++n} of ${total}`}
+                />
+              </span>
+            ) : (
+              <span class="cell p" aria-hidden="true">
+                <b>{ch}</b>
+              </span>
+            ),
+          )}
+        </span>
+      ))
+    }
+  </div>
+  <div class="controls">
+    <label><input type="checkbox" data-same /> Fill the same letter everywhere</label>
+    <button type="button" class="link" data-clear>Clear working</button>
+  </div>
+</div>
+
+<script>
+  for (const wrap of document.querySelectorAll<HTMLElement>('[data-worksheet]')) {
+    const key = `plaintext:working:${wrap.dataset.worksheet}`;
+    const cells = [...wrap.querySelectorAll<HTMLInputElement>('input[data-c]')];
+    const same = wrap.querySelector<HTMLInputElement>('[data-same]')!;
+
+    const save = () => {
+      try {
+        const v = cells.map((c) => c.value || ' ').join('');
+        if (v.trim()) localStorage.setItem(key, v);
+        else localStorage.removeItem(key);
+      } catch {
+        // Storage can be unavailable; working just won't persist.
+      }
+    };
+    try {
+      const saved = localStorage.getItem(key) ?? '';
+      cells.forEach((c, i) => (c.value = (saved[i] ?? '').trim()));
+    } catch {
+      // Nothing saved, or storage blocked.
+    }
+
+    const focus = (i: number) => {
+      const c = cells[Math.max(0, Math.min(cells.length - 1, i))];
+      for (const other of cells) other.tabIndex = -1;
+      c.tabIndex = 0;
+      c.focus();
+      c.select();
+    };
+
+    cells.forEach((cell, i) => {
+      cell.addEventListener('focus', () => {
+        for (const other of cells) other.tabIndex = other === cell ? 0 : -1;
+      });
+      cell.addEventListener('input', () => {
+        const v = cell.value.slice(-1).toUpperCase().replace(/[^A-Z0-9]/, '');
+        cell.value = v;
+        if (same.checked) for (const c of cells) if (c.dataset.c === cell.dataset.c) c.value = v;
+        save();
+        if (v) focus(i + 1);
+      });
+      cell.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') focus(i + 1);
+        else if (e.key === 'ArrowLeft') focus(i - 1);
+        else if (e.key === 'Home') focus(0);
+        else if (e.key === 'End') focus(cells.length - 1);
+        else if (e.key === 'Backspace' && !cell.value) focus(i - 1);
+        else return;
+        e.preventDefault();
+      });
+    });
+
+    wrap.querySelector('[data-clear]')!.addEventListener('click', () => {
+      for (const c of cells) c.value = '';
+      save();
+    });
+  }
+</script>
+
+<style>
+  .worksheet {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem 1.35rem;
+    padding: 1.5rem 1.1rem 1.6rem;
+  }
+  .wd {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 1.1rem;
+  }
+  .cell {
+    display: flex;
+    flex-direction: column;
+    width: 2.05rem;
+    text-align: center;
+  }
+  .cell b {
+    display: block;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0.55rem 0 0.45rem;
+    border: 1.5px solid var(--ink);
+    background: var(--field);
+  }
+  /* Neighbouring boxes share a border, and still close properly when a long word wraps. */
+  .cell + .cell {
+    margin-left: -1.5px;
+  }
+  .cell input {
+    width: calc(100% - 6px);
+    height: 2.25rem;
+    margin: 0 3px;
+    padding: 0;
+    border: 0;
+    border-bottom: 1.5px dashed var(--rule);
+    border-radius: 0;
+    background: transparent;
+    text-align: center;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 1.375rem;
+    color: var(--teal);
+    caret-color: var(--teal);
+  }
+  .cell input:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 0;
+    background: var(--tint);
+  }
+  .cell.p {
+    width: 0.9rem;
+  }
+  .cell.p b {
+    border: 0;
+    background: none;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 0.6rem 1rem 0.7rem;
+    border-top: 1px dashed var(--rule);
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+  }
+  .controls label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+  }
+  .controls input {
+    accent-color: var(--ink);
+    width: 1rem;
+    height: 1rem;
+  }
+  @media (max-width: 40rem) {
+    .worksheet {
+      gap: 0.9rem 0.9rem;
+      padding: 1.1rem 0.6rem 1.2rem;
+    }
+    .wd {
+      row-gap: 0.9rem;
+    }
+    .cell {
+      width: 1.6rem;
+    }
+    .cell b {
+      font-size: 1.1875rem;
+      padding: 0.45rem 0 0.35rem;
+    }
+    .cell input {
+      font-size: 1.125rem;
+      height: 1.9rem;
+      margin: 0 2px;
+      width: calc(100% - 4px);
+    }
+    .cell.p {
+      width: 0.6rem;
+    }
+  }
+</style>

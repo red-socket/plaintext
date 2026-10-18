@@ -113,7 +113,9 @@
     padding: 0;
   }
   .modes legend {
-    font-weight: 600;
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    color: var(--ink-soft);
     margin-bottom: 0.5rem;
   }
   .modes label {
@@ -121,18 +123,18 @@
     align-items: center;
     gap: 0.4rem;
     padding: 0.35rem 0.8rem;
-    border: 2px solid var(--rule);
-    border-radius: 3px;
+    border: 2px solid var(--ink);
     cursor: pointer;
     font-size: var(--step--1);
     font-weight: 600;
   }
   .modes label.on {
-    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
   }
   .modes label:has(:focus-visible) {
-    outline: 3px solid var(--violet);
-    outline-offset: 2px;
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
   }
   .modes input {
     position: absolute;
@@ -142,9 +144,8 @@
   .cipher-block {
     margin: 0;
     padding: 1.25rem 1.25rem 0.75rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
+    background: var(--field);
+    border: 2px solid var(--ink);
   }
   figcaption {
     margin-top: 0.4rem;
@@ -170,10 +171,10 @@
     margin: 0.4rem 0 0.5rem;
   }
   .msg.wrong {
-    color: var(--pencil);
+    color: var(--red);
   }
   .msg.close {
-    color: var(--violet);
+    color: var(--teal);
     font-weight: 600;
   }
   .solved {

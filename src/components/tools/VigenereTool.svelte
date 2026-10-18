@@ -140,11 +140,10 @@
   .factors .fill {
     display: block;
     background: var(--rule);
-    border-radius: 2px 2px 0 0;
     min-height: 1px;
   }
   .factors button.on .fill {
-    background: var(--violet);
+    background: var(--teal);
   }
   .len input {
     width: 4rem;
@@ -152,7 +151,6 @@
     padding: 0.2rem 0.4rem;
     margin-left: 0.4rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   .cols {

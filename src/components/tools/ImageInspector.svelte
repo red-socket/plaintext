@@ -138,12 +138,11 @@
     font-size: var(--step--1);
     padding: 0.3rem 0.4rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   input[type='range'],
   input[type='checkbox'] {
-    accent-color: var(--violet);
+    accent-color: var(--ink);
   }
   input[type='file'] {
     font-size: var(--step--1);
@@ -155,7 +154,6 @@
     max-height: 32rem;
     background: repeating-conic-gradient(var(--rule) 0% 25%, var(--paper) 0% 50%) 50% / 16px 16px;
     border: 1px solid var(--rule);
-    border-radius: 3px;
   }
   canvas {
     display: block;

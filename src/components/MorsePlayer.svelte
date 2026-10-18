@@ -65,7 +65,6 @@
     font-size: var(--step--1);
     padding: 0.4rem 0.5rem;
     border: 2px solid var(--ink);
-    border-radius: 3px;
     background: var(--paper);
   }
 </style>

@@ -84,7 +84,7 @@
     overflow-wrap: anywhere;
   }
   .enc {
-    color: var(--violet);
+    color: var(--teal);
     overflow-wrap: anywhere;
   }
 </style>

@@ -45,7 +45,6 @@
     padding: 0.6rem 0.7rem;
     background: var(--paper);
     border: 1px solid var(--rule);
-    border-radius: 3px;
     font-family: var(--mono);
     font-size: 0.85rem;
     line-height: 1.9;
@@ -59,14 +58,13 @@
     font-size: 0.6rem;
     padding: 0 0.15em;
     margin: 0 0.05em;
-    border-radius: 2px;
     color: var(--paper);
-    background: var(--pencil);
+    background: var(--red);
     vertical-align: middle;
   }
   .space,
   .tab {
-    color: var(--violet);
+    color: var(--teal);
   }
   .out {
     display: block;
@@ -80,6 +78,6 @@
   }
   .out.good {
     color: var(--ink);
-    border-left-color: var(--highlight);
+    border-left-color: var(--mark);
   }
 </style>

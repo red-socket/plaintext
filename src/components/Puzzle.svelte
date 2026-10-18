@@ -24,12 +24,16 @@
   let solved = $state<{ answer: string; writeup: string } | null>(null);
   let hintsShown = $state(0);
   let hintsAtSolve = $state(0);
+  let lastGuess = $state('');
+  // A fresh solve shows the bar lifting off the answer; a saved one shows it already lifted.
+  let lifted = $state(false);
 
   onMount(() => {
     const saved = puzzleOf(progress.get(), id);
     hintsShown = saved.hints;
     if (saved.solvedAt && saved.answer) {
       hintsAtSolve = saved.hints;
+      lifted = true;
       reveal(saved.answer);
     }
   });
@@ -51,6 +55,8 @@
       solved = { answer: payload.display ?? guess, writeup: payload.writeup ?? '' };
       hintsAtSolve = hintsShown;
       feedback = null;
+      lifted = false;
+      setTimeout(() => (lifted = true), 350);
       progress.update((p) => {
         p.puzzles[id] = { ...puzzleOf(p, id), solvedAt: Date.now(), answer: guess };
       });
@@ -58,7 +64,8 @@
     }
 
     if (!tried.includes(guess)) tried = [guess, ...tried];
-    feedback = payload?.type === 'partial' ? { kind: 'partial', text: payload.reply } : { kind: 'wrong', text: `${guess} is not the answer.` };
+    lastGuess = guess;
+    feedback = payload?.type === 'partial' ? { kind: 'partial', text: payload.reply } : { kind: 'wrong', text: 'Not the answer.' };
   }
 
   function showHint() {
@@ -69,6 +76,9 @@
       p.puzzles[id] = { ...cur, hints: Math.max(cur.hints, n) };
     });
   }
+
+  // Bars stand in for hints not yet shown, roughly as long as the hint they cover.
+  const barWidth = (hint: string) => `${Math.min(96, 28 + hint.length * 0.6)}%`;
 
   function solveAgain() {
     solved = null;
@@ -81,27 +91,32 @@
   <section class="answer" aria-labelledby={`answer-${id}`}>
     <h2 id={`answer-${id}`} class="sr-only">Your answer</h2>
     {#if solved}
-      <div class="solved" role="status">
-        <p class="solved-line">
-          Solved: <mark class="mono">{solved.answer}</mark>
-        </p>
-        <p class="meta">
-          {hintsAtSolve === 0 ? 'No hints used.' : `${hintsAtSolve} of ${hints.length} hints used.`}
+      <div class="cleared" role="status">
+        <p class="solved"><span class="k">Solved:</span> <span class="lifted" class:off={lifted}>{solved.answer}</span></p>
+        <p class="stamp" aria-hidden="true">Cleared</p>
+        <p class="filing note-line">
+          <span>{hintsAtSolve === 0 ? 'No hints used.' : `${hintsAtSolve} of ${hints.length} hints used.`} Recorded in Progress, in this browser.</span>
           <button type="button" class="link" onclick={solveAgain}>Solve again</button>
         </p>
       </div>
     {:else}
       <form onsubmit={submit}>
-        <label for={`guess-${id}`}>Answer</label>
+        <label class="filing" for={`guess-${id}`}>Your answer</label>
         <div class="row">
           <input id={`guess-${id}`} class="answer-input" bind:value autocomplete="off" spellcheck="false" placeholder="Spaces and case don't matter" />
           <button class="btn" type="submit" disabled={busy}>Check answer</button>
         </div>
-        <p class="feedback" class:wrong={feedback?.kind === 'wrong'} class:partial={feedback?.kind === 'partial'} aria-live="polite">
-          {feedback?.text ?? ''}
-        </p>
-        {#if tried.length}
-          <p class="tried meta">Tried: {#each tried as t, i}<span class="mono">{t}</span>{i < tried.length - 1 ? ', ' : ''}{/each}</p>
+        <div aria-live="polite">
+          {#if feedback}
+            <div class="reply" class:partial={feedback.kind === 'partial'}>
+              <p class="tag">Reply to your answer</p>
+              <p class="guess">{lastGuess}</p>
+              <p class="msg">{feedback.text}</p>
+            </div>
+          {/if}
+        </div>
+        {#if tried.length > 1}
+          <p class="tried filing">Tried: {#each tried as t, i}<span>{t}</span>{i < tried.length - 1 ? ', ' : ''}{/each}</p>
         {/if}
       </form>
     {/if}
@@ -123,21 +138,32 @@
 
   <section class="hints" aria-labelledby={`hints-${id}`}>
     <h2 id={`hints-${id}`}>Hints</h2>
-    {#if hintsShown > 0}
-      <ol>
-        {#each hints.slice(0, hintsShown) as hint}
-          <li>{hint}</li>
-        {/each}
-      </ol>
-    {:else}
-      <p class="meta">Stuck? Hints go from a nudge to nearly the whole method. Each one is shown only when you ask.</p>
-    {/if}
+    <p class="filing">
+      {hintsShown === 0
+        ? 'Stuck? Hints go from a nudge to nearly the whole method. Each one is shown only when you ask.'
+        : hintsShown < hints.length
+          ? `${hintsShown} of ${hints.length} shown. Each one gives away a little more.`
+          : "That's every hint. The rest is up to you."}
+    </p>
+    <ol>
+      {#each hints as hint, i}
+        <li>
+          <span class="n filing">Hint {i + 1}</span>
+          {#if i < hintsShown}
+            <p>{hint}</p>
+          {:else}
+            <div>
+              <span class="redaction" style:--w={barWidth(hint)} aria-hidden="true"></span>
+              <span class="sr-only">Not shown yet</span>
+            </div>
+          {/if}
+        </li>
+      {/each}
+    </ol>
     {#if hintsShown < hints.length}
       <button type="button" class="btn quiet" onclick={showHint}>
         Show hint {hintsShown + 1} of {hints.length}
       </button>
-    {:else}
-      <p class="meta">That's every hint. The rest is up to you.</p>
     {/if}
   </section>
 </div>
@@ -145,89 +171,153 @@
 <style>
   .puzzle {
     display: grid;
-    gap: 2.5rem;
+    gap: 3rem;
   }
 
   label {
     display: block;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.4rem;
   }
   .row {
     display: flex;
-    gap: 0.75rem;
-    align-items: end;
+    gap: 0.6rem;
+    align-items: stretch;
     flex-wrap: wrap;
   }
   .row .answer-input {
     flex: 1 1 14rem;
   }
-  .feedback {
-    min-height: 1.6em;
-    margin-top: 0.6rem;
+
+  .reply {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    margin-top: 1rem;
+    padding: 0.8rem 1.1rem;
+    border: 2px solid var(--teal);
+    border-left-width: 6px;
+    background: var(--field);
   }
-  .feedback.wrong {
-    color: var(--pencil);
+  .reply .tag {
+    grid-column: 1 / -1;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--teal);
   }
-  .feedback.partial {
-    color: var(--violet);
+  .reply .guess {
+    font-family: var(--mono);
     font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--red);
+    text-decoration: line-through 2px;
+  }
+  .reply.partial .guess {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .reply .msg {
+    font-family: var(--mono);
+    font-size: 1.0625rem;
+    line-height: 1.5;
   }
   .tried {
-    margin-top: 0.25rem;
+    margin-top: 0.6rem;
   }
-  .tried .mono {
-    font-size: 0.8rem;
+  .tried span {
     text-decoration: line-through;
-    text-decoration-color: var(--pencil);
+    text-decoration-color: var(--red);
   }
 
-  .solved-line {
-    font-size: var(--step-1);
-    font-weight: 600;
+  .cleared {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem 2rem;
+    padding: 2.5rem 0 1.1rem;
+    border-block: 3px solid var(--ink);
   }
-  .solved-line mark {
-    font-size: 0.85em;
-    letter-spacing: 0.04em;
+  .solved {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.22em;
+    font-weight: 800;
+    font-size: clamp(2.75rem, 1.5rem + 5vw, 5.5rem);
+    line-height: 0.95;
+    font-stretch: 66%;
+    overflow-wrap: anywhere;
   }
-  .solved .meta {
-    margin-top: 0.35rem;
+  .solved .k {
+    font-size: 0.42em;
+    font-weight: 700;
+    font-stretch: 85%;
   }
-  .link {
-    border: 0;
-    background: none;
-    padding: 0;
-    margin-left: 0.5rem;
-    cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: var(--violet);
-    text-underline-offset: 0.18em;
-    color: inherit;
-    font-size: inherit;
+  .solved .lifted {
+    letter-spacing: 0.02em;
+  }
+  .cleared .stamp {
+    transform: rotate(-7deg);
+    margin-bottom: 0.5rem;
+  }
+  .note-line {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.4rem 1.5rem;
+  }
+  .note-line .link {
+    color: var(--ink);
   }
 
   .writeup h2,
   .hints h2 {
-    font-size: var(--step-1);
+    font-size: clamp(1.875rem, 1.5rem + 1.2vw, 2.25rem);
   }
   .after {
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
   }
 
   .hints {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.9rem;
     justify-items: start;
   }
   .hints ol {
+    list-style: none;
     margin: 0;
-    padding-left: 1.25rem;
-    display: grid;
-    gap: 0.5rem;
+    padding: 0;
+    width: 100%;
+    border-top: 1px solid var(--ink);
   }
-  .hints li::marker {
-    font-family: var(--mono);
-    font-size: 0.8em;
-    color: var(--ink-soft);
+  .hints li {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .hints .n {
+    line-height: 1.9;
+  }
+  .hints .redaction {
+    margin: 0.4rem 0;
+  }
+  @media (max-width: 40rem) {
+    .cleared {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .cleared .stamp {
+      justify-self: start;
+    }
+    .hints li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.25rem;
+    }
+    .reply {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

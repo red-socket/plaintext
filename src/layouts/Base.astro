@@ -4,11 +4,23 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  /** Where this sheet is filed, shown at the right of the classification line, e.g. "Track 2, lesson 1". */
+  filing?: string;
 }
 
-const { title, description = 'Learn the ciphers, encodings and hidden-data tricks behind puzzle hunts and ARGs, one puzzle at a time.' } = Astro.props;
+const { title, description = 'Learn the ciphers, encodings and hidden-data tricks behind puzzle hunts and ARGs, one puzzle at a time.', filing } = Astro.props;
 const fullTitle = title ? `${title} | Plaintext` : 'Plaintext';
 const path = Astro.url.pathname;
+
+const learning = path === '/' || ['/learn', '/puzzles', '/cases', '/practice'].some((p) => path.startsWith(p));
+const nav = [
+  { href: '/#tracks', label: 'Learn', current: learning },
+  { href: '/drill', label: 'What is it?', current: path.startsWith('/drill') },
+  { href: '/field-guide', label: 'Field guide', current: path.startsWith('/field-guide') },
+  { href: '/toolkit', label: 'Toolkit', current: path.startsWith('/toolkit') },
+  { href: '/progress', label: 'Progress', current: path.startsWith('/progress') },
+];
+const sheet = filing ?? nav.find((n) => n.current)?.label ?? title ?? 'Index';
 ---
 
 <!doctype html>
@@ -22,27 +34,38 @@ const path = Astro.url.pathname;
   </head>
   <body>
     <a class="skip sr-only" href="#main">Skip to content</a>
-    <header class="site-header page">
-      <a class="wordmark" href="/" aria-label="Plaintext, home">plaintext</a>
-      <nav aria-label="Main">
-        <a href="/#tracks" aria-current={path === '/' ? 'page' : undefined}>Learn</a>
-        <a href="/drill" aria-current={path.startsWith('/drill') ? 'page' : undefined}>What is it?</a>
-        <a href="/field-guide" aria-current={path.startsWith('/field-guide') ? 'page' : undefined}>Field guide</a>
-        <a href="/toolkit" aria-current={path.startsWith('/toolkit') ? 'page' : undefined}>Toolkit</a>
-        <a href="/progress" aria-current={path.startsWith('/progress') ? 'page' : undefined}>Progress</a>
-      </nav>
-    </header>
+    <div class="page top">
+      <p class="classif"><span>Declassified for public instruction</span><span>{sheet}</span></p>
+      <header class="site-header">
+        <a class="wordmark" href="/" aria-label="Plaintext, home">plain<span>text</span></a>
+        <nav aria-label="Main">
+          <ul>
+            {
+              nav.map((n) => (
+                <li>
+                  <a href={n.href} aria-current={n.current ? 'page' : undefined}>
+                    {n.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </header>
+    </div>
     <main id="main">
       <slot />
     </main>
     <footer class="page">
       <div class="site-footer">
-      <p>Plaintext is free and open source: code under AGPL-3.0, lessons under CC BY-SA 4.0. Your progress stays in this browser.</p>
-      <a class="maker" href="https://github.com/red-socket">
-        <img src="/red-socket.svg" alt="" width="24" height="24" />
-        <span>Made by Red Socket</span>
-      </a>
+        <a class="wordmark" href="/" aria-label="Plaintext, home">plain<span>text</span></a>
+        <p>Plaintext is free and open source: code under AGPL-3.0, lessons under CC BY-SA 4.0. Your progress stays in this browser.</p>
+        <a class="maker" href="https://github.com/red-socket">
+          <img src="/red-socket.svg" alt="" width="24" height="24" />
+          <span>Made by Red Socket</span>
+        </a>
       </div>
+      <p class="classif end"><span>Declassified for public instruction</span><span>{sheet}</span></p>
     </footer>
   </body>
 </html>
@@ -61,69 +84,153 @@ const path = Astro.url.pathname;
     z-index: 10;
   }
 
+  /* The classification line: the one all-capitals voice on the page */
+  .classif {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.5rem;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding: 1.1rem 0 0.6rem;
+    border-bottom: 1px solid currentColor;
+    margin-bottom: 1.4rem;
+  }
+  .classif.end {
+    border-bottom: 0;
+    border-top: 1px solid currentColor;
+    padding: 0.6rem 0 1.5rem;
+    margin: 0;
+  }
+
   .site-header {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: 1rem;
-    padding-block: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    border-bottom: 3px solid var(--ink);
   }
 
   .wordmark {
-    font-family: var(--mono);
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.02em;
+    display: inline-block;
+    padding-bottom: 0.7rem;
     text-decoration: none;
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 1.875rem;
+    line-height: 1;
+    font-stretch: 118%;
+    letter-spacing: -0.015em;
+  }
+  .wordmark span {
+    background: var(--bar);
+    color: var(--on-bar);
+    padding: 0 0.1em 0.04em;
+    margin-left: 0.03em;
+    box-shadow: 0 0 0 1px var(--bar-edge);
+  }
+  .wordmark:hover {
+    color: var(--ink);
   }
 
-  nav {
+  /* Index tabs: the current section is the filled one */
+  nav ul {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0.25rem 1.25rem;
-    font-size: var(--step--1);
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
   nav a {
+    display: block;
+    padding: 0.55rem 0.9rem 0.5rem;
     text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 1rem;
+    border: 2px solid transparent;
+    border-bottom: 0;
+    white-space: nowrap;
   }
-  nav a:hover,
+  nav a:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
   nav a[aria-current='page'] {
-    text-decoration: underline;
-    text-decoration-color: var(--violet);
-    text-decoration-thickness: 0.12em;
-    text-underline-offset: 0.3em;
+    background: var(--ink);
+    color: var(--paper);
   }
 
   .site-footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem 2rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 1.25rem 3rem;
+    align-items: start;
     margin-top: 6rem;
-    padding-block: 2rem 3rem;
-    border-top: 1px solid var(--rule);
-    color: var(--ink-soft);
-    font-size: var(--step--1);
+    padding-block: 2rem 1.75rem;
+    border-top: 3px solid var(--ink);
   }
   .site-footer p {
-    max-width: var(--measure);
+    max-width: 40em;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .site-footer .wordmark {
+    font-size: 1.5rem;
+    padding: 0;
   }
   .maker {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--ink);
-    font-weight: 600;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    white-space: nowrap;
     text-decoration: none;
   }
   .maker:hover span {
     text-decoration: underline;
-    text-decoration-color: var(--violet);
     text-underline-offset: 0.18em;
   }
   .maker img {
     image-rendering: pixelated;
+  }
+
+  @media (max-width: 54rem) {
+    .site-footer {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 40rem) {
+    .classif {
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+    }
+    .site-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.4rem;
+    }
+    .wordmark {
+      font-size: 1.625rem;
+      padding-bottom: 0.25rem;
+    }
+    nav ul {
+      justify-content: space-between;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    nav a {
+      padding: 0.55rem 0.45rem 0.5rem;
+      font-size: 0.9375rem;
+      font-stretch: 84%;
+    }
   }
 </style>

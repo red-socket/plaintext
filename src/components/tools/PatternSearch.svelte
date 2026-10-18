@@ -83,7 +83,7 @@
     font-size: var(--step--1);
   }
   .check input {
-    accent-color: var(--violet);
+    accent-color: var(--ink);
   }
   .matches {
     list-style: none;
@@ -98,6 +98,5 @@
     font-size: 0.85rem;
     background: var(--paper);
     border: 1px solid var(--rule);
-    border-radius: 3px;
   }
 </style>

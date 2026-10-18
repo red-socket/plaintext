@@ -74,10 +74,12 @@
       <ul>
         {#each group.puzzles as z}
           {@const s = p.puzzles[z.id]}
-          <li>
+          <li class:done={s?.solvedAt}>
+            <span class="box" aria-hidden="true"></span>
             <a href={`/puzzles/${z.id}`}>{z.title}</a>
+            <span class="dots" aria-hidden="true"></span>
             <span class="meta">
-              {#if s?.solvedAt}<span class="tag">Solved</span>{s.hints === 0 ? ' No hints.' : ` ${s.hints} hint${s.hints === 1 ? '' : 's'}.`}{:else if s?.hints}Not solved, {s.hints} hint{s.hints === 1 ? '' : 's'} seen.{:else}Not started.{/if}
+              {#if s?.solvedAt}Solved.{s.hints === 0 ? ' No hints.' : ` ${s.hints} hint${s.hints === 1 ? '' : 's'}.`}{:else if s?.hints}Not solved, {s.hints} hint{s.hints === 1 ? '' : 's'} seen.{:else}Not started.{/if}
             </span>
           </li>
         {/each}
@@ -135,16 +137,17 @@
   .block {
     display: grid;
     gap: 0.9rem;
-    max-width: var(--measure);
-    padding-top: 2rem;
-    border-top: 1px solid var(--rule);
+    max-width: 44rem;
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 3px solid var(--ink);
   }
   h2 {
-    font-size: var(--step-1);
+    font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
   }
   h3 {
-    font-size: var(--step-0);
-    margin-top: 0.5rem;
+    font-size: 1.1875rem;
+    margin-top: 0.9rem;
   }
   .summary {
     font-size: var(--step-1);
@@ -153,23 +156,56 @@
   ul {
     list-style: none;
     margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0.35rem;
+    padding: 0.35rem 0;
+    border: 2px solid var(--ink);
+    background: var(--field);
   }
   li {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0 1rem;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.3rem 0.9rem;
+  }
+  .box {
+    flex: none;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    border: 2px solid var(--ink);
+    align-self: center;
+  }
+  li.done .box::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: -6px;
+    width: 7px;
+    height: 14px;
+    border: solid var(--teal);
+    border-width: 0 3px 3px 0;
+    transform: rotate(40deg);
+  }
+  .dots {
+    flex: 1;
+    min-width: 12px;
+    border-bottom: 2px dotted var(--rule);
+    transform: translateY(-0.3em);
+  }
+  li .meta {
+    flex: none;
+  }
+  li.done .meta {
+    color: var(--teal);
   }
   .tag {
-    margin: 0 0.4rem;
-    padding: 0 0.35em;
-    font-size: var(--step--1);
-    font-weight: 400;
-    color: var(--on-highlight);
-    background: var(--highlight);
+    margin: 0 0.5rem;
+    padding: 0.1em 0.45em;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    vertical-align: 0.15em;
+    color: var(--on-mark);
+    background: var(--mark);
   }
   .row {
     display: flex;
@@ -186,29 +222,43 @@
     gap: 0.3rem;
   }
   .field > span {
-    font-size: var(--step--1);
+    font-family: var(--mono);
+    font-size: 0.8125rem;
     color: var(--ink-soft);
   }
   textarea {
     font-family: var(--mono);
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     line-height: 1.5;
     padding: 0.6rem 0.7rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 3px;
+    background: var(--field);
+    border: 2px solid var(--ink);
     word-break: break-all;
     resize: vertical;
   }
   .msg {
     min-height: 1.5em;
+    font-family: var(--mono);
+    font-size: 0.875rem;
   }
   .msg.bad {
-    color: var(--pencil);
+    color: var(--red);
   }
   .btn.danger {
-    background: var(--pencil);
-    border-color: var(--pencil);
-    color: var(--paper);
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--field);
+  }
+  @media (max-width: 40rem) {
+    li {
+      flex-wrap: wrap;
+    }
+    .dots {
+      display: none;
+    }
+    li .meta {
+      flex-basis: 100%;
+      padding-left: 1.6rem;
+    }
   }
 </style>

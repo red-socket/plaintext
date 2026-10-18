@@ -83,7 +83,6 @@
     max-width: 16rem;
     max-height: 16rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     image-rendering: pixelated;
   }
 </style>

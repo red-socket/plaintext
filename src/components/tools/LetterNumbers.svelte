@@ -87,7 +87,6 @@
     justify-items: center;
     padding: 0.4rem 0.2rem;
     border: 1px solid var(--rule);
-    border-radius: 6px;
     background: var(--paper);
     font-family: var(--mono);
   }
@@ -96,7 +95,7 @@
   }
   .key span {
     font-size: 0.7rem;
-    color: var(--violet);
+    color: var(--teal);
     min-height: 1em;
   }
 </style>

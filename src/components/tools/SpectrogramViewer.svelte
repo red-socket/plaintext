@@ -41,12 +41,12 @@
     if (f) await load(await f.arrayBuffer(), f.name, URL.createObjectURL(f));
   }
 
-  // Dark to violet to highlighter yellow: loud is bright.
+  // Redaction black to teal to paper white: loud is bright.
   function colour(t: number): [number, number, number] {
     const stops: [number, number, number][] = [
-      [22, 21, 31],
-      [90, 54, 176],
-      [242, 221, 74],
+      [18, 26, 41],
+      [42, 140, 132],
+      [247, 247, 242],
     ];
     const x = Math.max(0, Math.min(1, t)) * 2;
     const i = Math.min(1, Math.floor(x));
@@ -136,11 +136,10 @@
     font-size: var(--step--1);
     padding: 0.3rem 0.4rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   input[type='range'] {
-    accent-color: var(--violet);
+    accent-color: var(--ink);
   }
   input[type='file'] {
     font-size: var(--step--1);
@@ -166,7 +165,6 @@
     width: 100%;
     height: 18rem;
     image-rendering: auto;
-    border-radius: 3px;
-    background: #16151f;
+    background: var(--bar);
   }
 </style>

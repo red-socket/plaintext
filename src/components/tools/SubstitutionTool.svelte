@@ -17,7 +17,7 @@
   const used = $derived(Object.values(map).filter(Boolean));
   const clashes = $derived(new Set(used.filter((v, i) => used.indexOf(v) !== i)));
 
-  // Decoded preview: known letters in ink, unknown letters left as violet ciphertext.
+  // Decoded preview: your guesses in teal, letters not yet guessed left as grey ciphertext.
   const preview = $derived(
     [...text].map((c) => {
       const up = c.toUpperCase();
@@ -77,8 +77,8 @@
   </div>
 
   <div class="tool-field">
-    <span>Decoded so far (violet letters are still unknown)</span>
-    <output class="preview" aria-live="polite">{#each preview as p}{#if p.known}<span>{p.c}</span>{:else}<span class="unk">{p.c}</span>{/if}{/each}</output>
+    <span>Decoded so far (grey letters aren't guessed yet)</span>
+    <output class="preview" aria-live="polite">{#each preview as p}{#if p.known}<span class:g={!p.plain}>{p.c}</span>{:else}<span class="unk">{p.c}</span>{/if}{/each}</output>
   </div>
 </div>
 
@@ -101,8 +101,7 @@
   }
   .fill {
     display: block;
-    background: var(--violet);
-    border-radius: 2px 2px 0 0;
+    background: var(--teal);
     min-height: 1px;
     align-self: end;
   }
@@ -124,7 +123,7 @@
     gap: 0.1rem;
     font-family: var(--mono);
     font-size: 0.8rem;
-    color: var(--violet);
+    color: var(--teal);
   }
   .cell input {
     width: 2.2rem;
@@ -134,12 +133,11 @@
     text-transform: uppercase;
     padding: 0.2rem 0;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   .cell.clash input {
-    border-color: var(--pencil);
-    color: var(--pencil);
+    border-color: var(--red);
+    color: var(--red);
   }
   .actions,
   .kw {
@@ -153,7 +151,6 @@
     font-size: 0.9rem;
     padding: 0.45rem 0.6rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
     width: 9rem;
   }
@@ -168,7 +165,12 @@
     overflow-wrap: anywhere;
     min-height: 3rem;
   }
+  .g {
+    color: var(--teal);
+    font-weight: 600;
+  }
   .unk {
-    color: var(--violet);
+    color: var(--ink-soft);
+    opacity: 0.7;
   }
 </style>

@@ -26,7 +26,7 @@ One file per puzzle: `src/content/puzzles/<id>.mdx`. The file name is the puzzle
 | `lesson` or `case` | one of them | The lesson this puzzle practises, or the case it's a file in. Never both. |
 | `order` | yes | Position in the lesson's puzzle list. |
 | `difficulty` | yes | 1–5. See below. |
-| `ciphertext` | no | Shown in a large violet block with a copy button. Leave it out if the puzzle is an image, a sound or prose. |
+| `ciphertext` | no | Shown in a boxed exhibit with a copy button; short all-capital letter ciphers get a worksheet with a box per letter. Leave it out if the puzzle is an image, a sound or prose. |
 | `cipher` | no | How the ciphertext was made: `{ plaintext: "…", steps: [...] }`. The build applies the steps in order and fails unless the result is exactly `ciphertext`. Always include it when the puzzle has a ciphertext. See [Cipher steps](#cipher-steps). |
 | `display` | no | `text` (default) shows the ciphertext. `morse-audio` hides it and gives a play button that sends it as sound. `pigpen` draws it as pigpen symbols. |
 | `page` | no | A page of text shown with the puzzle, line breaks kept. The source for book ciphers; also passed to the book cipher helper and the text reader. |

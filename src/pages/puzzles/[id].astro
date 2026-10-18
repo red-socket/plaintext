@@ -5,7 +5,9 @@ import Puzzle from '../../components/Puzzle.svelte';
 import Toolkit from '../../components/Toolkit.astro';
 import MorsePlayer from '../../components/MorsePlayer.svelte';
 import Pigpen from '../../components/Pigpen.astro';
-import { casePuzzles, lessonPuzzles } from '../../lib/content';
+import Worksheet from '../../components/Worksheet.astro';
+import { casePuzzles, lessonNumber, lessonPuzzles, sortedLessons } from '../../lib/content';
+import { TRACKS } from '../../lib/catalog';
 import { sealAll, type Payload } from '../../lib/seal';
 
 export async function getStaticPaths() {
@@ -22,7 +24,22 @@ const parent = lesson
   ? { href: `/learn/${lesson.id}`, title: lesson.data.title, noun: 'puzzle' }
   : { href: `/cases/${kase!.id}`, title: `Case ${kase!.data.number}: ${kase!.data.title}`, noun: 'file' };
 const siblings = lesson ? await lessonPuzzles(lesson.id) : await casePuzzles(kase!.id);
-const nextPuzzle = siblings[siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!) + 1];
+const index = siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!);
+const nextPuzzle = siblings[index + 1];
+const track = lesson && TRACKS.find((t) => t.id === lesson.data.track)!;
+const filing = lesson ? `Lesson ${lessonNumber(lesson, await sortedLessons())}, puzzle ${index + 1}` : `Case ${kase!.data.number}, file ${index + 1}`;
+const crumb = lesson ? { href: '/#tracks', title: `Track ${track!.number}: ${track!.title}` } : { href: '/#tracks', title: 'Cases' };
+
+// Short, all-capital letter ciphers get a worksheet: one box per letter with room for working under it.
+const ct = puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : '';
+const squeezed = ct.replace(/\s/g, '');
+const worksheet =
+  ct.length > 0 &&
+  ct.length <= 120 &&
+  ct === ct.toUpperCase() &&
+  (squeezed.match(/[A-Z]/g) ?? []).length / squeezed.length >= 0.9 &&
+  new Set(squeezed.replace(/[^A-Z]/g, '')).size >= 6;
+const letterCount = (ct.match(/[A-Z]/g) ?? []).length;
 
 // Answers and writeups are sealed here, at build time. The page only ever sees the sealed entries.
 const entries = await sealAll(`puzzle/${puzzle.id}`, [
@@ -31,16 +48,19 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
 ]);
 ---
 
-<Base title={puzzle.data.title}>
+<Base title={puzzle.data.title} filing={filing}>
   <article class="puzzle-page page">
     <header>
-      <p class="meta">
-        <a href={parent.href}>{parent.title}</a>, {parent.noun} {siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!) + 1} of {siblings.length}
-      </p>
+      <nav class="crumbs filing" aria-label="Breadcrumb">
+        <a href={crumb.href}>{crumb.title}</a> <span aria-hidden="true">/</span> <a href={parent.href}>{parent.title}</a>
+        <span aria-hidden="true">/</span> {parent.noun === 'file' ? 'File' : 'Puzzle'} {index + 1} of {siblings.length}
+      </nav>
       <h1>{puzzle.data.title}</h1>
-      <p class="difficulty meta" aria-label={`Difficulty ${puzzle.data.difficulty} of 5`}>
-        {Array.from({ length: 5 }, (_, i) => <span class:list={['pip', { on: i < puzzle.data.difficulty }]} />)}
-        <span aria-hidden="true">Difficulty {puzzle.data.difficulty} of 5</span>
+      <p class="difficulty filing">
+        <span class="meter" aria-hidden="true">
+          {Array.from({ length: 5 }, (_, i) => <i class:list={{ on: i < puzzle.data.difficulty }} />)}
+        </span>
+        Difficulty {puzzle.data.difficulty} of 5
       </p>
     </header>
 
@@ -100,13 +120,28 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
 
     {
       puzzle.data.ciphertext && puzzle.data.display === 'text' && (
-        <figure class="cipher-block">
-          <p class="ciphertext" id="ciphertext">{puzzle.data.ciphertext}</p>
-          <figcaption>
-            <button type="button" class="copy" data-copy={puzzle.data.ciphertext}>
-              Copy text
-            </button>
+        <figure class="intercept">
+          <figcaption class="intercept-head">
+            <b>The message</b>
+            <span>
+              {worksheet ? `${letterCount} letters. Write your working under each one.` : 'Copy it into a tool below, or work on paper.'}{' '}
+              <button type="button" class="link" data-copy={puzzle.data.ciphertext}>
+                Copy text
+              </button>
+            </span>
           </figcaption>
+          {worksheet ? (
+            <>
+              <p class="sr-only" id="ciphertext">
+                {puzzle.data.ciphertext}
+              </p>
+              <Worksheet id={puzzle.id} text={puzzle.data.ciphertext} />
+            </>
+          ) : (
+            <p class="ciphertext squared" id="ciphertext">
+              {puzzle.data.ciphertext}
+            </p>
+          )}
         </figure>
       )
     }
@@ -148,34 +183,86 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     display: grid;
     gap: 2rem;
   }
-  .puzzle-page > * {
-    max-width: 44rem;
+  .puzzle-page > :global(*) {
+    max-width: 46rem;
   }
   header {
     display: grid;
-    gap: 0.6rem;
-    padding-top: 2rem;
+    gap: 0.9rem;
+    padding-top: 2.5rem;
+  }
+  .crumbs {
+    margin-bottom: 0.75rem;
+  }
+  .crumbs span {
+    margin: 0 0.4em;
+    color: var(--rule);
   }
   h1 {
-    font-size: var(--step-4);
+    font-size: clamp(2.8rem, 1.5rem + 5vw, 5.2rem);
   }
   .difficulty {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.75rem;
+    color: var(--ink);
   }
-  .pip {
-    width: 0.6rem;
-    height: 0.6rem;
-    border: 1.5px solid var(--ink-soft);
-    border-radius: 1px;
+  .meter {
+    display: flex;
+    gap: 4px;
   }
-  .pip.on {
+  .meter i {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--ink);
+  }
+  .meter i.on {
     background: var(--ink);
-    border-color: var(--ink);
   }
-  .difficulty > span:last-child {
-    margin-left: 0.4rem;
+
+  .prompt {
+    font-size: 1.25rem;
+    line-height: 1.55;
+  }
+
+  /* Anything you were given to work on sits in a boxed exhibit with a caption bar. */
+  .intercept,
+  .cipher-block,
+  .file,
+  .book-page {
+    margin: 0;
+    border: 2px solid var(--ink);
+    background: var(--field);
+  }
+  .intercept-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.4rem 1.25rem;
+    padding: 0.6rem 1rem;
+    border-bottom: 2px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .intercept-head b {
+    font-weight: 600;
+  }
+  .intercept-head span {
+    color: var(--ink-soft);
+  }
+  .intercept-head .link {
+    margin-left: 0.5rem;
+    color: var(--ink);
+  }
+  .intercept > .ciphertext {
+    padding: 1.25rem 1.1rem;
+  }
+  .cipher-block {
+    padding: 1.25rem;
+  }
+  .cipher-block figcaption {
+    margin-top: 0.75rem;
   }
 
   .files {
@@ -183,19 +270,15 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     gap: 1rem;
   }
   .file {
-    margin: 0;
     display: grid;
-    gap: 0.5rem;
+    gap: 0.75rem;
     padding: 1rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
   }
   .file img {
     max-width: 100%;
     height: auto;
-    border-radius: 2px;
     image-rendering: auto;
+    border: 1px solid var(--ink);
   }
   .file audio {
     width: 100%;
@@ -205,16 +288,16 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 0.25rem 1rem;
-    font-size: var(--step--1);
+    font-family: var(--mono);
+    font-size: 0.8125rem;
     color: var(--ink-soft);
   }
+  .file figcaption a {
+    color: var(--ink);
+  }
   .book-page {
-    margin: 0;
     padding: 1.5rem 1.75rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    box-shadow: 4px 4px 0 var(--rule);
+    box-shadow: 5px 5px 0 var(--ink);
     font-size: var(--step-0);
     line-height: 1.7;
   }
@@ -222,35 +305,12 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     margin: 0;
     white-space: pre-wrap;
   }
-
-  .prompt {
-    font-size: var(--step-1);
-    line-height: 1.5;
-  }
-
-  .cipher-block {
-    margin: 0;
-    padding: 1.25rem 1.25rem 0.75rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-  }
   figcaption {
-    margin-top: 0.5rem;
+    margin-top: 0;
   }
-  .copy {
-    border: 0;
-    background: none;
-    padding: 0;
-    cursor: pointer;
-    color: var(--ink-soft);
-    font-size: var(--step--1);
-    text-decoration: underline;
-    text-decoration-color: var(--rule);
-    text-underline-offset: 0.18em;
+  @media (max-width: 40rem) {
+    .intercept-head .link {
+      margin-left: 0;
+    }
   }
-  .copy:hover {
-    color: var(--ink);
-  }
-
 </style>

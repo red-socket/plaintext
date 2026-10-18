@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 import LessonComplete from '../../components/LessonComplete.svelte';
 import PuzzleList from '../../components/PuzzleList.astro';
 import { PRACTICE, TRACKS, toolById } from '../../lib/catalog';
-import { lessonPuzzles, sortedLessons } from '../../lib/content';
+import { lessonNumber, lessonPuzzles, sortedLessons } from '../../lib/content';
 
 export async function getStaticPaths() {
   const lessons = await getCollection('lessons');
@@ -20,18 +20,27 @@ const first = puzzles[0];
 const practice = PRACTICE[lesson.id];
 const ordered = await sortedLessons();
 const nextLesson = ordered[ordered.findIndex((l) => l.id === lesson.id) + 1];
+const number = lessonNumber(lesson, ordered);
 ---
 
-<Base title={lesson.data.title} description={lesson.data.summary}>
+<Base title={lesson.data.title} description={lesson.data.summary} filing={`Track ${track.number}, lesson ${number}`}>
   <article class="lesson page">
-    <header>
-      <p class="meta"><a href="/#tracks">Track {track.number}: {track.title}</a></p>
-      <h1>{lesson.data.title}</h1>
-      <p class="summary">{lesson.data.summary}</p>
-      <p class="meta">About {lesson.data.minutes} minutes{tool && `. Finishing it adds the ${tool.name} to your toolkit.`}</p>
+    <header class="lesson-head">
+      <div>
+        <nav class="crumbs filing" aria-label="Breadcrumb">
+          <a href="/#tracks">Learn</a> <span aria-hidden="true">/</span> <a href="/#tracks">Track {track.number}: {track.title}</a>
+        </nav>
+        <p class="filing">Lesson {number}, about {lesson.data.minutes} minutes</p>
+        <h1>{lesson.data.title}</h1>
+        <p class="summary">{lesson.data.summary}</p>
+        {tool && <p class="note">Finishing it adds the {tool.name} to your toolkit.</p>}
+      </div>
+      <p class="stamp" aria-hidden="true"><small>Course {track.number}</small>{track.title}</p>
     </header>
 
-    <Content />
+    <div class="steps">
+      <Content />
+    </div>
 
     <div class="end">
       <LessonComplete
@@ -47,7 +56,7 @@ const nextLesson = ordered[ordered.findIndex((l) => l.id === lesson.id) + 1];
       puzzles.length > 0 && (
         <section class="puzzles" aria-labelledby="puzzles-title">
           <h2 id="puzzles-title">Puzzles</h2>
-          <p class="meta">You can try them at any time, but they're easier once the lesson is done.</p>
+          <p class="filing">You can try them at any time, but they're easier once the lesson is done.</p>
           <PuzzleList puzzles={puzzles} />
           {practice && (
             <p class="more">
@@ -61,22 +70,49 @@ const nextLesson = ordered[ordered.findIndex((l) => l.id === lesson.id) + 1];
 </Base>
 
 <style>
-  .lesson header {
+  .lesson {
+    counter-reset: exercise;
+  }
+  .lesson-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.25rem 2.5rem;
+    padding-block: 2.5rem 2.25rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .lesson-head > div {
     display: grid;
     gap: 0.75rem;
-    padding-block: 2rem 0.5rem;
-    max-width: var(--measure);
+    max-width: 44rem;
+  }
+  .crumbs {
+    margin-bottom: 1rem;
+  }
+  .crumbs span {
+    margin: 0 0.4em;
+    color: var(--rule);
   }
   .lesson h1 {
-    font-size: var(--step-4);
+    font-size: clamp(2.8rem, 1.5rem + 5vw, 5.6rem);
+    margin-top: 0.25rem;
   }
   .summary {
     font-size: var(--step-1);
     line-height: 1.45;
+    max-width: 31em;
+  }
+  .lesson-head .note {
+    margin-top: 0.5rem;
+    max-width: 31em;
+  }
+  .lesson-head .stamp {
+    margin-top: 2rem;
+    max-width: 12rem;
   }
   .end {
     margin-top: 3.5rem;
-    max-width: var(--measure);
+    max-width: 44rem;
   }
   .more {
     margin-top: 0.5rem;
@@ -84,7 +120,17 @@ const nextLesson = ordered[ordered.findIndex((l) => l.id === lesson.id) + 1];
   .puzzles {
     display: grid;
     gap: 0.75rem;
-    margin-top: 3.5rem;
-    max-width: var(--measure);
+    margin-top: 4rem;
+    max-width: 44rem;
+  }
+  @media (max-width: 54rem) {
+    .lesson-head {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .lesson-head .stamp {
+      grid-row: 1;
+      justify-self: start;
+      margin: 0 0 0.5rem 0.25rem;
+    }
   }
 </style>

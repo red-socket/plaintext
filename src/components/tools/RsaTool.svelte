@@ -71,7 +71,6 @@
     font-family: var(--mono);
     padding: 0.4rem 0.5rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
   }
   .sub {

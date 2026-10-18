@@ -2,49 +2,79 @@
 import Base from '../layouts/Base.astro';
 import DecodeLine from '../components/DecodeLine.astro';
 import { TRACKS } from '../lib/catalog';
-import { sortedCases, sortedLessons } from '../lib/content';
+import { lessonNumber, sortedCases, sortedLessons } from '../lib/content';
 
 const lessons = await sortedLessons();
 const cases = await sortedCases();
 const first = lessons[0];
 ---
 
-<Base>
+<Base filing="Index">
   <section class="hero page">
-    <DecodeLine text="Every secret message was written to be read." />
-    <div class="intro prose">
-      <p>
+    <div class="lede">
+      <DecodeLine text="Every secret message was written to be read." />
+      <p class="fig filing">Fig. 1. The same sentence, in cipher (top) and decoded (bottom).</p>
+      <p class="intro">
         Plaintext teaches the ciphers, encodings and hidden-data tricks behind puzzle hunts, ARGs and escape rooms. Each lesson takes about ten
         minutes, ends with puzzles to solve, and gives you a tool to keep.
       </p>
-      {first && <p class="start"><a class="btn" href={`/learn/${first.id}`}>Start the first lesson</a> <span class="meta">{first.data.title}, {first.data.minutes} minutes</span></p>}
+      {
+        first && (
+          <a class="btn start" href={`/learn/${first.id}`}>
+            <span class="no">{lessonNumber(first, lessons)}</span>
+            <span>Start the first lesson</span>
+          </a>
+        )
+      }
     </div>
+    <p class="note"><b>Note.</b> The top line uses a shift of 3: every letter sits three places after the one below it. H is three after E, Y is three after V.</p>
   </section>
 
-  <section id="tracks" class="tracks page" aria-labelledby="tracks-title">
-    <h2 id="tracks-title">Tracks</h2>
-    <ol>
+  <section id="tracks" class="page" aria-labelledby="tracks-title">
+    <div class="sec-head">
+      <h2 id="tracks-title">Tracks</h2>
+      <p class="filing">Six courses. The boxes tick as you finish lessons.</p>
+    </div>
+    <ol class="register">
       {
         TRACKS.map((t) => {
           const trackLessons = lessons.filter((l) => l.data.track === t.id);
+          const minutes = trackLessons.reduce((sum, l) => sum + l.data.minutes, 0);
           return (
-            <li class:list={['track', { empty: trackLessons.length === 0 }]}>
-              <span class="n">{t.number}</span>
-              <div>
-                <h3>{t.title}</h3>
-                <p class="blurb">{t.blurb}</p>
-                {trackLessons.length > 0 ? (
-                  <ul class="lessons">
-                    {trackLessons.map((l) => (
-                      <li>
-                        <a href={`/learn/${l.id}`}>{l.data.title}</a> <span class="meta">{l.data.minutes} min</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p class="meta">Not written yet.</p>
-                )}
+            <li class="entry">
+              <div class="plate">
+                <span class="k">Track</span>
+                <span class="n">{t.number}</span>
               </div>
+              <div class="info">
+                <h3>{t.title}</h3>
+                <p>{t.blurb}</p>
+                <p class="tally">
+                  {trackLessons.length} lesson{trackLessons.length === 1 ? '' : 's'}, {minutes} min
+                </p>
+              </div>
+              {trackLessons.length > 0 ? (
+                <ol class="lessons">
+                  {trackLessons.map((l) => (
+                    <li>
+                      <a href={`/learn/${l.id}`} data-lesson={l.id}>
+                        <span class="box" aria-hidden="true" />
+                        <span class="ln">{lessonNumber(l, lessons)}</span>
+                        <span class="lt">{l.data.title}</span>
+                        <span class="dots" aria-hidden="true" />
+                        <span class="lm">{l.data.minutes} min</span>
+                        <span class="sr-only done-label">, finished</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <div class="sealed">
+                  <span class="redaction" style="--w:72%" aria-hidden="true" />
+                  <span class="redaction" style="--w:48%" aria-hidden="true" />
+                  <p class="filing">Not yet released</p>
+                </div>
+              )}
             </li>
           );
         })
@@ -55,141 +85,286 @@ const first = lessons[0];
   {
     cases.length > 0 && (
       <section class="cases page" aria-labelledby="cases-title">
-        <h2 id="cases-title">Cases</h2>
-        <p class="lead">Story puzzles that mix everything, with nothing to say which technique comes next.</p>
-        <ul>
+        <div class="sec-head">
+          <h2 id="cases-title">Cases</h2>
+          <p class="filing">Story puzzles that mix everything, with nothing to say which technique comes next.</p>
+        </div>
+        <ol class="register">
           {cases.map((c) => (
-            <li>
-              <span class="n">{c.data.number}</span>
-              <div>
-                <h3><a href={`/cases/${c.id}`}>{c.data.title}</a></h3>
+            <li class="entry case">
+              <div class="plate">
+                <span class="k">Case</span>
+                <span class="n">{c.data.number}</span>
+              </div>
+              <div class="info">
+                <h3>
+                  <a href={`/cases/${c.id}`}>{c.data.title}</a>
+                </h3>
                 <p>{c.data.summary}</p>
-                <p class="meta">{c.data.after}</p>
+                <p class="tally">{c.data.after}</p>
               </div>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
     )
   }
 
   <section class="drill-cta page" aria-labelledby="drill-title">
-    <h2 id="drill-title">What is it?</h2>
-    <p>The skill under every puzzle: look at a sample and say what it is. <a href="/drill">Practise spotting ciphers and encodings</a>.</p>
+    <div class="sec-head">
+      <h2 id="drill-title">What is it?</h2>
+    </div>
+    <p>The skill under every puzzle: look at a sample and say what it is.</p>
+    <a class="btn quiet" href="/drill">Practise spotting ciphers and encodings</a>
   </section>
 </Base>
+
+<script>
+  import { isLessonDone, progress } from '../lib/progress';
+
+  const links = document.querySelectorAll<HTMLElement>('[data-lesson]');
+  progress.subscribe((p) => {
+    for (const a of links) a.toggleAttribute('data-done', isLessonDone(p, a.dataset.lesson!));
+  });
+</script>
 
 <style>
   .hero {
     display: grid;
-    gap: 2.5rem;
-    padding-block: 3rem 4rem;
+    grid-template-columns: minmax(0, 1fr) 14.5rem;
+    gap: 2rem 3.5rem;
+    padding-block: 3.5rem 4.5rem;
   }
-  @media (min-width: 48rem) {
-    .hero {
-      padding-block: 6rem 5rem;
-    }
+  .hero > .note {
+    align-self: start;
+    margin-top: 0.5rem;
+  }
+  .fig {
+    margin: 1.1rem 0 2.25rem;
   }
   .intro {
     font-size: var(--step-1);
     line-height: 1.5;
-  }
-  .intro .btn {
-    font-size: var(--step-0);
+    max-width: 31em;
+    margin-bottom: 2rem;
   }
   .start {
+    padding: 0;
+    min-height: 3.25rem;
+    align-items: stretch;
+    font-size: var(--step-0);
+  }
+  .start > span {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 0.6rem 0.9rem;
+    padding: 0 1.25rem;
+  }
+  .start .no {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0 0.9rem;
+    border-right: 2px solid color-mix(in srgb, currentColor 45%, transparent);
   }
 
-  .tracks h2 {
-    margin-bottom: 1.5rem;
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.25rem;
   }
-  .tracks > ol {
+  .sec-head h2 {
+    font-size: clamp(2.25rem, 1.8rem + 1.5vw, 2.75rem);
+    font-stretch: 72%;
+  }
+
+  /* The register: one boxed row per track, a tick box per lesson */
+  .register {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 2px solid var(--ink);
+    border: 2px solid var(--ink);
+    background: var(--field);
   }
-  .track {
+  .entry {
     display: grid;
-    grid-template-columns: 2.5rem 1fr;
-    gap: 1rem;
-    padding-block: 1.25rem;
-    border-bottom: 1px solid var(--rule);
+    grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 1.4fr);
+    border-top: 1px solid var(--ink);
   }
-  .track .n {
+  .entry:first-child {
+    border-top: 0;
+  }
+  .entry.case {
+    grid-template-columns: 7rem minmax(0, 1fr);
+  }
+  .plate {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 1rem 0.9rem 0.9rem;
+    border-right: 2px solid var(--ink);
+    background: var(--paper);
+  }
+  .plate .k {
     font-family: var(--mono);
-    font-size: var(--step-1);
-    color: var(--violet);
-    line-height: 1.2;
-  }
-  .track h3 {
-    font-size: var(--step-1);
-  }
-  .blurb {
-    margin-top: 0.25rem;
-    max-width: var(--measure);
-  }
-  .track.empty h3,
-  .track.empty .n {
+    font-weight: 500;
+    font-size: 0.8125rem;
+    line-height: 1;
     color: var(--ink-soft);
+  }
+  .plate .n {
+    font-weight: 800;
+    font-size: 4.5rem;
+    line-height: 0.8;
+    font-stretch: 62%;
+  }
+  .info {
+    padding: 1.1rem 1.5rem;
+  }
+  .info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .info h3 a {
+    text-decoration-thickness: 2px;
+  }
+  .info p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 34em;
+  }
+  .info .tally {
+    margin-top: 0.5rem;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--teal);
   }
   .lessons {
     list-style: none;
-    margin: 0.75rem 0 0;
-    padding: 0;
-    font-weight: 600;
+    margin: 0;
+    padding: 0.75rem 1.25rem 0.75rem 0;
   }
-  .lessons .meta {
-    font-weight: 400;
-    margin-left: 0.4rem;
+  .lessons a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.45rem 0.6rem;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+  .lessons a:hover {
+    background: var(--tint);
+  }
+  .lessons a:hover .lt {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .box {
+    flex: none;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    border: 2px solid var(--ink);
+    align-self: center;
+  }
+  [data-done] .box::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: -6px;
+    width: 7px;
+    height: 14px;
+    border: solid var(--teal);
+    border-width: 0 3px 3px 0;
+    transform: rotate(40deg);
+  }
+  .done-label {
+    display: none;
+  }
+  [data-done] .done-label {
+    display: inline;
+  }
+  .ln {
+    flex: none;
+    min-width: 2.2em;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+  .dots {
+    flex: 1;
+    min-width: 12px;
+    border-bottom: 2px dotted var(--rule);
+    transform: translateY(-0.3em);
+  }
+  .lm {
+    flex: none;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.875rem;
     white-space: nowrap;
   }
+  .sealed {
+    padding: 1.1rem 1.25rem 1rem 0.6rem;
+  }
+
   .cases,
   .drill-cta {
-    margin-top: 4rem;
-  }
-  .cases h2,
-  .drill-cta h2 {
-    margin-bottom: 0.75rem;
-  }
-  .lead {
-    max-width: var(--measure);
-    margin-bottom: 1.5rem;
-  }
-  .cases ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 2px solid var(--ink);
-  }
-  .cases li {
-    display: grid;
-    grid-template-columns: 2.5rem 1fr;
-    gap: 1rem;
-    padding-block: 1.25rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  .cases li p {
-    max-width: var(--measure);
-    margin-top: 0.25rem;
-  }
-  .cases .n {
-    font-family: var(--mono);
-    font-size: var(--step-1);
-    color: var(--violet);
-    line-height: 1.2;
-  }
-  .cases h3 {
-    font-size: var(--step-1);
+    margin-top: 4.5rem;
   }
   .drill-cta p {
     max-width: var(--measure);
+    margin-bottom: 1.25rem;
   }
-  .track > div > .meta {
-    margin-top: 0.5rem;
+
+  @media (max-width: 54rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      padding-block: 2.5rem 3.5rem;
+    }
+    .hero > .note {
+      margin-top: 0;
+    }
+    .entry {
+      grid-template-columns: 5rem minmax(0, 1fr);
+    }
+    .entry > .lessons,
+    .entry > .sealed {
+      grid-column: 1 / -1;
+      border-top: 1px dashed var(--rule);
+      padding: 0.6rem 0.75rem;
+    }
+    .entry.case {
+      grid-template-columns: 5rem minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 40rem) {
+    .intro {
+      font-size: 1.1875rem;
+    }
+    .plate {
+      padding: 0.75rem 0.6rem;
+    }
+    .plate .n {
+      font-size: 3.25rem;
+    }
+    .info {
+      padding: 0.9rem;
+    }
+    .info h3 {
+      font-size: 1.3125rem;
+    }
+    .lessons a {
+      padding: 0.45rem 0.35rem;
+      font-size: 1rem;
+      gap: 0.5rem;
+    }
   }
 </style>

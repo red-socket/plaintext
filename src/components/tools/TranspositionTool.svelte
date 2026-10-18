@@ -119,7 +119,7 @@
     overflow-wrap: anywhere;
   }
   input[type='range'] {
-    accent-color: var(--violet);
+    accent-color: var(--ink);
   }
   .shape {
     overflow-x: auto;
@@ -148,7 +148,7 @@
     font-weight: 600;
   }
   .head span {
-    color: var(--violet);
+    color: var(--teal);
     font-weight: 700;
   }
   .head small {

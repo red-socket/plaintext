@@ -93,7 +93,7 @@
     font-weight: 700;
     text-anchor: middle;
     dominant-baseline: middle;
-    fill: var(--violet);
+    fill: var(--teal);
   }
   .keygrid circle {
     fill: var(--ink);
@@ -106,13 +106,12 @@
   .board button {
     padding: 0.3rem;
     border: 1px solid var(--rule);
-    border-radius: 4px;
     background: var(--paper);
     cursor: pointer;
   }
-  .board button:hover,
-  .board button:focus-visible {
-    border-color: var(--violet);
+  .board button:hover {
+    border-color: var(--ink);
+    background: var(--tint);
   }
   .board svg,
   .drawn svg {
@@ -124,14 +123,21 @@
   .board path,
   .drawn path {
     fill: none;
-    stroke: var(--violet);
+    stroke: var(--teal);
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
   .board circle,
   .drawn circle {
-    fill: var(--violet);
+    fill: var(--teal);
+  }
+  /* The board is the key you were given, in ink; what you spell out below is your working, in teal. */
+  .board path {
+    stroke: var(--ink);
+  }
+  .board circle {
+    fill: var(--ink);
   }
   .typed {
     display: flex;

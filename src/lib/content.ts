@@ -21,3 +21,10 @@ export async function casePuzzles(caseId: string): Promise<CollectionEntry<'puzz
 export async function sortedCases(): Promise<CollectionEntry<'cases'>[]> {
   return (await getCollection('cases')).sort((a, b) => a.data.number - b.data.number);
 }
+
+/** A lesson's number in the manual: its track, then its place in the track, e.g. "2.1". */
+export function lessonNumber(lesson: CollectionEntry<'lessons'>, sorted: CollectionEntry<'lessons'>[]): string {
+  const track = TRACKS.find((t) => t.id === lesson.data.track)!;
+  const inTrack = sorted.filter((l) => l.data.track === lesson.data.track);
+  return `${track.number}.${inTrack.indexOf(inTrack.find((l) => l.id === lesson.id)!) + 1}`;
+}

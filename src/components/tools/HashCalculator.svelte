@@ -118,8 +118,8 @@
     overflow-wrap: anywhere;
   }
   .hashes dd.match {
-    background: var(--highlight);
-    color: var(--on-highlight);
+    background: var(--mark);
+    color: var(--on-mark);
   }
   .sub {
     font-size: var(--step-0);

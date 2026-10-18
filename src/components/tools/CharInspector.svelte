@@ -65,7 +65,7 @@
     gap: 0.4rem;
     justify-items: start;
     padding: 0.75rem 1rem;
-    border-left: 3px solid var(--highlight);
+    border-left: 3px solid var(--mark);
     background: var(--paper);
   }
   .fixed {
@@ -84,7 +84,6 @@
     justify-items: center;
     padding: 0.35rem 0.2rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
     background: var(--paper);
     font-family: var(--mono);
   }
@@ -94,16 +93,16 @@
   }
   .c span {
     font-size: 0.65rem;
-    color: var(--violet);
+    color: var(--teal);
   }
   .c small {
     font-size: 0.6rem;
     color: var(--ink-soft);
   }
   .c.latin {
-    border-color: var(--violet);
+    border-color: var(--teal);
   }
   .c.other {
-    border-color: var(--pencil);
+    border-color: var(--red);
   }
 </style>

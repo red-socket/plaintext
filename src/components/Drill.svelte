@@ -147,22 +147,22 @@
     display: inline-flex;
     align-items: center;
     padding: 0.35rem 0.8rem;
-    border: 2px solid var(--rule);
-    border-radius: 3px;
+    border: 2px solid var(--ink);
     cursor: pointer;
     font-size: var(--step--1);
     font-weight: 600;
   }
   .pool label.on {
-    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
   }
   .pool label.off {
     opacity: 0.55;
     cursor: not-allowed;
   }
   .pool label:has(:focus-visible) {
-    outline: 3px solid var(--violet);
-    outline-offset: 2px;
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
   }
   .pool input {
     position: absolute;
@@ -172,9 +172,8 @@
   .cipher-block {
     margin: 0;
     padding: 1.25rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
+    background: var(--field);
+    border: 2px solid var(--ink);
   }
   .pigpen {
     display: flex;
@@ -191,13 +190,13 @@
   }
   .pigpen path {
     fill: none;
-    stroke: var(--violet);
+    stroke: var(--ink);
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
   .pigpen circle {
-    fill: var(--violet);
+    fill: var(--ink);
   }
   .choices {
     display: grid;
@@ -224,15 +223,13 @@
     text-align: left;
     padding: 0.75rem 1rem;
     border: 2px solid var(--ink);
-    border-radius: 4px;
-    background: var(--paper);
+    background: var(--field);
     font-size: var(--step-0);
     font-weight: 600;
     cursor: pointer;
   }
   .choice:hover:not(:disabled) {
-    border-color: var(--violet);
-    color: var(--violet);
+    background: var(--tint);
   }
   .choice:disabled {
     cursor: default;
@@ -240,14 +237,14 @@
   }
   .choice.correct {
     opacity: 1;
-    background: var(--highlight);
-    color: var(--on-highlight);
-    border-color: var(--on-highlight);
+    background: var(--mark);
+    color: var(--on-mark);
+    border-color: var(--on-mark);
   }
   .choice.wrong {
     opacity: 1;
-    border-color: var(--pencil);
-    color: var(--pencil);
+    border-color: var(--red);
+    color: var(--red);
     text-decoration: line-through;
   }
   .key {

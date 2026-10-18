@@ -185,9 +185,8 @@
     display: grid;
     gap: 1.5rem;
     padding: 1.25rem;
-    background: var(--paper-raised);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
+    background: var(--field);
+    border: 2px solid var(--ink);
   }
   @media (min-width: 44rem) {
     .wheel-tool {
@@ -220,13 +219,13 @@
     stroke-width: 2;
   }
   .inner-disk {
-    fill: var(--violet-faint);
-    stroke: var(--violet);
+    fill: var(--tint);
+    stroke: var(--teal);
     stroke-width: 2;
   }
   .grip {
-    fill: var(--paper-raised);
-    stroke: var(--violet);
+    fill: var(--field);
+    stroke: var(--teal);
     stroke-width: 1;
     stroke-dasharray: 2 4;
   }
@@ -252,14 +251,14 @@
   .inner {
     font-size: 14px;
     font-weight: 500;
-    fill: var(--violet);
+    fill: var(--teal);
   }
   .hot {
-    fill: var(--pencil);
+    fill: var(--red);
     font-weight: 800;
   }
   .pointer {
-    fill: var(--pencil);
+    fill: var(--red);
   }
   .shift-num {
     font-size: 40px;
@@ -267,7 +266,7 @@
     fill: var(--ink);
   }
   .shift-label {
-    font-family: var(--serif);
+    font-family: var(--sans);
     font-size: 13px;
     fill: var(--ink-soft);
   }
@@ -308,7 +307,7 @@
   }
   input[type='radio'],
   input[type='checkbox'] {
-    accent-color: var(--violet);
+    accent-color: var(--ink);
     width: 1.05rem;
     height: 1.05rem;
   }
@@ -328,11 +327,10 @@
     padding: 0.6rem 0.7rem;
     background: var(--paper);
     border: 1px solid var(--rule);
-    border-radius: 3px;
     resize: vertical;
   }
   textarea:focus-visible {
-    outline: 2px solid var(--violet);
+    outline: 2px solid var(--teal);
     outline-offset: 0;
   }
   .out {
@@ -359,7 +357,6 @@
     max-height: 22rem;
     overflow-y: auto;
     border: 1px solid var(--rule);
-    border-radius: 3px;
   }
   .all li + li {
     border-top: 1px solid var(--rule);
@@ -378,7 +375,7 @@
   }
   .all button:hover,
   .all button:focus-visible {
-    background: var(--violet-faint);
+    background: var(--tint);
   }
   .all .n {
     color: var(--ink-soft);

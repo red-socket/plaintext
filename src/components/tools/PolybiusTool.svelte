@@ -95,7 +95,7 @@
     text-align: center;
     border: 1px solid var(--rule);
     background: var(--paper);
-    color: var(--violet);
+    color: var(--teal);
     font-weight: 600;
   }
   .square small {

@@ -10,13 +10,22 @@ const { puzzles } = Astro.props;
 
 <ol class="puzzle-list">
   {
-    puzzles.map((p) => (
+    puzzles.map((p, i) => (
       <li data-puzzle-id={p.id}>
-        <a href={`/puzzles/${p.id}`}>{p.data.title}</a>
-        <span class="meta">
-          Difficulty {p.data.difficulty} of 5
-          <span class="solved-tag">Solved</span>
-        </span>
+        <a href={`/puzzles/${p.id}`}>
+          <span class="box" aria-hidden="true" />
+          <span class="n">{i + 1}</span>
+          <span class="t">{p.data.title}</span>
+          <span class="dots" aria-hidden="true" />
+          <span class="meter" aria-hidden="true">
+            {Array.from({ length: 5 }, (_, j) => (
+              <i class:list={{ on: j < p.data.difficulty }} />
+            ))}
+          </span>
+          <span class="sr-only">
+            Difficulty {p.data.difficulty} of 5<span class="solved-tag">, solved</span>
+          </span>
+        </a>
       </li>
     ))
   }
@@ -35,39 +44,80 @@ const { puzzles } = Astro.props;
   .puzzle-list {
     list-style: none;
     margin: 0;
-    padding: 0;
-    counter-reset: puzzle;
-    border-top: 1px solid var(--rule);
+    padding: 0.4rem 0;
+    border: 2px solid var(--ink);
+    background: var(--field);
   }
-  li {
-    counter-increment: puzzle;
+  a {
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    gap: 0.25rem 1rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--rule);
+    gap: 0.6rem;
+    padding: 0.5rem 0.9rem;
+    text-decoration: none;
+    color: var(--ink);
+    line-height: 1.35;
   }
-  li::before {
-    content: counter(puzzle);
+  a:hover {
+    background: var(--tint);
+  }
+  a:hover .t {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .box {
+    flex: none;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    border: 2px solid var(--ink);
+    align-self: center;
+  }
+  [data-solved] .box::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: -6px;
+    width: 7px;
+    height: 14px;
+    border: solid var(--teal);
+    border-width: 0 3px 3px 0;
+    transform: rotate(40deg);
+  }
+  .n {
+    flex: none;
+    min-width: 1.4em;
     font-family: var(--mono);
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-    width: 1.75rem;
-  }
-  li a {
-    flex: 1;
     font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+  .t {
+    font-weight: 600;
+  }
+  .dots {
+    flex: 1;
+    min-width: 12px;
+    border-bottom: 2px dotted var(--rule);
+    transform: translateY(-0.3em);
+  }
+  .meter {
+    flex: none;
+    display: flex;
+    gap: 3px;
+    align-self: center;
+  }
+  .meter i {
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--ink);
+  }
+  .meter i.on {
+    background: var(--ink);
   }
   .solved-tag {
     display: none;
-    margin-left: 0.5rem;
-    padding: 0 0.35em;
-    color: var(--on-highlight);
-    background: var(--highlight);
   }
-  li[data-solved] .solved-tag {
+  [data-solved] .solved-tag {
     display: inline;
   }
 </style>

@@ -8,7 +8,7 @@ const id = `step-${n}`;
 ---
 
 <section class="step" aria-labelledby={id}>
-  <h2 id={id}><span class="n">{n}</span>{title}</h2>
+  <h2 id={id}><span class="n">Step {n}</span>{title}</h2>
   <div class="body prose"><slot /></div>
 </section>
 
@@ -16,23 +16,24 @@ const id = `step-${n}`;
   .step {
     display: grid;
     gap: 1rem;
-    padding-top: 2.5rem;
+    padding-top: 3rem;
   }
   h2 {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    font-size: var(--step-2);
+    font-size: clamp(1.875rem, 1.5rem + 1.2vw, 2.25rem);
+    max-width: 44rem;
   }
   .n {
+    display: block;
     font-family: var(--mono);
-    font-size: 0.55em;
     font-weight: 500;
-    color: var(--violet);
-    min-width: 1.5rem;
+    font-size: 0.9375rem;
+    line-height: 1;
+    font-stretch: 100%;
+    color: var(--ink-soft);
+    margin-bottom: 0.6rem;
   }
   .body {
-    max-width: none;
+    max-width: 44rem;
   }
   .body :global(> p),
   .body :global(> ul),

@@ -74,7 +74,6 @@
     align-content: start;
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--rule);
-    border-radius: 4px;
     background: var(--paper);
     font-size: var(--step--1);
     margin: 0;
@@ -94,8 +93,7 @@
     font-size: 0.85rem;
     padding: 0.2rem 0.3rem;
     border: 1px solid var(--rule);
-    border-radius: 3px;
-    background: var(--paper-raised);
+    background: var(--field);
   }
   .out {
     display: block;
@@ -104,7 +102,7 @@
     font-size: 0.95rem;
     letter-spacing: 0.06em;
     padding: 0.6rem 0.7rem;
-    border-left: 3px solid var(--highlight);
+    border-left: 3px solid var(--mark);
     overflow-wrap: anywhere;
   }
 </style>

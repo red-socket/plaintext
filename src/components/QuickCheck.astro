@@ -20,20 +20,51 @@ const entries = await sealAll(
 );
 ---
 
-<div class="quick-check" data-check-id={id}>
-  <p class="q"><slot /></p>
-  <QuickCheckForm client:idle id={id} entries={entries} />
+<div class="quick-check squared" data-check-id={id}>
+  <p class="head"><span class="ex" aria-hidden="true"></span><span>Quick check</span></p>
+  <div class="inner">
+    <p class="q"><slot /></p>
+    <QuickCheckForm client:idle id={id} entries={entries} />
+  </div>
 </div>
 
 <style>
+  /* Numbered as exercises through the lesson: the counter is reset on the lesson article. */
   .quick-check {
-    padding: 1rem 1.1rem 0.6rem;
-    border-left: 4px solid var(--violet);
-    background: var(--paper-raised);
-    border-radius: 0 4px 4px 0;
+    counter-increment: exercise;
+    border: 2px solid var(--ink);
+    background-color: var(--field);
+  }
+  .head {
+    display: flex;
+    align-items: stretch;
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .head > span {
+    padding: 0.45rem 0.8rem;
+  }
+  .ex {
+    display: flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    border-right: 2px solid var(--paper);
+  }
+  .ex::before {
+    content: 'Ex. ' counter(exercise);
+  }
+  .head > span:last-child {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    font-stretch: 90%;
+  }
+  .inner {
+    padding: 1.1rem 1.1rem 0.75rem;
   }
   .q {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-size: 1.1875rem;
+    margin-bottom: 0.9rem;
   }
 </style>
