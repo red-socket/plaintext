@@ -1,0 +1,49 @@
+---
+/** Shows a tool only after its lesson is complete. Progress lives in the browser, so the check runs there. */
+import { toolById } from '../lib/catalog';
+
+interface Props {
+  tool: string;
+  lessonTitle: string;
+}
+
+const { tool: toolId, lessonTitle } = Astro.props;
+const tool = toolById(toolId);
+if (!tool) throw new Error(`Unknown tool ${toolId}`);
+---
+
+<div class="tool-gate" data-lesson={tool.lesson} data-unlocked="false">
+  <div class="locked">
+    <p>
+      <strong>{tool.name}</strong>. Finish the <a href={`/learn/${tool.lesson}`}>{lessonTitle}</a> lesson to add it to your toolkit.
+    </p>
+  </div>
+  <div class="unlocked">
+    <slot />
+  </div>
+</div>
+
+<script>
+  import { isLessonDone, progress } from '../lib/progress';
+
+  const gates = document.querySelectorAll<HTMLElement>('.tool-gate');
+  progress.subscribe((p) => {
+    for (const g of gates) g.dataset.unlocked = String(isLessonDone(p, g.dataset.lesson!));
+  });
+</script>
+
+<style>
+  .tool-gate[data-unlocked='false'] .unlocked,
+  .tool-gate[data-unlocked='true'] .locked {
+    display: none;
+  }
+  .locked {
+    padding: 1rem 1.1rem;
+    border: 2px dashed var(--rule);
+    border-radius: 6px;
+    color: var(--ink-soft);
+  }
+  .locked strong {
+    color: var(--ink);
+  }
+</style>

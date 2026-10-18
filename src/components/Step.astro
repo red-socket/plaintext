@@ -1,0 +1,42 @@
+---
+interface Props {
+  n: number;
+  title: string;
+}
+const { n, title } = Astro.props;
+const id = `step-${n}`;
+---
+
+<section class="step" aria-labelledby={id}>
+  <h2 id={id}><span class="n">{n}</span>{title}</h2>
+  <div class="body prose"><slot /></div>
+</section>
+
+<style>
+  .step {
+    display: grid;
+    gap: 1rem;
+    padding-top: 2.5rem;
+  }
+  h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: var(--step-2);
+  }
+  .n {
+    font-family: var(--mono);
+    font-size: 0.55em;
+    font-weight: 500;
+    color: var(--violet);
+    min-width: 1.5rem;
+  }
+  .body {
+    max-width: none;
+  }
+  .body :global(> p),
+  .body :global(> ul),
+  .body :global(> ol) {
+    max-width: var(--measure);
+  }
+</style>

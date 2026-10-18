@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ToolGate from '../components/ToolGate.astro';
+import CipherWheel from '../components/tools/CipherWheel.svelte';
+import { TOOLS } from '../lib/catalog';
+
+const lessons = await getCollection('lessons');
+const lessonTitle = (id: string) => lessons.find((l) => l.id === id)?.data.title ?? id;
+---
+
+<Base title="Toolkit" description="The tools you've earned by finishing lessons.">
+  <div class="toolkit page">
+    <header class="prose">
+      <h1>Toolkit</h1>
+      <p>Every lesson you finish adds a tool here. You'll also find your tools under every puzzle.</p>
+    </header>
+
+    {
+      TOOLS.map((tool) => (
+        <section aria-labelledby={`tool-${tool.id}`}>
+          <h2 id={`tool-${tool.id}`}>{tool.name}</h2>
+          <p class="desc">{tool.description}</p>
+          <ToolGate tool={tool.id} lessonTitle={lessonTitle(tool.lesson)}>
+            {tool.id === 'caesar-wheel' && <CipherWheel client:visible shift={3} />}
+          </ToolGate>
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .toolkit {
+    display: grid;
+    gap: 2.5rem;
+  }
+  header {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 2rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  section {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 56rem;
+  }
+  .desc {
+    max-width: var(--measure);
+  }
+</style>

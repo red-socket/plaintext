@@ -1,0 +1,39 @@
+---
+/**
+ * A small question inside a lesson. The answer is sealed at build time and never reaches the page.
+ * Usage in MDX: <QuickCheck id="caesar-cat" answer="FDW" note="C→F, A→D, T→W.">Encode CAT with shift 3.</QuickCheck>
+ */
+import { sealAll } from '../lib/seal';
+import QuickCheckForm from './QuickCheckForm.svelte';
+
+interface Props {
+  id: string;
+  answer: string | string[];
+  note?: string;
+}
+
+const { id, answer, note } = Astro.props;
+const answers = Array.isArray(answer) ? answer : [answer];
+const entries = await sealAll(
+  `check/${id}`,
+  answers.map((a) => ({ answer: a, payload: { type: 'solve' as const, note } })),
+);
+---
+
+<div class="quick-check" data-check-id={id}>
+  <p class="q"><slot /></p>
+  <QuickCheckForm client:idle id={id} entries={entries} />
+</div>
+
+<style>
+  .quick-check {
+    padding: 1rem 1.1rem 0.6rem;
+    border-left: 4px solid var(--violet);
+    background: var(--paper-raised);
+    border-radius: 0 4px 4px 0;
+  }
+  .q {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+</style>

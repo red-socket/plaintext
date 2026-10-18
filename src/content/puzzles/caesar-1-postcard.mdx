@@ -1,0 +1,28 @@
+---
+title: Postcard from Gaul
+lesson: caesar
+order: 1
+difficulty: 1
+ciphertext: "ZLVK BRX ZHUH KHUH. WKH DQVZHU LV DTXHGXFW."
+cipher: { type: caesar, shift: 3, plaintext: "WISH YOU WERE HERE. THE ANSWER IS AQUEDUCT." }
+answers: [AQUEDUCT]
+partials:
+  - answer: "WISH YOU WERE HERE THE ANSWER IS AQUEDUCT"
+    reply: "You decoded it. The answer is one word in there."
+  - answer: "3"
+    reply: "That's the shift. Now use it on the message."
+  - answer: "III"
+    reply: "That's the shift, written the Roman way. Now use it on the message."
+hints:
+  - "J.C. is a famous Roman. Which cipher is named after him?"
+  - "III is a Roman numeral, and it tells you the shift."
+  - "Shift every letter back by 3: D becomes A, Z becomes W."
+writeup: |
+  The signature J.C. points to Julius Caesar, and III in the corner is the shift: 3, the one Caesar himself is said to have used.
+
+  Shifting every letter back by 3 turns `ZLVK BRX ZHUH KHUH` into `WISH YOU WERE HERE`, and the rest of the card says the answer is AQUEDUCT.
+
+  Puzzle makers rarely hand you the key this openly, but they often leave it somewhere nearby: a number in a corner, a date, a name.
+---
+
+A postcard turns up in a second-hand book, a picture of a Roman bridge on the front. On the back, one line of capitals, signed **J.C.**, with **III** pencilled small in the corner.

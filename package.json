@@ -1,0 +1,31 @@
+{
+  "name": "plaintext",
+  "type": "module",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest run",
+    "check": "astro check && vitest run"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.4",
+    "@astrojs/mdx": "^8.1.0",
+    "@astrojs/svelte": "^9.1.0",
+    "@fontsource-variable/literata": "^5.3.0",
+    "@fontsource-variable/martian-mono": "^5.3.0",
+    "astro": "^7.4.0",
+    "svelte": "^5.57.2",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "vitest": "^5.0.5"
+  },
+  "license": "AGPL-3.0-or-later",
+  "private": true
+}

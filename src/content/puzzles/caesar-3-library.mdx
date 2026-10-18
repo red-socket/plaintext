@@ -1,0 +1,30 @@
+---
+title: Returned late
+lesson: caesar
+order: 3
+difficulty: 2
+ciphertext: "P OPK AOL RLF BUKLY H SVVZL IYPJR. AOL WHZZDVYK PZ TPULYCH."
+cipher: { type: caesar, shift: 7, plaintext: "I HID THE KEY UNDER A LOOSE BRICK. THE PASSWORD IS MINERVA." }
+answers: [MINERVA]
+partials:
+  - answer: "I HID THE KEY UNDER A LOOSE BRICK THE PASSWORD IS MINERVA"
+    reply: "Decoded. The answer is the password."
+  - answer: "7"
+    reply: "That's the shift. What does the slip say?"
+  - answer: "SEVEN"
+    reply: "That's the shift. What does the slip say?"
+hints:
+  - "There is no key this time. That's fine: a Caesar cipher only has 25 possible shifts."
+  - "Look at the one-letter words, P and H. In English, one-letter words are almost always I or A."
+  - "If P stands for I, the shift is 7. Shift every letter back by 7."
+writeup: |
+  No key is given, so there are two ways in.
+
+  Brute force: try all 25 shifts and stop at the one that reads as English. The Caesar wheel's "Try all shifts" view does this at once.
+
+  Deduction: the message has two one-letter words, `P` and `H`. If `P` is I, the shift is 7 (I + 7 = P), and `H` then becomes A, which confirms it. The slip reads `I HID THE KEY UNDER A LOOSE BRICK. THE PASSWORD IS MINERVA.`
+
+  A cipher with only 25 keys is not secure against anyone who is patient. That weakness is the whole reason later ciphers exist.
+---
+
+A library book comes back three months late. Tucked inside the back cover, a slip of paper with one line typed on it. No note, no key, no signature.

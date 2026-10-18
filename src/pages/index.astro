@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import DecodeLine from '../components/DecodeLine.astro';
+import { TRACKS } from '../lib/catalog';
+import { sortedLessons } from '../lib/content';
+
+const lessons = await sortedLessons();
+const first = lessons[0];
+---
+
+<Base>
+  <section class="hero page">
+    <DecodeLine text="Every secret message was written to be read." />
+    <div class="intro prose">
+      <p>
+        Plaintext teaches the ciphers, encodings and hidden-data tricks behind puzzle hunts, ARGs and escape rooms. Each lesson takes about ten
+        minutes, ends with puzzles to solve, and gives you a tool to keep.
+      </p>
+      {first && <p><a class="btn" href={`/learn/${first.id}`}>Start with {first.data.title.replace(/^The /, 'the ')}</a></p>}
+    </div>
+  </section>
+
+  <section id="tracks" class="tracks page" aria-labelledby="tracks-title">
+    <h2 id="tracks-title">Tracks</h2>
+    <ol>
+      {
+        TRACKS.map((t) => {
+          const trackLessons = lessons.filter((l) => l.data.track === t.id);
+          return (
+            <li class:list={['track', { empty: trackLessons.length === 0 }]}>
+              <span class="n">{t.number}</span>
+              <div>
+                <h3>{t.title}</h3>
+                <p class="blurb">{t.blurb}</p>
+                {trackLessons.length > 0 ? (
+                  <ul class="lessons">
+                    {trackLessons.map((l) => (
+                      <li>
+                        <a href={`/learn/${l.id}`}>{l.data.title}</a> <span class="meta">{l.data.minutes} min</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p class="meta">Not written yet.</p>
+                )}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: 3rem 4rem;
+  }
+  @media (min-width: 48rem) {
+    .hero {
+      padding-block: 6rem 5rem;
+    }
+  }
+  .intro {
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+  .intro .btn {
+    font-size: var(--step-0);
+  }
+
+  .tracks h2 {
+    margin-bottom: 1.5rem;
+  }
+  .tracks > ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--ink);
+  }
+  .track {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .track .n {
+    font-family: var(--mono);
+    font-size: var(--step-1);
+    color: var(--violet);
+    line-height: 1.2;
+  }
+  .track h3 {
+    font-size: var(--step-1);
+  }
+  .blurb {
+    margin-top: 0.25rem;
+    max-width: var(--measure);
+  }
+  .track.empty h3,
+  .track.empty .n {
+    color: var(--ink-soft);
+  }
+  .lessons {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    font-weight: 600;
+  }
+  .lessons .meta {
+    font-weight: 400;
+    margin-left: 0.4rem;
+  }
+  .track > div > .meta {
+    margin-top: 0.5rem;
+  }
+</style>

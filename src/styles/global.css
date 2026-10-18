@@ -1,0 +1,278 @@
+@import '@fontsource-variable/literata/opsz.css';
+@import '@fontsource-variable/literata/opsz-italic.css';
+@import '@fontsource-variable/martian-mono/standard.css';
+
+/*
+ * Spirit-duplicator palette: cool paper, violet-black ink, ditto violet for ciphertext,
+ * highlighter yellow for anything decoded or solved, red pencil for mistakes.
+ */
+:root {
+  --paper: #edeff3;
+  --paper-raised: #f7f8fa;
+  --ink: #1c1a2e;
+  --ink-soft: #4d4a63;
+  --rule: #c9cbd6;
+  --violet: #5a36b0;
+  --violet-faint: #e3def3;
+  --highlight: #f2dd4a;
+  --on-highlight: #1c1a2e;
+  --pencil: #b8324a;
+
+  --serif: 'Literata Variable', Georgia, serif;
+  --mono: 'Martian Mono Variable', ui-monospace, monospace;
+
+  /* Scale: 1.25 steps from an 18px base */
+  --step--1: 0.875rem;
+  --step-0: 1.125rem;
+  --step-1: 1.375rem;
+  --step-2: 1.75rem;
+  --step-3: 2.25rem;
+  --step-4: 3rem;
+
+  --measure: 38rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #16151f;
+    --paper-raised: #1f1d2b;
+    --ink: #e6e3f1;
+    --ink-soft: #a9a5bf;
+    --rule: #3a3750;
+    --violet: #b3a0ff;
+    --violet-faint: #2c2547;
+    --highlight: #e5cf3c;
+    --on-highlight: #16151f;
+    --pencil: #ff8095;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #16151f;
+  --paper-raised: #1f1d2b;
+  --ink: #e6e3f1;
+  --ink-soft: #a9a5bf;
+  --rule: #3a3750;
+  --violet: #b3a0ff;
+  --violet-faint: #2c2547;
+  --highlight: #e5cf3c;
+  --on-highlight: #16151f;
+  --pencil: #ff8095;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-optical-sizing: auto;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-3);
+}
+h2 {
+  font-size: var(--step-2);
+}
+h3 {
+  font-size: var(--step-1);
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--violet);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-thickness: 0.16em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+code,
+kbd,
+.mono {
+  font-family: var(--mono);
+  font-size: 0.82em;
+}
+
+code {
+  color: var(--violet);
+  word-break: break-word;
+}
+
+mark,
+.marked {
+  color: var(--on-highlight);
+  background: linear-gradient(100deg, transparent 0.15em, var(--highlight) 0.25em, var(--highlight) calc(100% - 0.25em), transparent calc(100% - 0.1em));
+  padding: 0 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+blockquote {
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--rule);
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* Ciphertext: the one thing on every page written in violet ink */
+.ciphertext {
+  font-family: var(--mono);
+  font-size: clamp(1rem, 0.85rem + 0.9vw, 1.35rem);
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+  color: var(--violet);
+  overflow-wrap: anywhere;
+}
+
+/* Buttons and inputs */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--serif);
+  font-size: var(--step--1);
+  font-weight: 600;
+  padding: 0.5em 1em;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover {
+  background: var(--violet);
+  border-color: var(--violet);
+}
+.btn.quiet {
+  background: transparent;
+  color: var(--ink);
+}
+.btn.quiet:hover {
+  border-color: var(--violet);
+  color: var(--violet);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.answer-input {
+  font-family: var(--mono);
+  font-size: var(--step-0);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  width: 100%;
+  min-width: 0;
+  padding: 0.4em 0.1em;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+}
+.answer-input::placeholder {
+  text-transform: none;
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: 0;
+}
+.answer-input:focus-visible {
+  outline: none;
+  border-bottom-color: var(--violet);
+  box-shadow: 0 2px 0 var(--violet);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Page frame */
+.page {
+  width: 100%;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.prose {
+  max-width: var(--measure);
+}
+.prose > * + * {
+  margin-top: 1rem;
+}
+.prose h2 {
+  margin-top: 2.5rem;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+}
+.prose li + li {
+  margin-top: 0.35rem;
+}
+
+.meta {
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

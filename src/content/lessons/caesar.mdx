@@ -1,0 +1,78 @@
+---
+title: The Caesar cipher
+track: classical
+order: 1
+summary: Shift every letter a few places down the alphabet. The oldest trick in the book, and still in puzzles everywhere.
+minutes: 10
+tool: caesar-wheel
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import CipherWheel from '../../components/tools/CipherWheel.svelte';
+
+<Step n={1} title="Shift every letter">
+
+Pick a number, the **shift**, and move every letter that many places along the alphabet. With a shift of 3, A becomes D, B becomes E, and so on. At the end you wrap around: X becomes A, Y becomes B, Z becomes C.
+
+Suetonius wrote that Julius Caesar used a shift of 3 for private letters, which is why the method carries his name.
+
+The wheel below does the shifting for you. The outer ring is the plain alphabet, the inner ring is what each letter turns into. Type something and turn the inner ring.
+
+<CipherWheel client:visible shift={3} text="Hello" bruteForce={false} />
+
+<QuickCheck id="caesar-encode-cat" answer="FDW" note="C moves to F, A to D, T to W.">Encrypt the word CAT with a shift of 3.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Decrypting is shifting back">
+
+To read a message, shift the other way by the same amount. If the sender moved letters forward by 3, you move them back by 3. On the wheel, find each letter on the **inner** ring and read the outer ring.
+
+<QuickCheck id="caesar-decode-world" answer="WORLD" note="Z back 3 is W, R is O, U is R, O is L, G is D.">Decrypt ZRUOG. It was made with a shift of 3.</QuickCheck>
+
+There are only 26 positions, so shifting back by 3 is the same as shifting forward by 23. Either works.
+
+<QuickCheck id="caesar-undo-10" answer={["16", "SIXTEEN"]} note="10 + 16 = 26, one full turn.">A message was shifted forward by 10. What forward shift undoes it?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="ROT13, the shift that undoes itself">
+
+A shift of 13 is half the alphabet. Do it twice and every letter is back where it started, so the same step both hides and reveals a message. It's called **ROT13**, and people have used it for decades to hide spoilers and punchlines on forums, so readers only see them on purpose.
+
+You'll learn to recognise one word on sight: in ROT13, THE becomes `GUR`.
+
+<QuickCheck id="caesar-rot13-uryyb" answer="HELLO">What does URYYB say in ROT13?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Breaking it without the key">
+
+A Caesar cipher has only 25 useful shifts. Without the key, you can simply try them all and stop at the one that reads as English. That's a **brute-force attack**, and against Caesar it takes about a minute by hand.
+
+You can often go faster by reading the shape of the message, because Caesar keeps it:
+
+- **Word lengths and spaces stay the same.** A one-letter word is almost always A or I.
+- **Double letters stay double.** `KHOOR` has a double letter where HELLO has LL.
+- **Short common words give it away.** If a three-letter word appears over and over, it's probably THE.
+
+<QuickCheck id="caesar-one-letter" answer={["4", "FOUR"]} note="A + 4 = E.">In a Caesar message you see the one-letter word E. If it stands for A, what is the shift?</QuickCheck>
+
+Switch on **Try all 25 shifts** and paste a message: every possible reading appears, and one of them will make sense.
+
+<CipherWheel client:visible shift={0} mode="decrypt" text="Xppe xp le esp zwo xtww le yzzy" />
+
+</Step>
+
+<Step n={5} title="How to spot a Caesar cipher">
+
+Real puzzles won't tell you which cipher they used. Suspect Caesar when:
+
+- the text is **letters only**, with spaces and punctuation in normal places;
+- words have normal English **lengths and shapes**, but read as nonsense;
+- something nearby could be a **number**: a Roman numeral, a date, a clock, "III".
+
+If ROT13 and a quick brute force both fail, it's probably a different cipher. Later lessons cover the next suspects: a scrambled alphabet (substitution) or a different shift for every letter (Vigenère).
+
+</Step>

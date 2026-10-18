@@ -1,0 +1,36 @@
+---
+title: Dated the Ides
+lesson: caesar
+order: 4
+difficulty: 3
+ciphertext: "IWT UXGHI QADL LXAA RDBT UGDB RPHRP. HPN WXH CPBT PI IWT SDDG."
+cipher: { type: caesar, shift: 15, plaintext: "THE FIRST BLOW WILL COME FROM CASCA. SAY HIS NAME AT THE DOOR." }
+answers: [CASCA]
+partials:
+  - answer: "BRUTUS"
+    reply: "Everyone guesses that. Decode the letter."
+  - answer: "ET TU BRUTE"
+    reply: "Good line, wrong answer. Decode the letter."
+  - answer: "15"
+    reply: "That's the key. Now use it."
+  - answer: "FIFTEEN"
+    reply: "That's the key. Now use it."
+  - answer: "IDES"
+    reply: "Right idea. Which day of the month were the Ides of March?"
+  - answer: "THE FIRST BLOW WILL COME FROM CASCA SAY HIS NAME AT THE DOOR"
+    reply: "Decoded. Whose name do you say at the door?"
+hints:
+  - "The key is the date. The Ides were a fixed day in the Roman calendar."
+  - "The Ides of March fall on the 15th."
+  - "Shift every letter back by 15. Shifting forward by 11 does the same thing."
+writeup: |
+  The letter says to use the date as the key, and it's dated the Ides of March: 15 March, the day Caesar was killed in 44 BC. The shift is 15.
+
+  Shifting back by 15 (or forward by 11, since 15 + 11 = 26) turns `IWT UXGHI QADL` into `THE FIRST BLOW`. The letter names Casca, the senator said to have struck first.
+
+  The key wasn't in the puzzle as a number. You had to know, or look up, what the date meant. Real puzzles do this a lot: when a puzzle says "the key is…", look for something that can become a number.
+---
+
+A letter sealed with red wax, dated only **the Ides of March**. Under the date, in a different hand: *use the date as the key*.
+
+Whose name do you say at the door?

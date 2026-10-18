@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = 'Learn the ciphers, encodings and hidden-data tricks behind puzzle hunts and ARGs, one puzzle at a time.' } = Astro.props;
+const fullTitle = title ? `${title} | Plaintext` : 'Plaintext';
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <a class="skip sr-only" href="#main">Skip to content</a>
+    <header class="site-header page">
+      <a class="wordmark" href="/" aria-label="Plaintext, home">plaintext</a>
+      <nav aria-label="Main">
+        <a href="/#tracks" aria-current={path === '/' ? 'page' : undefined}>Learn</a>
+        <a href="/toolkit" aria-current={path.startsWith('/toolkit') ? 'page' : undefined}>Toolkit</a>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer page">
+      <p>Plaintext is free and open source: code under AGPL-3.0, lessons under CC BY-SA 4.0. Your progress stays in this browser.</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .skip:focus {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+    height: auto;
+    clip: auto;
+    padding: 0.5rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+    z-index: 10;
+  }
+
+  .site-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.25rem;
+  }
+
+  .wordmark {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+    font-size: var(--step--1);
+  }
+  nav a {
+    text-decoration: none;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--violet);
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.3em;
+  }
+
+  .site-footer {
+    margin-top: 6rem;
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+</style>

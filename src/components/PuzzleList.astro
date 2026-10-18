@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  puzzles: CollectionEntry<'puzzles'>[];
+}
+
+const { puzzles } = Astro.props;
+---
+
+<ol class="puzzle-list">
+  {
+    puzzles.map((p) => (
+      <li data-puzzle-id={p.id}>
+        <a href={`/puzzles/${p.id}`}>{p.data.title}</a>
+        <span class="meta">
+          Difficulty {p.data.difficulty} of 5
+          <span class="solved-tag">Solved</span>
+        </span>
+      </li>
+    ))
+  }
+</ol>
+
+<script>
+  import { isSolved, progress } from '../lib/progress';
+
+  const items = document.querySelectorAll<HTMLElement>('[data-puzzle-id]');
+  progress.subscribe((p) => {
+    for (const li of items) li.toggleAttribute('data-solved', isSolved(p, li.dataset.puzzleId!));
+  });
+</script>
+
+<style>
+  .puzzle-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: puzzle;
+    border-top: 1px solid var(--rule);
+  }
+  li {
+    counter-increment: puzzle;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  li::before {
+    content: counter(puzzle);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    width: 1.75rem;
+  }
+  li a {
+    flex: 1;
+    font-weight: 600;
+  }
+  .solved-tag {
+    display: none;
+    margin-left: 0.5rem;
+    padding: 0 0.35em;
+    color: var(--on-highlight);
+    background: var(--highlight);
+  }
+  li[data-solved] .solved-tag {
+    display: inline;
+  }
+</style>

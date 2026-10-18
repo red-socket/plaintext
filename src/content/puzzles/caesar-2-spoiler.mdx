@@ -1,0 +1,32 @@
+---
+title: Spoiler tag
+lesson: caesar
+order: 2
+difficulty: 2
+ciphertext: "GUR XVYYRE JNF GUR YVTUGUBHFR XRRCRE."
+cipher: { type: caesar, shift: 13, plaintext: "THE KILLER WAS THE LIGHTHOUSE KEEPER." }
+answers: ["LIGHTHOUSE KEEPER", "THE LIGHTHOUSE KEEPER"]
+partials:
+  - answer: "THE KILLER WAS THE LIGHTHOUSE KEEPER"
+    reply: "That's the whole spoiler. The question is who did it."
+  - answer: "13"
+    reply: "Right shift. What does the spoiler say?"
+  - answer: "ROT13"
+    reply: "Right method. What does the spoiler say?"
+hints:
+  - "Forums have used the same shift to hide spoilers for decades, because one tool both hides and reveals them."
+  - "A shift of 13 is its own inverse: doing it twice gets you back where you started. People call it ROT13."
+  - "With ROT13, G becomes T, U becomes H and R becomes E."
+writeup: |
+  "The usual way" is ROT13, a Caesar shift of 13. The alphabet has 26 letters, so shifting by 13 twice brings every letter home. That's why the same button can hide and reveal a spoiler.
+
+  `GUR XVYYRE JNF GUR YVTUGUBHFR XRRCRE` becomes `THE KILLER WAS THE LIGHTHOUSE KEEPER`.
+
+  If you see `GUR` in a puzzle, try ROT13 first. It is "THE", the most common word in English.
+---
+
+A thread about a mystery novel, *The Long Shift*. One reply near the bottom:
+
+> Ending spoiler, encoded the usual way so nobody reads it by accident:
+
+Who did it?

@@ -1,0 +1,114 @@
+---
+/**
+ * The home page's opening line: it starts as ciphertext and turns, one shift at a time, into plaintext.
+ * Screen readers get the plaintext through aria-label; with reduced motion it is shown already decoded.
+ */
+import { caesarEncrypt } from '../lib/caesar';
+
+interface Props {
+  text: string;
+  shift?: number;
+}
+
+const { text, shift = 13 } = Astro.props;
+---
+
+<div class="decode" data-plain={text} data-shift={shift}>
+  <p class="line" role="img" aria-label={text}>{caesarEncrypt(text, shift)}</p>
+  <div class="readout">
+    <p aria-hidden="true"><span class="label">shift</span> <span class="value">{shift}</span></p>
+    <button type="button" class="replay" hidden>Encrypt it again</button>
+  </div>
+</div>
+
+<script>
+  import { caesarEncrypt } from '../lib/caesar';
+
+  for (const el of document.querySelectorAll<HTMLElement>('.decode')) {
+    const plain = el.dataset.plain!;
+    const start = Number(el.dataset.shift);
+    const line = el.querySelector<HTMLElement>('.line')!;
+    const value = el.querySelector<HTMLElement>('.value')!;
+    const replay = el.querySelector<HTMLButtonElement>('.replay')!;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer: number | undefined;
+
+    const show = (s: number) => {
+      line.textContent = s === 0 ? plain : caesarEncrypt(plain, s);
+      value.textContent = String(s);
+      el.classList.toggle('solved', s === 0);
+    };
+
+    const run = () => {
+      clearTimeout(timer);
+      replay.hidden = true;
+      let s = start;
+      show(s);
+      const tick = () => {
+        s -= 1;
+        show(s);
+        if (s > 0) timer = window.setTimeout(tick, s < 3 ? 220 : 110);
+        else replay.hidden = false;
+      };
+      timer = window.setTimeout(tick, 900);
+    };
+
+    replay.addEventListener('click', run);
+    if (reduced) {
+      show(0);
+      replay.hidden = false;
+    } else run();
+  }
+</script>
+
+<style>
+  .decode {
+    display: grid;
+    gap: 1rem;
+  }
+  .line {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 0.9rem + 3.6vw, 3.6rem);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    color: var(--violet);
+    overflow-wrap: anywhere;
+    transition: color 300ms ease;
+    min-height: 2.5em;
+  }
+  .solved .line {
+    color: var(--ink);
+  }
+  .readout,
+  .readout p {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .value {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--violet);
+    min-width: 1.5rem;
+  }
+  .solved .value {
+    color: var(--on-highlight);
+    background: var(--highlight);
+    padding: 0 0.3em;
+  }
+  .replay {
+    margin-left: 0.75rem;
+    border: 0;
+    background: none;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--violet);
+    text-underline-offset: 0.18em;
+    font-size: inherit;
+  }
+</style>
