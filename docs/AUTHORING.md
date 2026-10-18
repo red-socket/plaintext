@@ -2,7 +2,7 @@
 
 Everything a player reads lives in `src/content/`. You don't need to touch code to add a puzzle. Start from the templates in [`docs/templates/`](templates/).
 
-Run `npm run verify` before you open a pull request. It checks types, runs the tests, builds the site (which validates every content file and checks every cipher puzzle is solvable) and makes sure no answer reached the built pages.
+Run `npm run verify` before you open a pull request. It checks types, runs the tests and builds the site, which validates every content file and checks every cipher puzzle is solvable.
 
 ## The voice
 
@@ -27,13 +27,35 @@ One file per puzzle: `src/content/puzzles/<id>.mdx`. The file name is the puzzle
 | `order` | yes | Position in the lesson's puzzle list. |
 | `difficulty` | yes | 1–5. See below. |
 | `ciphertext` | no | Shown in a large violet block with a copy button. Leave it out if the puzzle is an image, a sound or prose. |
-| `cipher` | no | How the ciphertext was made, e.g. `{ type: caesar, shift: 3, plaintext: "…" }`. If present, the build fails unless it reproduces `ciphertext` exactly. Always include it for cipher puzzles. |
+| `cipher` | no | How the ciphertext was made: `{ plaintext: "…", steps: [...] }`. The build applies the steps in order and fails unless the result is exactly `ciphertext`. Always include it when the puzzle has a ciphertext. See [Cipher steps](#cipher-steps). |
+| `display` | no | `text` (default) shows the ciphertext. `morse-audio` hides it and gives a play button that sends it as sound. |
 | `answers` | yes | Every answer you'll accept. Case, spaces, punctuation and accents are ignored, so `Lighthouse keeper!` and `LIGHTHOUSEKEEPER` are the same. Add real alternatives (`THE LIGHTHOUSE KEEPER`), not typos. |
 | `partials` | no | Wrong turns you can predict, each with a reply. See below. |
 | `hints` | yes | In order, from a nudge to nearly the whole method. Three is the norm. |
 | `writeup` | yes | Shown after solving. Blank lines make paragraphs, backticks make `code`. Nothing else is formatted. |
 
 The body of the file (after the frontmatter) is the prompt: the scene and the question. Markdown works there.
+
+### Cipher steps
+
+Each step is applied to the output of the one before. Available steps (from `src/lib/steps.ts`):
+
+| Step | Output |
+| --- | --- |
+| `{ type: caesar, shift: 3 }` | Letters shifted forward by 3. |
+| `{ type: a1z26 }` | `8-5-12-12-15 23-15-18-12-4`. Add `start: 0` for A0Z25. |
+| `{ type: keypad }` | `44 33 555 555 666`, with `0` between words. |
+| `{ type: morse }` | `.... . .-.. .-.. ---`, with ` / ` between words. |
+| `{ type: binary }` | 8-bit groups: `01001000 01101001`. |
+| `{ type: ascii }` | Decimal codes: `72 101 108 108 111`. |
+| `{ type: hex }` | Uppercase byte pairs: `48 65 6C 6C 6F`. |
+| `{ type: base64 }`, `{ type: base32 }` | Standard, with `=` padding. |
+| `{ type: reverse }` | The whole string backwards. |
+| `{ type: map, map: { "0": "□", "1": "■" } }` | Replaces single characters; anything else passes through. |
+
+A layered puzzle is just several steps: `steps: [{ type: caesar, shift: 13 }, { type: hex }, { type: base64 }]`.
+
+To get the ciphertext, write the `cipher` with `ciphertext: ""`, run `npm run build`, and copy the expected value from the error message.
 
 ### Difficulty
 
@@ -64,7 +86,7 @@ Replies say what to do next. They never say "wrong", and never give the answer. 
 - **Hint 2** names it: "III is a Roman numeral, and it tells you the shift."
 - **Hint 3** is nearly the method: "Shift every letter back by 3: D becomes A."
 
-Hints are in the page source (only answers and writeups are sealed), so never put the answer in a hint.
+Never put the answer in a hint: hints are for getting unstuck, not for skipping.
 
 ### Writeups
 

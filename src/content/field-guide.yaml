@@ -84,7 +84,7 @@
   tells:
     - Numbers between 1 and 26, often separated by dashes or spaces.
   try: "1 is A, 26 is Z. Try counting from 0, or backwards, if it doesn't read."
-  track: encodings
+  lesson: letters-as-numbers
 
 - id: phone-keypad
   name: Phone keypad
@@ -94,7 +94,7 @@
     - Only the digits 2 to 9.
     - The same digit repeated up to four times (multi-tap), or digit pairs where the second digit is 1 to 4.
   try: "Each key has letters on it: 2 is ABC, 7 is PQRS, 9 is WXYZ. 555 means the third letter on 5: L."
-  track: encodings
+  lesson: letters-as-numbers
 
 - id: polybius
   name: Polybius square and tap code
@@ -114,7 +114,7 @@
     - Numbers mostly between 65 and 122.
     - Capital letters are 65 to 90, lowercase 97 to 122, a space is 32.
   try: Look each number up in an ASCII table, or convert it in your browser's console with String.fromCharCode.
-  track: computers
+  lesson: binary
 
 - id: book-cipher
   name: Book cipher
@@ -134,7 +134,7 @@
     - Only 0 and 1, usually in groups of 8.
     - Sometimes two other symbols stand in for 0 and 1, like light and dark squares.
   try: Read each group of 8 as a number, then look it up as ASCII. 01000001 is 65, which is A.
-  track: encodings
+  lesson: binary
 
 - id: morse
   name: Morse code
@@ -144,7 +144,7 @@
     - Dots and dashes, or any two things of different lengths, with gaps between letters.
     - Beeps, flashes, long and short marks, blinking lights in a video.
   try: "E is one dot, T is one dash. Find the separators first: a short gap between letters, a longer one between words."
-  track: encodings
+  lesson: morse
 
 - id: hex
   name: Hexadecimal
@@ -154,7 +154,7 @@
     - Only 0–9 and A–F.
     - Often in pairs. Lots of 6s and 7s means lowercase text.
   try: Read each pair as one byte and look it up as ASCII. 41 is A, 61 is a.
-  track: encodings
+  lesson: hex-and-base64
 
 - id: base64
   name: Base64
@@ -165,7 +165,7 @@
     - Ends with one or two = signs (not always).
     - Length is a multiple of 4.
   try: Decode it as Base64. If the result is still gibberish, it may be decoded twice, or hide something else.
-  track: encodings
+  lesson: hex-and-base64
 
 - id: base32
   name: Base32
@@ -175,7 +175,7 @@
     - Capital letters and the digits 2 to 7 only. No 0, 1, 8 or 9.
     - Often a run of = signs at the end.
   try: Decode it as Base32.
-  track: encodings
+  lesson: hex-and-base64
 
 - id: hash
   name: Hash

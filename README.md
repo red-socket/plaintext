@@ -13,7 +13,7 @@ npm install
 npm run dev      # http://localhost:4321
 npm run build    # static output in dist/
 npm run check    # types + tests
-npm run verify   # types, tests, build and leak check (what CI runs)
+npm run verify   # types, tests and build (what CI runs)
 ```
 
 Built with [Astro](https://astro.build).

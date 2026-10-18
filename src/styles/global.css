@@ -276,3 +276,100 @@ select {
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Tools: shared parts so every tool in the toolkit looks like one set */
+.tool-panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  min-width: 0;
+}
+.tool-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.tool-modes label {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  cursor: pointer;
+}
+.tool-modes input,
+.tool-panel input[type='checkbox'] {
+  accent-color: var(--violet);
+  width: 1.05rem;
+  height: 1.05rem;
+}
+.tool-field {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.tool-field > span {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+.tool-field textarea,
+.tool-field input[type='text'] {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 0.6rem 0.7rem;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  resize: vertical;
+  width: 100%;
+  min-width: 0;
+}
+.tool-field textarea:focus-visible,
+.tool-field input[type='text']:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 0;
+}
+.tool-error {
+  color: var(--pencil);
+  font-size: var(--step--1);
+  min-height: 1.4em;
+}
+.tool-grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 44rem) {
+  .tool-grid.two {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.chart {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.25rem, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+.chart > * {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.3rem 0.45rem;
+  background: var(--paper);
+}
+.chart b {
+  color: var(--ink);
+  font-weight: 700;
+}
+.chart span {
+  color: var(--violet);
+}

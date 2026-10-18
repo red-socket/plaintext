@@ -6,9 +6,10 @@
     lessonId: string;
     toolName?: string;
     firstPuzzle?: { href: string; title: string };
+    next?: { href: string; title: string };
   }
 
-  let { lessonId, toolName, firstPuzzle }: Props = $props();
+  let { lessonId, toolName, firstPuzzle, next }: Props = $props();
 
   let checkIds = $state<string[]>([]);
   let p = $state<Progress>(progress.get());
@@ -18,10 +19,10 @@
 
   onMount(() => {
     checkIds = Array.from(document.querySelectorAll<HTMLElement>('[data-check-id]'), (el) => el.dataset.checkId!);
-    return progress.subscribe((next) => {
-      p = next;
-      const allDone = checkIds.length > 0 && checkIds.every((c) => next.checks[c]);
-      if (allDone && !isLessonDone(next, lessonId)) {
+    return progress.subscribe((snap) => {
+      p = snap;
+      const allDone = checkIds.length > 0 && checkIds.every((c) => snap.checks[c]);
+      if (allDone && !isLessonDone(snap, lessonId)) {
         progress.update((d) => (d.lessons[lessonId] = { completedAt: Date.now() }));
       }
     });
@@ -36,6 +37,9 @@
     {/if}
     {#if firstPuzzle}
       <p><a class="btn" href={firstPuzzle.href}>Start the puzzles: {firstPuzzle.title}</a></p>
+      {#if next}<p class="meta">Or go on to the next lesson: <a href={next.href}>{next.title}</a>.</p>{/if}
+    {:else if next}
+      <p><a class="btn" href={next.href}>Next lesson: {next.title}</a></p>
     {/if}
   {:else}
     <h2>Finish the lesson</h2>

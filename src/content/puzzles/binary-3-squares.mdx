@@ -1,0 +1,21 @@
+---
+title: Light and dark
+lesson: binary
+order: 3
+difficulty: 3
+ciphertext: "□■□■□□□■ □■□■□■□■ □■□□□□□■ □■□■□□■□ □■□■□■□□ □■□■■□■□"
+cipher: { plaintext: "QUARTZ", steps: [{ type: binary }, { type: map, map: { "0": "□", "1": "■" } }] }
+answers: [QUARTZ]
+hints:
+  - "Two kinds of square, in groups of eight."
+  - "Treat one kind as 0 and the other as 1. If the result is nonsense, swap them."
+  - "Every group starts with a light square, and ASCII letters start with 0. So light is 0 and dark is 1."
+writeup: |
+  Two symbols in groups of eight: binary in disguise. The only question is which square is 0.
+
+  Every group starts with a light square, and every ASCII letter starts with a 0 bit, so light is 0 and dark is 1. Then `□■□■□□□■` is `01010001`, 81, which is Q. The tiles spell `QUARTZ`.
+
+  When two symbols could be 0 or 1, look at the first bit of each group. Text almost always starts with 0.
+---
+
+A mosaic floor in a museum hallway: six rows of eight tiles, pale stone and dark slate. The guidebook says nothing about it.

@@ -1,0 +1,26 @@
+---
+title: Play in reverse
+lesson: morse
+order: 3
+difficulty: 3
+ciphertext: "--- .... .-.- . / ... .. / ..- .-. --- --. / . ..- --- .-.- / . .... - / .- --. -. ..- / - -. / - . . --"
+cipher: { plaintext: "MEET AT DAWN THE CODE WORD IS ECHO", steps: [{ type: morse }, { type: reverse }] }
+answers: [ECHO]
+partials:
+  - answer: "MEET AT DAWN THE CODE WORD IS ECHO"
+    reply: "Decoded. The answer is the code word."
+  - answer: "OHE SI UROG EUO EHT AGNU TN TEEM"
+    reply: "Some of those look like words spelled backwards. Look at the label again."
+hints:
+  - "Decode it as normal Morse. Some codes don't exist, and the words look wrong. Now read the cassette's label."
+  - "The label is written backwards: PLAY IN REVERSE."
+  - "Reverse the whole line of dots, dashes and slashes, character by character, then decode."
+writeup: |
+  Decoded as written, the Morse gives nonsense like `OH?E SI UROG`, with codes that aren't letters at all. The label is the key: ESREVER NI YALP is PLAY IN REVERSE written backwards.
+
+  Reversing every symbol of the transcript gives Morse that reads `MEET AT DAWN THE CODE WORD IS ECHO`.
+
+  Codes that don't exist are a sign you're reading something the wrong way round: backwards, mirrored, or with the symbols swapped.
+---
+
+A cassette tape in a shoebox, its label written in capitals: **ESREVER NI YALP**. On it, beeps. Someone already transcribed them.

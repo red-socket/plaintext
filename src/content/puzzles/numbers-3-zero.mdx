@@ -1,0 +1,24 @@
+---
+title: Counting from zero
+lesson: letters-as-numbers
+order: 3
+difficulty: 3
+ciphertext: "19-7-4 15-0-18-18-22-14-17-3 8-18 1-14-14-19-18-19-17-0-15"
+cipher: { plaintext: "THE PASSWORD IS BOOTSTRAP", steps: [{ type: a1z26, start: 0 }] }
+answers: [BOOTSTRAP]
+partials:
+  - answer: "THE PASSWORD IS BOOTSTRAP"
+    reply: "Decoded. The answer is the password."
+hints:
+  - "Decode it as A1Z26. Does it look almost right?"
+  - "There's a 0 in it, and A1Z26 has no letter for 0. Who counts from zero?"
+  - "Programmers do. Use A = 0: 19 is T, 7 is H, 4 is E."
+writeup: |
+  Read as A1Z26, the first word comes out `SGD`, one letter before THE, and the 0s don't decode at all. Both are signs that the count starts at zero.
+
+  With A = 0, `19-7-4` is THE, and the note reads `THE PASSWORD IS BOOTSTRAP`.
+
+  A 0 among small numbers, or a decode that's off by one letter everywhere, means A0Z25.
+---
+
+A sticky note on a server rack in a basement office, in the handwriting of the developer who quit last week.

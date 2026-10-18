@@ -1,0 +1,58 @@
+---
+title: Binary and ASCII
+track: encodings
+order: 3
+summary: How computers write letters as numbers, and numbers as ones and zeros.
+minutes: 12
+tool: base-converter
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import BaseConverter from '../../components/tools/BaseConverter.svelte';
+
+<Step n={1} title="Counting with two digits">
+
+Binary is ordinary counting with only 0 and 1. Each position is worth double the one to its right: 1, 2, 4, 8, 16, 32, 64, 128. Add up the positions that hold a 1.
+
+`01000001` has a 1 in the 64 place and a 1 in the 1 place: 64 + 1 = **65**.
+
+A group of eight binary digits (**bits**) is a **byte**, and it holds a number from 0 to 255.
+
+<QuickCheck id="binary-five" answer={["5", "FIVE"]} note="A 1 in the 4 place and the 1 place: 4 + 1.">What number is `00000101`?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="ASCII: a number for every character">
+
+Computers store text as numbers, and **ASCII** is the table that says which number is which character. The parts worth remembering:
+
+- **A to Z** are 65 to 90.
+- **a to z** are 97 to 122, exactly 32 more than the capitals.
+- **0 to 9** are 48 to 57, and a **space** is 32.
+
+<QuickCheck id="binary-ascii-c" answer="67" note="A is 65, B is 66, C is 67.">In ASCII, A is 65. What number is C?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Letters in binary">
+
+Put the two together: write each character's ASCII number as one byte. HI becomes `01001000 01001001`.
+
+That's why letters in binary have a recognisable shape: capitals start with `010`, lowercase letters with `011`. Type in any box below and watch the others change.
+
+<BaseConverter client:visible text="01001000 01001001" />
+
+<QuickCheck id="binary-decode-a" answer="A" note="01000001 is 65, and 65 is A.">Decode the byte `01000001`.</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Only 0 and 1**, usually in groups of eight, and the groups start with `01` if they're letters.
+- **Two of anything** standing in for 0 and 1: light and dark squares, on and off, up and down.
+- **Numbers between 65 and 122**: ASCII written in decimal.
+
+If two symbols come out as nonsense, try swapping which one is 0. Letters always start with 0.
+
+</Step>

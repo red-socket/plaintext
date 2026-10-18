@@ -1,0 +1,109 @@
+---
+/**
+ * The player's unlocked tools under a puzzle or practice page, each in a collapsible panel.
+ * Which tools are unlocked lives in the browser, so the script decides what to show.
+ */
+import { TOOLS } from '../lib/catalog';
+import ToolView from './tools/ToolView.astro';
+
+interface Props {
+  /** Pre-fills every tool. */
+  text?: string;
+  /** This tool starts open. */
+  open?: string;
+}
+
+const { text = '', open } = Astro.props;
+---
+
+<section class="toolkit" aria-labelledby="toolkit-title">
+  <h2 id="toolkit-title">Your toolkit</h2>
+  {
+    TOOLS.map((t) => (
+      <details class="kit-tool" data-lesson={t.lesson} open={t.id === open} hidden>
+        <summary>
+          <span class="name">{t.name}</span>
+          <span class="desc">{t.description}</span>
+        </summary>
+        <div class="body">
+          <ToolView tool={t.id} text={text} />
+        </div>
+      </details>
+    ))
+  }
+  <p class="kit-empty" hidden>No tools yet. Finishing a lesson earns you its tool, and it appears here on every puzzle.</p>
+  <p class="kit-more meta" hidden><span></span> <a href="/toolkit">See your toolkit</a>.</p>
+</section>
+
+<script>
+  import { TOOLS } from '../lib/catalog';
+  import { isLessonDone, progress } from '../lib/progress';
+
+  for (const kit of document.querySelectorAll<HTMLElement>('.toolkit')) {
+    const items = kit.querySelectorAll<HTMLDetailsElement>('.kit-tool');
+    const empty = kit.querySelector<HTMLElement>('.kit-empty')!;
+    const more = kit.querySelector<HTMLElement>('.kit-more')!;
+    progress.subscribe((p) => {
+      let shown = 0;
+      for (const d of items) {
+        const on = isLessonDone(p, d.dataset.lesson!);
+        d.hidden = !on;
+        if (on) shown++;
+      }
+      const locked = TOOLS.length - shown;
+      empty.hidden = shown > 0;
+      more.hidden = shown === 0 || locked === 0;
+      more.querySelector('span')!.textContent = `${locked} more tool${locked === 1 ? '' : 's'} to earn.`;
+    });
+  }
+</script>
+
+<style>
+  .toolkit {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--ink);
+    max-width: 56rem;
+  }
+  h2 {
+    font-size: var(--step-1);
+    margin-bottom: 0.25rem;
+  }
+  .kit-tool {
+    border-bottom: 1px solid var(--rule);
+  }
+  summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    padding: 0.6rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::before {
+    content: '+';
+    font-family: var(--mono);
+    color: var(--violet);
+    width: 1rem;
+  }
+  details[open] > summary::before {
+    content: '−';
+  }
+  .name {
+    font-weight: 600;
+  }
+  .desc {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    flex: 1 1 18rem;
+  }
+  .body {
+    padding-bottom: 1.25rem;
+  }
+</style>

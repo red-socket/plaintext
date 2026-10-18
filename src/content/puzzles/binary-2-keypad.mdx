@@ -1,0 +1,21 @@
+---
+title: Door code
+lesson: binary
+order: 2
+difficulty: 2
+ciphertext: "78 105 103 104 116 105 110 103 97 108 101"
+cipher: { plaintext: "Nightingale", steps: [{ type: ascii }] }
+answers: [NIGHTINGALE]
+hints:
+  - "The numbers are too big for A1Z26. What else turns letters into numbers?"
+  - "Computers do. Every number here is between 65 and 122."
+  - "It's ASCII in decimal. 78 is N; lowercase letters start at 97."
+writeup: |
+  The numbers run from 78 to 116, too big for A1Z26 but right in ASCII's range for letters. 78 is a capital N; everything else is above 97, so lowercase.
+
+  The note spells `Nightingale`.
+
+  Numbers between 65 and 122 are the fingerprint of ASCII text. The capitals and lowercase sit 32 apart.
+---
+
+The door to the server room has a keypad that takes letters, not digits. A note under the keyboard of the night guard's computer says *the password is what the computer calls it*.

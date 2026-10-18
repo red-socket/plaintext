@@ -1,0 +1,24 @@
+---
+title: Matryoshka
+lesson: hex-and-base64
+order: 3
+difficulty: 4
+ciphertext: "MkQgMjAgMkUgMkUgMkUgMkUgMjAgMkUgMjAgMkYgMjAgMkUgMkQgMkUgMkUgMjAgMkUgMkQgMjAgMkUgMkUgMkUgMjAgMkQgMjAgMkYgMjAgMkQgMkUgMkUgMjAgMkQgMkQgMkQgMjAgMkUgMkQgMkUgMkUgMjAgMkUgMkQgMkUgMkUgMjAgMkYgMjAgMkUgMkUgMjAgMkUgMkUgMkUgMjAgMkYgMjAgMkUgMkUgMkUgMkUgMjAgMkQgMkQgMkQgMjAgMkUgMkQgMkUgMkUgMjAgMkUgMkQgMkUgMkUgMjAgMkQgMkQgMkQgMjAgMkUgMkQgMkQ="
+cipher: { plaintext: "THE LAST DOLL IS HOLLOW", steps: [{ type: morse }, { type: hex }, { type: base64 }] }
+answers: [HOLLOW]
+partials:
+  - answer: "THE LAST DOLL IS HOLLOW"
+    reply: "All the way down. What is the last doll?"
+hints:
+  - "Start with the outside: what does the whole thing look like?"
+  - "It's Base64. What you get out is another encoding, and inside that is a third."
+  - "Base64, then hex, then Morse."
+writeup: |
+  The outer layer is Base64: mixed case, digits, an `=` at the end. Decoding it gives pairs like `2D 20 2E 2E`, which is hex.
+
+  The hex decodes to characters that are only `-`, `.`, `/` and spaces: Morse. That decodes to `THE LAST DOLL IS HOLLOW`.
+
+  After each layer, stop and look at the output as if it were a new puzzle. The tells are the same at every depth.
+---
+
+A set of nesting dolls, each one painted with text. The outermost doll has the longest line. You've copied it down.

@@ -1,0 +1,24 @@
+---
+title: Hex dump
+lesson: hex-and-base64
+order: 1
+difficulty: 1
+ciphertext: "54 68 65 20 61 6E 73 77 65 72 20 69 73 20 47 4C 41 43 49 45 52"
+cipher: { plaintext: "The answer is GLACIER", steps: [{ type: hex }] }
+answers: [GLACIER]
+partials:
+  - answer: "THE ANSWER IS GLACIER"
+    reply: "Decoded. The answer is the last word."
+hints:
+  - "Pairs of characters, only 0–9 and A–F."
+  - "It's hex: each pair is one byte, one ASCII character."
+  - "54 is T, 68 is h, 20 is a space."
+writeup: |
+  Only 0–9 and A–F, in pairs: hex. Each pair is one byte.
+
+  `54 68 65` is The, `20` is a space, and the line reads `The answer is GLACIER`. The 6s and 7s are lowercase; the 4s and 5s at the end are capitals.
+
+  In a hex dump, 20 between groups is the space. It splits the text into words before you decode anything.
+---
+
+A crash report from a weather station's software. Most of it is noise, but one line of the memory dump has been highlighted.

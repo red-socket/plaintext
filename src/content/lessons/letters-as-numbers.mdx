@@ -1,0 +1,56 @@
+---
+title: Letters as numbers
+track: encodings
+order: 1
+summary: A1Z26 and the phone keypad, the two simplest ways to turn words into digits.
+minutes: 8
+tool: letter-numbers
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import LetterNumbers from '../../components/tools/LetterNumbers.svelte';
+
+<Step n={1} title="A is 1, Z is 26">
+
+The simplest code there is: number the letters. A is 1, B is 2, and so on up to Z at 26. It's usually called **A1Z26**.
+
+Letters in a word are separated by dashes or spaces, and words by bigger gaps or slashes. HELLO is `8-5-12-12-15`.
+
+<LetterNumbers client:visible text="8-5-12-12-15" />
+
+<QuickCheck id="numbers-cab" answer="CAB" note="3 is C, 1 is A, 2 is B.">Decode `3-1-2`.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Off by one">
+
+Programmers count from zero, and some puzzles do too: A is 0, Z is 25. If you see a **0**, or every letter comes out one step too early (SGD instead of THE), switch to **A0Z25**.
+
+<QuickCheck id="numbers-a0z25" answer={["25", "TWENTY FIVE"]} note="Everything moves down by one, so Z goes from 26 to 25.">In A0Z25, what number is Z?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="The phone keypad">
+
+Before smartphones, you typed texts on a number pad. Each key from 2 to 9 has three or four letters: 2 is ABC, 7 is PQRS, 9 is WXYZ.
+
+Puzzles write it in two ways:
+
+- **Multi-tap:** press the key once for its first letter, twice for the second. 44 is H, 7777 is S. A 0 means a space.
+- **Key and position:** two digits per letter, the key and then which letter on it. 7-4 is S.
+
+<QuickCheck id="numbers-keypad-o" answer="O" note="6 is MNO, and three presses lands on O.">In multi-tap, what letter is `666`?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot them">
+
+- **Numbers from 1 to 26**, in groups that look like word lengths: A1Z26.
+- **A 0 among small numbers**, or a decode that's almost right: A0Z25.
+- **Only digits 2 to 9**, repeated up to four times: multi-tap keypad.
+- **Digit pairs where the second is 1 to 4**: keypad by position.
+
+Both are in the [field guide](/field-guide#digits), next to other things made of numbers.
+
+</Step>

@@ -1,0 +1,24 @@
+---
+title: Trailing equals
+lesson: hex-and-base64
+order: 2
+difficulty: 2
+ciphertext: "TWVldCBtZSB3aGVyZSB0aGUgcml2ZXIgZm9ya3MuIEFuc3dlcjogSEVST04="
+cipher: { plaintext: "Meet me where the river forks. Answer: HERON", steps: [{ type: base64 }] }
+answers: [HERON]
+partials:
+  - answer: "MEET ME WHERE THE RIVER FORKS ANSWER HERON"
+    reply: "Decoded. The answer is at the end."
+hints:
+  - "Upper and lowercase letters and digits, and it ends with =."
+  - "The length is 60, a multiple of 4. That's Base64."
+  - "Decode it as Base64."
+writeup: |
+  Mixed-case letters and digits, a length that divides by 4, and an `=` at the end: Base64.
+
+  Decoded, it reads `Meet me where the river forks. Answer: HERON`.
+
+  A trailing `=` is the quickest tell for Base64, but it isn't always there. Check the length and the alphabet too.
+---
+
+Hidden in the HTML source of an abandoned blog, inside a comment after the last post.

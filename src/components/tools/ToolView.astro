@@ -1,0 +1,21 @@
+---
+/** Renders a tool by id. `text` pre-fills it (a puzzle's ciphertext, for example). */
+import Base64Tool from './Base64Tool.svelte';
+import BaseConverter from './BaseConverter.svelte';
+import CipherWheel from './CipherWheel.svelte';
+import LetterNumbers from './LetterNumbers.svelte';
+import MorseTool from './MorseTool.svelte';
+
+interface Props {
+  tool: string;
+  text?: string;
+}
+
+const { tool, text = '' } = Astro.props;
+---
+
+{tool === 'caesar-wheel' && <CipherWheel client:visible shift={text ? 0 : 3} mode={text ? 'decrypt' : 'encrypt'} text={text} />}
+{tool === 'letter-numbers' && <LetterNumbers client:visible text={text} />}
+{tool === 'morse-key' && <MorseTool client:visible text={text} />}
+{tool === 'base-converter' && <BaseConverter client:visible text={text} />}
+{tool === 'base64' && <Base64Tool client:visible text={text} />}

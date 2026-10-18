@@ -1,0 +1,57 @@
+---
+title: Morse code
+track: encodings
+order: 2
+summary: Dots and dashes, beeps and flashes. The code that turns up in every escape room.
+minutes: 10
+tool: morse-key
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import MorseTool from '../../components/tools/MorseTool.svelte';
+import MorsePlayer from '../../components/MorsePlayer.svelte';
+
+<Step n={1} title="Short, long and gaps">
+
+Morse code writes every letter as a pattern of short signals (**dots**) and long ones (**dashes**). The gaps matter too: a short gap between letters, a longer one between words. On paper, letters are separated by spaces and words by a slash.
+
+The common letters got the short codes. E is a single dot and T a single dash. Rare letters like Q (`--.-`) are long.
+
+<MorseTool client:visible text="SOS" />
+
+<QuickCheck id="morse-sos" answer="SOS" note="The distress call. It was chosen because it's easy to send and hard to mistake, not because the letters stand for anything.">Decode `... --- ...`.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Hearing it">
+
+Morse was made to be heard. Operators learn letters as whole sounds, not by counting dots. Press play and listen: a short word, sent slowly.
+
+<MorsePlayer client:visible code="--- .-- .-.." label="Play the word" />
+
+Use the Morse key above to check yourself. Play it as many times as you like.
+
+<QuickCheck id="morse-listen-owl" answer="OWL" note="--- is O, .-- is W, .-.. is L.">What word did you hear?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Morse in disguise">
+
+Anything with two lengths can carry Morse: long and short blinks, taps, tall and short letters, bold and plain words, even the words "long" and "short" themselves. The separators can be disguised too.
+
+When you suspect Morse, find the gaps first. Once you know where each letter ends, which symbol is the dot is easy to try both ways.
+
+<QuickCheck id="morse-disguise-c" answer="C" note="OXOX is -.-. in disguise, which is C.">If X is a dot and O is a dash, what letter is `OXOX`?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Dots and dashes**, or any two symbols of different weight, with gaps.
+- **Beeps, flashes, blinks or taps** in a sound or video.
+- **Groups of one to five symbols** between separators; digits are always five.
+
+Morse is in the [field guide](/field-guide#two-symbols) next to binary and Bacon's cipher, its two-symbol cousins.
+
+</Step>

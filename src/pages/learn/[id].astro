@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 import LessonComplete from '../../components/LessonComplete.svelte';
 import PuzzleList from '../../components/PuzzleList.astro';
 import { PRACTICE, TRACKS, toolById } from '../../lib/catalog';
-import { lessonPuzzles } from '../../lib/content';
+import { lessonPuzzles, sortedLessons } from '../../lib/content';
 
 export async function getStaticPaths() {
   const lessons = await getCollection('lessons');
@@ -18,6 +18,8 @@ const tool = lesson.data.tool ? toolById(lesson.data.tool) : undefined;
 const puzzles = await lessonPuzzles(lesson.id);
 const first = puzzles[0];
 const practice = PRACTICE[lesson.id];
+const ordered = await sortedLessons();
+const nextLesson = ordered[ordered.findIndex((l) => l.id === lesson.id) + 1];
 ---
 
 <Base title={lesson.data.title} description={lesson.data.summary}>
@@ -37,6 +39,7 @@ const practice = PRACTICE[lesson.id];
         lessonId={lesson.id}
         toolName={tool?.name}
         firstPuzzle={first && { href: `/puzzles/${first.id}`, title: first.data.title }}
+        next={nextLesson && { href: `/learn/${nextLesson.id}`, title: nextLesson.data.title }}
       />
     </div>
 

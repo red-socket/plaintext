@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ToolGate from '../components/ToolGate.astro';
-import CipherWheel from '../components/tools/CipherWheel.svelte';
+import ToolView from '../components/tools/ToolView.astro';
 import { TOOLS } from '../lib/catalog';
 
 const lessons = await getCollection('lessons');
@@ -22,7 +22,7 @@ const lessonTitle = (id: string) => lessons.find((l) => l.id === id)?.data.title
           <h2 id={`tool-${tool.id}`}>{tool.name}</h2>
           <p class="desc">{tool.description}</p>
           <ToolGate tool={tool.id} lessonTitle={lessonTitle(tool.lesson)}>
-            {tool.id === 'caesar-wheel' && <CipherWheel client:visible shift={3} />}
+            <ToolView tool={tool.id} />
           </ToolGate>
         </section>
       ))

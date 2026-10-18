@@ -1,0 +1,66 @@
+---
+title: How to look at a puzzle
+track: looking
+order: 1
+summary: Before you decode anything, work out what kind of thing it is, what it looks like, and what's cheapest to try.
+minutes: 8
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+
+<Step n={1} title="Encoding, cipher or hash">
+
+Hidden messages come in three kinds, and knowing which one you have tells you what's possible.
+
+- An **encoding** is a public rule. Anyone with the chart can read it: Morse code, binary, Base64. There is no secret, just a different way of writing.
+- A **cipher** needs a key. The method can be known (shift every letter), but without the key (by how much?) you have to work it out.
+- A **hash** is a one-way fingerprint. You can't turn it back into the original; you can only guess the original, hash your guess and compare.
+
+Puzzles use all three, but encodings are the most common, because they're fair: everything you need is on the page.
+
+<QuickCheck id="looking-morse-kind" answer="ENCODING" note="No key and a public chart: an encoding.">Morse code has no key: anyone with a chart can read it. Is it an encoding, a cipher or a hash?</QuickCheck>
+
+<QuickCheck id="looking-hash" answer={["NO", "N"]} note="64 characters of 0–9 and a–f is the size of a SHA-256 hash. You can only guess the word and compare.">A puzzle gives you a 64-character block of 0–9 and a–f and asks for the original word. Can you decode it directly? Answer yes or no.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Look before you decode">
+
+Most of solving is noticing. Before reaching for a tool, ask:
+
+- **Which characters appear?** Only letters? Only digits? Two symbols? Letters, digits and `=`?
+- **How are they grouped?** Pairs, fives, eights, words of normal length?
+- **What repeats?** A repeated chunk is a foothold.
+- **What's outside the text?** The title, a picture, a date, a number in the corner. Puzzle makers rarely waste words.
+
+The [field guide](/field-guide) is organised by exactly these observations. Start from what you see, not from a cipher's name.
+
+<QuickCheck id="looking-polybius-digits" answer={["5", "FIVE"]} note="Pairs of digits from 1 to 5 point to a Polybius square, a 5×5 grid of letters.">Look at `23 15 31 31 34`. Every digit is between 1 and which number?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Try the cheap things first">
+
+Some attempts take seconds, others take an hour. Do the fast ones first.
+
+1. **Seconds:** read it as A1Z26, try ROT13, decode it as Base64, read it backwards.
+2. **Minutes:** try every Caesar shift, count letter frequencies, look for a keyword in the puzzle.
+3. **Longer:** everything else.
+
+The title and the story often tell you which one to try. A puzzle called *Dot dot dash* is probably Morse; a letter "dated the Ides of March" probably has a key of 15.
+
+<QuickCheck id="looking-sixty-four" answer={["BASE64", "BASE 64"]} note="The title says 64, and = at the end is how Base64 pads its output.">A puzzle is called *Sixty-four*, and its text ends with `==`. What do you try first?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="When you're stuck">
+
+- **Write down what you tried.** It stops you going in circles.
+- **Re-read the prompt** and look for the one detail you ignored. Fair puzzles contain everything you need.
+- **Check for another layer.** If your decoded text still looks encoded, it probably is. Decode it again.
+- **Use a hint.** They start small. Taking one isn't failing; staying stuck for an hour isn't learning.
+
+<QuickCheck id="looking-layer" answer={["ANOTHER LAYER", "LAYER", "HEX", "ANOTHER"]} note="Pairs of 0–9 and A–F are hex. Decoded once more, it says Hello.">You decode some Base64 and get `48 65 6C 6C 6F`. Is that the answer, or another layer?</QuickCheck>
+
+</Step>

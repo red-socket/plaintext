@@ -1,0 +1,28 @@
+---
+title: Mayday
+lesson: morse
+order: 1
+difficulty: 1
+ciphertext: "... --- ... / ... .. -. -.- .. -. --. / -. . .- .-. / - .... . / .-. . . ..-. / ... . -. -.. / .... . .-.. .--."
+cipher: { plaintext: "SOS SINKING NEAR THE REEF SEND HELP", steps: [{ type: morse }] }
+answers: [REEF, THE REEF, NEAR THE REEF]
+partials:
+  - answer: "SOS SINKING NEAR THE REEF SEND HELP"
+    reply: "That's the whole message. Where are they?"
+  - answer: "SOS"
+    reply: "That's the call for help. Where are they?"
+hints:
+  - "Dots, dashes and slashes. You know this one."
+  - "The first three letters are the most famous Morse in the world."
+  - "Slashes separate words. The fourth word is short; the fifth is where they are."
+writeup: |
+  Dots and dashes with slashes between the groups: Morse code. It opens with `... --- ...`, SOS.
+
+  The full message is `SOS SINKING NEAR THE REEF SEND HELP`. They're near the reef.
+
+  When a message is all dots and dashes, find the separators first. Here slashes divide words and spaces divide letters.
+---
+
+The harbour radio log from the night of the storm. The operator wrote down what came in, but didn't have time to decode it.
+
+Where is the boat?

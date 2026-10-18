@@ -15,6 +15,30 @@ export type Tool = { id: string; name: string; description: string; lesson: stri
 
 export const TOOLS: Tool[] = [
   {
+    id: 'letter-numbers',
+    name: 'Letter numbers',
+    description: 'Letters to numbers and back: A1Z26, A0Z25 and the phone keypad.',
+    lesson: 'letters-as-numbers',
+  },
+  {
+    id: 'morse-key',
+    name: 'Morse key',
+    description: 'Text to Morse and back, a chart, and playback at three speeds.',
+    lesson: 'morse',
+  },
+  {
+    id: 'base-converter',
+    name: 'Base converter',
+    description: 'Text, binary, decimal codes and hex side by side, plus one number in three bases.',
+    lesson: 'binary',
+  },
+  {
+    id: 'base64',
+    name: 'Base64 decoder',
+    description: 'Base64 and Base32 to text and back, with a clear message when the input is not valid.',
+    lesson: 'hex-and-base64',
+  },
+  {
     id: 'caesar-wheel',
     name: 'Caesar wheel',
     description: 'Turn the inner ring to any shift, encrypt or decrypt text, and try all 25 shifts at once.',

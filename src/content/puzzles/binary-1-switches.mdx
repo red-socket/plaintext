@@ -1,0 +1,21 @@
+---
+title: Light switches
+lesson: binary
+order: 1
+difficulty: 1
+ciphertext: "01010110 01000001 01010101 01001100 01010100"
+cipher: { plaintext: "VAULT", steps: [{ type: binary }] }
+answers: [VAULT]
+hints:
+  - "Up and down, eight at a time. Two states, groups of eight."
+  - "Each group of eight is one byte. Turn it into a number, then look the number up in ASCII."
+  - "01010110 is 64 + 16 + 4 + 2 = 86, and 86 is V."
+writeup: |
+  Two states in groups of eight: binary bytes. Each byte is a character's ASCII number.
+
+  `01010110` is 86, which is V. The five bytes spell `VAULT`.
+
+  Groups of eight that all start with `010` are almost certainly capital letters.
+---
+
+In the basement of the bank, a panel of forty light switches in five rows of eight. Someone has left them set, some up and some down, and copied the pattern onto a card: up is 1, down is 0.

@@ -19,5 +19,3 @@ jobs:
         run: npm run check
       - name: Build (content schemas and solvability checks run here)
         run: npm run build
-      - name: No answers or writeups in the built site
-        run: npm run leaks

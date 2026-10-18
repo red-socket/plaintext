@@ -2,9 +2,8 @@
 import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Puzzle from '../../components/Puzzle.svelte';
-import ToolGate from '../../components/ToolGate.astro';
-import CipherWheel from '../../components/tools/CipherWheel.svelte';
-import { TOOLS } from '../../lib/catalog';
+import Toolkit from '../../components/Toolkit.astro';
+import MorsePlayer from '../../components/MorsePlayer.svelte';
 import { lessonPuzzles } from '../../lib/content';
 import { sealAll, type Payload } from '../../lib/seal';
 
@@ -18,8 +17,6 @@ const { Content } = await render(puzzle);
 const lesson = (await getEntry(puzzle.data.lesson))!;
 const siblings = await lessonPuzzles(lesson.id);
 const nextPuzzle = siblings[siblings.indexOf(siblings.find((p) => p.id === puzzle.id)!) + 1];
-const lessons = await getCollection('lessons');
-const lessonTitle = (id: string) => lessons.find((l) => l.id === id)?.data.title ?? id;
 
 // Answers and writeups are sealed here, at build time. The page only ever sees the sealed entries.
 const entries = await sealAll(`puzzle/${puzzle.id}`, [
@@ -44,7 +41,16 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     <div class="prompt prose"><Content /></div>
 
     {
-      puzzle.data.ciphertext && (
+      puzzle.data.ciphertext && puzzle.data.display === 'morse-audio' && (
+        <figure class="cipher-block audio">
+          <MorsePlayer client:load code={puzzle.data.ciphertext} label="Play the signal" />
+          <figcaption class="meta">Sound only. Listen as many times as you like, at any speed.</figcaption>
+        </figure>
+      )
+    }
+
+    {
+      puzzle.data.ciphertext && puzzle.data.display === 'text' && (
         <figure class="cipher-block">
           <p class="ciphertext" id="ciphertext">{puzzle.data.ciphertext}</p>
           <figcaption>
@@ -65,16 +71,7 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
       lesson={{ href: `/learn/${lesson.id}`, title: lesson.data.title }}
     />
 
-    <section class="toolkit" aria-labelledby="toolkit-title">
-      <h2 id="toolkit-title">Your toolkit</h2>
-      {
-        TOOLS.map((tool) => (
-          <ToolGate tool={tool.id} lessonTitle={lessonTitle(tool.lesson)}>
-            {tool.id === 'caesar-wheel' && <CipherWheel client:visible shift={0} mode="decrypt" text={puzzle.data.ciphertext ?? ''} />}
-          </ToolGate>
-        ))
-      }
-    </section>
+    <Toolkit text={puzzle.data.display === 'text' ? (puzzle.data.ciphertext ?? '') : ''} open={lesson.data.tool} />
   </article>
 </Base>
 
@@ -157,15 +154,4 @@ const entries = await sealAll(`puzzle/${puzzle.id}`, [
     color: var(--ink);
   }
 
-  .toolkit {
-    display: grid;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 2rem;
-    border-top: 2px solid var(--ink);
-    max-width: 56rem;
-  }
-  .toolkit h2 {
-    font-size: var(--step-1);
-  }
 </style>

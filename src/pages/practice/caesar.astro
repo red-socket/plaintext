@@ -1,13 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Practice from '../../components/Practice.svelte';
-import ToolGate from '../../components/ToolGate.astro';
-import CipherWheel from '../../components/tools/CipherWheel.svelte';
-import { toolById } from '../../lib/catalog';
+import Toolkit from '../../components/Toolkit.astro';
 import { getEntry } from 'astro:content';
 
 const lesson = (await getEntry('lessons', 'caesar'))!;
-const tool = toolById('caesar-wheel')!;
 ---
 
 <Base title="Caesar practice" description="Endless Caesar cipher messages to decode, with or without the key.">
@@ -20,12 +17,7 @@ const tool = toolById('caesar-wheel')!;
 
     <Practice client:load />
 
-    <section class="toolkit" aria-labelledby="toolkit-title">
-      <h2 id="toolkit-title">Your toolkit</h2>
-      <ToolGate tool={tool.id} lessonTitle={lesson.data.title}>
-        <CipherWheel client:visible shift={0} mode="decrypt" />
-      </ToolGate>
-    </section>
+    <Toolkit open="caesar-wheel" />
   </div>
 </Base>
 
@@ -41,16 +33,5 @@ const tool = toolById('caesar-wheel')!;
   }
   h1 {
     font-size: var(--step-4);
-  }
-  .toolkit {
-    display: grid;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 2rem;
-    border-top: 2px solid var(--ink);
-    max-width: 56rem;
-  }
-  .toolkit h2 {
-    font-size: var(--step-1);
   }
 </style>

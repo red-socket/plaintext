@@ -1,0 +1,62 @@
+---
+title: Hex and Base64
+track: encodings
+order: 4
+summary: Two ways to write bytes compactly. You'll meet both in every online puzzle hunt.
+minutes: 12
+tool: base64
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import BaseConverter from '../../components/tools/BaseConverter.svelte';
+import Base64Tool from '../../components/tools/Base64Tool.svelte';
+
+<Step n={1} title="Hex: sixteen digits">
+
+**Hexadecimal** counts in sixteens. After 0 to 9 come A, B, C, D, E and F, for ten to fifteen. Two hex digits cover exactly one byte, 00 to FF, so it's a tidy way to write bytes.
+
+Letters in hex follow ASCII: capitals are 41 to 5A, lowercase 61 to 7A. A page of 4s and 5s is shouting; a page of 6s and 7s is lowercase.
+
+<BaseConverter client:visible text="48 65 6C 6C 6F" />
+
+<QuickCheck id="hex-ok" answer="OK" note="4F is 79, which is O. 4B is 75, which is K.">Decode `4F 4B`.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Base64">
+
+**Base64** packs every three bytes into four characters from a 64-character alphabet: A–Z, a–z, 0–9, + and /. When the input doesn't divide evenly by three, it pads the end with one or two `=`.
+
+It was made to send files through systems that only handle text, like email. Puzzle makers love it because it looks like random noise until you decode it.
+
+<Base64Tool client:visible text="SGVsbG8gd29ybGQ=" />
+
+<QuickCheck id="base64-yes" answer="YES" note="eWVz is the Base64 for yes.">Decode `eWVz`.</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Base32">
+
+**Base32** is Base64's plainer cousin: only capital letters and the digits 2 to 7. It skips 0, 1 and 8, which are easy to confuse with O, I and B. It often ends in a run of `=`.
+
+<QuickCheck id="base32-no-one" answer={["NO", "N"]} note="Base32 uses only 2 to 7, so a 1 means it's something else.">Can Base32 contain the digit 1? Answer yes or no.</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Layers">
+
+Decoding Base64 sometimes gives you something that still looks encoded: hex, Morse, or more Base64. Puzzles nest encodings like dolls. When the output isn't readable, look at it fresh and ask what it is, the same way you did at the start.
+
+<QuickCheck id="base64-multiple" answer={["4", "FOUR"]} note="Three bytes become four characters, so Base64 always comes in fours, padding included.">Base64 output, with its padding, is always a multiple of how many characters?</QuickCheck>
+
+</Step>
+
+<Step n={5} title="How to spot them">
+
+- **Only 0–9 and A–F**, often in pairs: hex.
+- **Mixed case letters and digits**, maybe + and /, length a multiple of 4, maybe ending in `=`: Base64.
+- **Capitals and 2–7 only**, maybe a run of `=`: Base32.
+- **A fixed-length block of hex** that won't decode to text: probably a hash. See the [field guide](/field-guide#mixed).
+
+</Step>

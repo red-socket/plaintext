@@ -1,0 +1,24 @@
+---
+title: Locker 26
+lesson: letters-as-numbers
+order: 1
+difficulty: 1
+ciphertext: "20-8-5 1-14-19-23-5-18 9-19 20-15-23-5-12"
+cipher: { plaintext: "THE ANSWER IS TOWEL", steps: [{ type: a1z26 }] }
+answers: [TOWEL]
+partials:
+  - answer: "THE ANSWER IS TOWEL"
+    reply: "Decoded. The answer is the last word."
+hints:
+  - "There are 26 lockers in the row, and 26 letters in the alphabet."
+  - "Every number is between 1 and 26. Try A = 1."
+  - "20 is T, 8 is H, 5 is E."
+writeup: |
+  Every number is between 1 and 26, and the groups look like word lengths: three, six, two, five. That's A1Z26.
+
+  `20-8-5` is THE, and the whole note reads `THE ANSWER IS TOWEL`.
+
+  When numbers never go above 26, try letters first.
+---
+
+The changing room at the old swimming baths has a row of 26 lockers. Number 26 is padlocked, and someone has written on the inside of its open neighbour's door in marker.

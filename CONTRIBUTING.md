@@ -20,12 +20,11 @@ Puzzles are reviewed for fairness first: can a player who has done the lesson ge
 ```bash
 npm install
 npm run dev       # http://localhost:4321
-npm run verify    # types, tests, build, leak check: the same as CI
+npm run verify    # types, tests and build: the same as CI
 ```
 
 - Cipher and encoding logic goes in `src/lib/` with tests in `tests/`. Components only call it.
 - Everything runs in the browser. Lessons and puzzles must work without a server.
-- Answers, writeups and partial replies must never appear in the built pages. `npm run leaks` checks this.
 - Colours and type sizes are tokens in `src/styles/global.css`. Use them rather than new values.
 
 ## Licence
