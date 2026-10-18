@@ -1,9 +1,10 @@
 ---
 /**
- * The player's unlocked tools under a puzzle or practice page, each in a collapsible panel.
- * Which tools are unlocked lives in the browser, so the script decides what to show.
+ * The player's unlocked tools under a puzzle or practice page, grouped by track, each in a
+ * collapsible panel. Which tools are unlocked lives in the browser, so the script decides what to show.
  */
-import { TOOLS } from '../lib/catalog';
+import { getCollection } from 'astro:content';
+import { TOOLS, TRACKS } from '../lib/catalog';
 import ToolView from './tools/ToolView.astro';
 
 interface Props {
@@ -18,21 +19,29 @@ interface Props {
 }
 
 const { text = '', open, page, file } = Astro.props;
+const lessons = await getCollection('lessons');
+const trackOf = (lessonId: string) => lessons.find((l) => l.id === lessonId)?.data.track;
+const groups = TRACKS.map((t) => ({ track: t, tools: TOOLS.filter((tool) => trackOf(tool.lesson) === t.id) })).filter((g) => g.tools.length);
 ---
 
 <section class="toolkit" aria-labelledby="toolkit-title">
   <h2 id="toolkit-title">Your toolkit</h2>
   {
-    TOOLS.map((t) => (
-      <details class="kit-tool" data-lesson={t.lesson} open={t.id === open} hidden>
-        <summary>
-          <span class="name">{t.name}</span>
-          <span class="desc">{t.description}</span>
-        </summary>
-        <div class="body">
-          <ToolView tool={t.id} text={text} page={page} file={file} />
-        </div>
-      </details>
+    groups.map((g) => (
+      <div class="kit-group" hidden>
+        <h3 class="kit-track">{g.track.title}</h3>
+        {g.tools.map((t) => (
+          <details class="kit-tool" data-lesson={t.lesson} open={t.id === open} hidden>
+            <summary>
+              <span class="name">{t.name}</span>
+              <span class="desc">{t.description}</span>
+            </summary>
+            <div class="body">
+              <ToolView tool={t.id} text={text} page={page} file={file} />
+            </div>
+          </details>
+        ))}
+      </div>
     ))
   }
   <p class="kit-empty" hidden>No tools yet. Finishing a lesson earns you its tool, and it appears here on every puzzle.</p>
@@ -44,15 +53,19 @@ const { text = '', open, page, file } = Astro.props;
   import { isLessonDone, progress } from '../lib/progress';
 
   for (const kit of document.querySelectorAll<HTMLElement>('.toolkit')) {
-    const items = kit.querySelectorAll<HTMLDetailsElement>('.kit-tool');
     const empty = kit.querySelector<HTMLElement>('.kit-empty')!;
     const more = kit.querySelector<HTMLElement>('.kit-more')!;
     progress.subscribe((p) => {
       let shown = 0;
-      for (const d of items) {
-        const on = isLessonDone(p, d.dataset.lesson!);
-        d.hidden = !on;
-        if (on) shown++;
+      for (const group of kit.querySelectorAll<HTMLElement>('.kit-group')) {
+        let inGroup = 0;
+        for (const d of group.querySelectorAll<HTMLDetailsElement>('.kit-tool')) {
+          const on = isLessonDone(p, d.dataset.lesson!);
+          d.hidden = !on;
+          if (on) inGroup++;
+        }
+        group.hidden = inGroup === 0;
+        shown += inGroup;
       }
       const locked = TOOLS.length - shown;
       empty.hidden = shown > 0;
@@ -74,6 +87,21 @@ const { text = '', open, page, file } = Astro.props;
   h2 {
     font-size: var(--step-1);
     margin-bottom: 0.25rem;
+  }
+  .kit-group {
+    display: grid;
+  }
+  /* An explicit display beats the browser's own [hidden] rule, so restate it. */
+  .kit-group[hidden],
+  .kit-tool[hidden] {
+    display: none;
+  }
+  .kit-track {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+    padding: 0.75rem 0 0.25rem;
+    border-bottom: 1px solid var(--rule);
   }
   .kit-tool {
     border-bottom: 1px solid var(--rule);

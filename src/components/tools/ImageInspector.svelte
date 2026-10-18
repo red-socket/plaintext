@@ -149,6 +149,8 @@
     font-size: var(--step--1);
   }
   .frame {
+    width: fit-content;
+    max-width: 100%;
     overflow: auto;
     max-height: 32rem;
     background: repeating-conic-gradient(var(--rule) 0% 25%, var(--paper) 0% 50%) 50% / 16px 16px;

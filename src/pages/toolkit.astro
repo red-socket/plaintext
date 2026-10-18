@@ -3,37 +3,60 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ToolGate from '../components/ToolGate.astro';
 import ToolView from '../components/tools/ToolView.astro';
-import { TOOLS } from '../lib/catalog';
+import { TOOLS, TRACKS } from '../lib/catalog';
 
 const lessons = await getCollection('lessons');
-const lessonTitle = (id: string) => lessons.find((l) => l.id === id)?.data.title ?? id;
+const lessonOf = (id: string) => lessons.find((l) => l.id === id);
+const groups = TRACKS.map((t) => ({ track: t, tools: TOOLS.filter((tool) => lessonOf(tool.lesson)?.data.track === t.id) })).filter((g) => g.tools.length);
 ---
 
 <Base title="Toolkit" description="The tools you've earned by finishing lessons.">
   <div class="toolkit page">
     <header class="prose">
       <h1>Toolkit</h1>
-      <p>Every lesson you finish adds a tool here. You'll also find your tools under every puzzle.</p>
+      <p>Every lesson you finish adds a tool here. You'll also find your tools under every puzzle. Open any tool to use it.</p>
     </header>
 
     {
-      TOOLS.map((tool) => (
-        <section aria-labelledby={`tool-${tool.id}`}>
-          <h2 id={`tool-${tool.id}`}>{tool.name}</h2>
-          <p class="desc">{tool.description}</p>
-          <ToolGate tool={tool.id} lessonTitle={lessonTitle(tool.lesson)}>
-            <ToolView tool={tool.id} />
-          </ToolGate>
+      groups.map((g) => (
+        <section class="group" aria-labelledby={`track-${g.track.id}`}>
+          <h2 id={`track-${g.track.id}`}>
+            <span class="n">{g.track.number}</span>
+            {g.track.title}
+          </h2>
+          {g.tools.map((tool) => (
+            <details class="tool" data-lesson={tool.lesson} data-unlocked="false">
+              <summary>
+                <span class="name">{tool.name}</span>
+                <span class="lock">Locked</span>
+                <span class="desc">{tool.description}</span>
+              </summary>
+              <div class="body">
+                <ToolGate tool={tool.id} lessonTitle={lessonOf(tool.lesson)?.data.title ?? tool.lesson}>
+                  <ToolView tool={tool.id} />
+                </ToolGate>
+              </div>
+            </details>
+          ))}
         </section>
       ))
     }
   </div>
 </Base>
 
+<script>
+  import { isLessonDone, progress } from '../lib/progress';
+
+  const items = document.querySelectorAll<HTMLElement>('details.tool');
+  progress.subscribe((p) => {
+    for (const d of items) d.dataset.unlocked = String(isLessonDone(p, d.dataset.lesson!));
+  });
+</script>
+
 <style>
   .toolkit {
     display: grid;
-    gap: 2.5rem;
+    gap: 2.25rem;
   }
   header {
     display: grid;
@@ -43,12 +66,67 @@ const lessonTitle = (id: string) => lessons.find((l) => l.id === id)?.data.title
   h1 {
     font-size: var(--step-4);
   }
-  section {
+  .group {
     display: grid;
-    gap: 0.75rem;
     max-width: 56rem;
   }
+  .group h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: var(--step-1);
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .n {
+    font-family: var(--mono);
+    font-size: 0.75em;
+    color: var(--violet);
+  }
+  .tool {
+    border-bottom: 1px solid var(--rule);
+  }
+  summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    padding: 0.7rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::before {
+    content: '+';
+    font-family: var(--mono);
+    color: var(--violet);
+    width: 1rem;
+  }
+  details[open] > summary::before {
+    content: '−';
+  }
+  .name {
+    font-weight: 600;
+  }
+  .lock {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    border: 1px dashed var(--rule);
+    border-radius: 3px;
+    padding: 0 0.4em;
+  }
+  .tool[data-unlocked='true'] .lock {
+    display: none;
+  }
   .desc {
-    max-width: var(--measure);
+    flex: 1 1 100%;
+    padding-left: 1.75rem;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+  .body {
+    padding-bottom: 1.25rem;
   }
 </style>

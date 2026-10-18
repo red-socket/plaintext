@@ -65,3 +65,15 @@ describe('display form of answers', () => {
     expect(await open('p9', 'redsands', entries)).toEqual({ type: 'solve', display: 'RED SANDS' });
   });
 });
+
+describe('writeups', async () => {
+  const { renderWriteup, smartQuotes } = await import('../src/lib/writeup');
+
+  it('curls quotes and apostrophes', () => {
+    expect(smartQuotes(`"The usual way" isn't 'hard', it's ROT13.`)).toBe('“The usual way” isn’t ‘hard’, it’s ROT13.');
+  });
+
+  it('leaves code alone and escapes HTML', () => {
+    expect(renderWriteup('Type `"GUR"` <b>now</b>.\n\nNext "para".')).toBe('<p>Type <code>&#34;GUR&#34;</code> &#60;b&#62;now&#60;/b&#62;.</p><p>Next “para”.</p>');
+  });
+});
