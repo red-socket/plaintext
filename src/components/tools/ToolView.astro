@@ -22,6 +22,7 @@ import CharInspector from './CharInspector.svelte';
 import CodeScanner from './CodeScanner.svelte';
 import HashCalculator from './HashCalculator.svelte';
 import HexViewer from './HexViewer.svelte';
+import PatternSearch from './PatternSearch.svelte';
 import EnigmaTool from './EnigmaTool.svelte';
 import KeyExchangeTool from './KeyExchangeTool.svelte';
 import RsaTool from './RsaTool.svelte';
@@ -65,3 +66,4 @@ const { tool, text = '', page = '', file } = Astro.props;
 {tool === 'enigma' && <EnigmaTool client:visible text={text} />}
 {tool === 'key-exchange' && <KeyExchangeTool client:visible />}
 {tool === 'rsa' && <RsaTool client:visible />}
+{tool === 'pattern-search' && <PatternSearch client:visible />}

@@ -1,0 +1,22 @@
+---
+title: In order, once each
+lesson: regex
+order: 3
+difficulty: 3
+answers: [FACETIOUS]
+partials:
+  - answer: "ABSTEMIOUS"
+    reply: "That works too, but it isn't in the word list. There's a more common one."
+  - answer: "AEIOU"
+    reply: "Those are the vowels. Now find a word that has them in that order."
+hints:
+  - "Write the vowels in order, with anything but a vowel allowed between them."
+  - "Anything but a vowel is [^aeiou]*."
+  - "Search for ^[^aeiou]*a[^aeiou]*e[^aeiou]*i[^aeiou]*o[^aeiou]*u[^aeiou]*$"
+writeup: |
+  The pattern puts a, e, i, o and u in order, with any non-vowels before, between and after: `^[^aeiou]*a[^aeiou]*e[^aeiou]*i[^aeiou]*o[^aeiou]*u[^aeiou]*$`. In the list, only one word fits: `facetious`.
+
+  *Abstemious* also works, but it's too rare to make a common-word list. Patterns are only as good as the list they search.
+---
+
+A riddle on a pub quiz sheet: *I'm a common English word. I contain every vowel, a, e, i, o and u, each exactly once and in alphabetical order. What am I?*

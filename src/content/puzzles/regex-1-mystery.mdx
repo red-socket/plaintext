@@ -1,0 +1,18 @@
+---
+title: The smudged crossword
+lesson: regex
+order: 1
+difficulty: 1
+ciphertext: "? Y ? T ? R Y"
+answers: [MYSTERY]
+hints:
+  - "Seven letters, four of them missing. Write the known ones as a pattern."
+  - "Each missing letter is a dot: ^.y.t.ry$"
+  - "Search the word list with ^.y.t.ry$. Only one word fits."
+writeup: |
+  Writing the gaps as dots gives `^.y.t.ry$`, and only one word in the list fits: `mystery`. It matches the clue too.
+
+  When letters are missing, a pattern search turns guessing into looking.
+---
+
+A crossword left on a train, coffee spilt across 14 across. The clue still reads *An unsolved case (7)*, and some letters survive.

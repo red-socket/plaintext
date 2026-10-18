@@ -147,6 +147,12 @@ export const TOOLS: Tool[] = [
     lesson: 'qr-codes',
   },
   {
+    id: 'pattern-search',
+    name: 'Pattern search',
+    description: 'Find every common English word matching a pattern, or every anagram of a set of letters.',
+    lesson: 'regex',
+  },
+  {
     id: 'xor',
     name: 'XOR workbench',
     description: 'XOR text or hex with a key, and XOR two ciphertexts together to cancel a reused key.',

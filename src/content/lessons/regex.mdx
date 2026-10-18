@@ -1,0 +1,65 @@
+---
+title: Searching with patterns
+track: computers
+order: 5
+summary: Regular expressions, the puzzle hunter's secret weapon for filling gaps, finding odd words and checking hunches.
+minutes: 12
+tool: pattern-search
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import PatternSearch from '../../components/tools/PatternSearch.svelte';
+
+<Step n={1} title="Gaps and anchors">
+
+A **regular expression** (regex) is a small language for describing text. In puzzles you mostly use it to search a word list for words that fit what you know.
+
+- A letter matches itself.
+- A **dot** `.` matches any one letter.
+- `^` means the start of the word, and `$` the end.
+
+So `^c.t$` means: c, any letter, t, and nothing else. The search below looks through 38,015 common English words.
+
+<PatternSearch client:visible />
+
+<QuickCheck id="regex-cat" answer={["3", "THREE"]} note="Cat, cot and cut.">How many words in the list match `^c.t$`?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Choices and repeats">
+
+- **Square brackets** pick one from a set: `[aeiou]` is any vowel, and `[^aeiou]` any letter that isn't one.
+- A star `*` means "any number of the thing before, even none", a plus `+` means "one or more", and `{5}` means exactly five.
+
+So `^[^aeiou]*$` is a word with no vowels, and `^.{12}$` is any twelve-letter word. And `.*`, any letters or none, lets a pattern sit anywhere inside a word: `.*qu.*` is every word containing *qu*. (The tool's *Whole words only* adds `^` and `$` for you, so remember the `.*` when you want a match in the middle.)
+
+<QuickCheck id="regex-vowel" answer={["A VOWEL", "ANY VOWEL", "VOWEL", "ONE VOWEL", "VOWELS"]} note="Exactly one of a, e, i, o or u.">What does `[aeiou]` match?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Remembering a letter">
+
+Round brackets **capture** what they match, and `\1` means "the same thing again". So `.*(.)\1.*` is any word with a double letter, and `^(.)(.).\2\1$` is a five-letter word that reads the same backwards: first letter equals last, second equals fourth.
+
+<QuickCheck id="regex-palindromes" answer={["11", "ELEVEN"]} note="Civic, kayak, level, madam, radar, refer, rotor, sagas, sexes, solos and tenet.">How many five-letter palindromes are in the list?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Anagrams">
+
+Patterns can't rearrange letters, so the tool has a separate anagram mode: give it letters and it finds every word that uses exactly those.
+
+<QuickCheck id="regex-silent" answer="SILENT" note="Enlist, inlets, listen, silent and tinsel all use the same six letters.">Which anagram of LISTEN means quiet?</QuickCheck>
+
+</Step>
+
+<Step n={5} title="When to reach for it">
+
+- A word with **some letters known** and some missing: crosswords, smudged notes, half-decoded messages.
+- A clue about the **shape** of a word: double letters, no vowels, letters in order.
+- A hunch you want to check: *is there really only one word like that?*
+
+Puzzle hunters use big tools built on the same idea, like Nutrimatic and Qat, with lists of millions of words and phrases.
+
+</Step>

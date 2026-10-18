@@ -1,0 +1,20 @@
+---
+title: Three in a row
+lesson: regex
+order: 2
+difficulty: 3
+answers: [BOOKKEEPER]
+partials:
+  - answer: "BOOKKEEPING"
+    reply: "Right family, but there's a shorter one."
+  - answer: "BOOKKEEPERS"
+    reply: "Right family, but there's a shorter one."
+hints:
+  - "A double letter is (.)\\1 as a pattern."
+  - "Three double letters in a row is three of those back to back, each with its own number."
+  - "Search for .*(.)\\1(.)\\2(.)\\3.* (the .* lets anything come before and after) and pick the shortest match."
+writeup: |
+  A double letter is `(.)\1`; three in a row, each with its own capture, is `(.)\1(.)\2(.)\3`, with `.*` either side to allow the rest of the word. Only three words in the list match: bookkeeper, bookkeepers and bookkeeping. The shortest is `BOOKKEEPER`, with oo, kk and ee.
+---
+
+The note taped inside an old ledger: *The safe's password is the shortest common English word with three double letters in a row.*
