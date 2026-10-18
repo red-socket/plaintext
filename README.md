@@ -1,5 +1,7 @@
 # Plaintext
 
+![Plaintext](docs/images/header.png)
+
 A game-first platform for learning cryptography and informatics: encodings, classic ciphers, hidden data and how computers store things, taught through puzzles in the style of ARGs and puzzle hunts.
 
 Play it at **[red-socket.github.io/plaintext](https://red-socket.github.io/plaintext/)**.
