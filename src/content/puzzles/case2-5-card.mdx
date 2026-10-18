@@ -1,0 +1,22 @@
+---
+title: The membership card
+case: anniversary
+order: 5
+difficulty: 3
+ciphertext: "06 09 1C 72 16 16 00 05 79 1B 12 79 1F 00 0A 06 12"
+cipher: { plaintext: "THE WORD IS MASTS", steps: [{ type: xor, key: RAY }] }
+answers: [MASTS]
+partials:
+  - answer: "THE WORD IS MASTS"
+    reply: "Decrypted. The word is the last one."
+  - answer: "RAY"
+    reply: "That's the key. Now use it."
+hints:
+  - "Bytes in hex, and a card signed by its owner."
+  - "XOR the bytes with a key, repeated."
+  - "The key is the name he signed with: RAY."
+writeup: |
+  The hex on the card doesn't decode as ASCII, so it's been mixed with a key. The card is signed *Captain Ray*, and XORing the bytes with RAY, repeated, gives `THE WORD IS MASTS`.
+---
+
+A laminated club membership card. Under the member's name, where the number should be, is a row of hex. It's signed *Captain Ray*.

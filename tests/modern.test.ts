@@ -135,3 +135,11 @@ describe('puzzle data the build does not check', () => {
     expect(['COCKATOO', 'FLAMINGO', 'PARAKEET', 'SKYLARKS'].filter(fits)).toEqual(['FLAMINGO']);
   });
 });
+
+describe('case 2', () => {
+  it('the five words read diagonally to SANDS', () => {
+    const words = ['SIGNAL', 'WAVES', 'TUNER', 'STUDIO', 'MASTS'];
+    expect(words.map((w, i) => w[i]).join('')).toBe('SANDS');
+    expect(words.map((w) => w[0]).join('')).toBe('SWTSM');
+  });
+});

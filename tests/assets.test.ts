@@ -156,3 +156,28 @@ describe('code puzzles', () => {
     expect(a1z26Decode(digits.slice(0, 12).match(/../g)!.join('-'))).toBe('GARDEN');
   });
 });
+
+describe('case 2 files', () => {
+  it('the ident draws in the spectrogram band', async () => {
+    const { samples, sampleRate } = readWav(file('case2-1-ident/ident.wav'));
+    const { columns, binHz } = spectrogram(samples, 1024, 512);
+    const hz = binHz(sampleRate);
+    const lit = columns.filter((col) => Math.max(...col.slice(Math.floor(1500 / hz), Math.floor(7500 / hz))) > -35).length;
+    // No background noise here, so the gaps between letters are silent columns.
+    expect(lit / columns.length).toBeGreaterThan(0.3);
+  });
+
+  it('the fort photo hides WAVES in its low bits', () => {
+    expect(readLsb(readPng('public/files/case2-2-fort/fort.png').rgba)).toBe('WAVES');
+  });
+
+  it('the sign-off decodes to its picture', () => {
+    const { samples, sampleRate } = readWav(file('case2-4-signoff/signoff.wav'));
+    const out = sstvDecode(samples, sampleRate);
+    expect(out.lines).toBe(64);
+    const ref = readPng('tests/fixtures/sstv-studio.png').rgba;
+    let err = 0;
+    for (let p = 0; p < 320 * 64; p++) for (let c = 0; c < 3; c++) err += Math.abs(out.rgb[p * 3 + c] - ref[p * 4 + c]);
+    expect(err / (320 * 64 * 3)).toBeLessThan(25);
+  });
+});

@@ -410,6 +410,49 @@ def code_assets():
     barcode_image('978030640615').save(out('lessons/barcode.png'))
 
 
+# ── Case 2: the anniversary broadcast ──────────────────────────────────
+
+
+def sea_fort(w: int, h: int) -> Image.Image:
+    """A Maunsell-style sea fort: boxy towers on legs, joined by walkways, in a grey sea."""
+    px = np.zeros((h, w, 3), dtype=np.float64)
+    horizon = int(h * 0.55)
+    for y in range(h):
+        t = y / horizon if y < horizon else (y - horizon) / (h - horizon)
+        px[y, :] = (150 + 40 * t, 165 + 35 * t, 180 + 30 * t) if y < horizon else (70 - 20 * t, 90 - 20 * t, 100 - 15 * t)
+    px += rng.normal(0, 5, px.shape)
+    img = Image.fromarray(np.clip(px, 0, 255).astype(np.uint8))
+    d = ImageDraw.Draw(img)
+    towers = [(0.18, 0.40), (0.34, 0.36), (0.50, 0.42), (0.66, 0.37), (0.82, 0.41)]
+    for i, (fx, fy) in enumerate(towers):
+        x, top = int(w * fx), int(h * fy)
+        for leg in (-14, 14):
+            d.line([(x + leg, top + 26), (x + leg, horizon + 28)], fill=(55, 50, 45), width=4)
+        d.rectangle([x - 24, top, x + 24, top + 30], fill=(95, 85, 75))
+        d.rectangle([x - 16, top - 10, x + 16, top], fill=(80, 72, 64))
+        if i < len(towers) - 1:
+            nx = int(w * towers[i + 1][0])
+            d.line([(x + 24, top + 18), (nx - 24, int(h * towers[i + 1][1]) + 18)], fill=(60, 55, 50), width=2)
+    d.line([(int(w * 0.5), int(h * 0.42) - 10), (int(w * 0.5), int(h * 0.12))], fill=(40, 40, 40), width=3)
+    return img
+
+
+def case2_assets():
+    rate = 22050
+    sig = spectro_text('SIGNAL', rate, 6.0, 1500, 7500)
+    t = np.arange(len(sig)) / rate
+    tone = 0.04 * np.sin(2 * np.pi * 1000 * t) * (t < 1.0)
+    write_wav(out('case2-1-ident/ident.wav'), 0.7 * sig + tone, rate)
+
+    arr = np.array(sea_fort(480, 320))
+    lsb_write(arr, 'WAVES')
+    Image.fromarray(arr).save(out('case2-2-fort/fort.png'))
+
+    rgb = sstv_image(['STUDIO'], ((90, 20, 30), (255, 230, 160), (240, 240, 240)), 40, height=64)
+    write_wav(out('case2-4-signoff/signoff.wav'), sstv_encode(rgb, 8000), 8000)
+    Image.fromarray(rgb).save(FIX / 'sstv-studio.png')
+
+
 if __name__ == '__main__':
     FIX.mkdir(parents=True, exist_ok=True)
     metadata_assets()
@@ -418,6 +461,7 @@ if __name__ == '__main__':
     sstv_assets()
     file_assets()
     code_assets()
+    case2_assets()
     for p in sorted(PUB.rglob('*')):
         if p.is_file():
             print(f'{p.relative_to(ROOT)}  {p.stat().st_size // 1024} KB')

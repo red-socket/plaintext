@@ -1,0 +1,18 @@
+---
+title: The fort
+case: anniversary
+order: 2
+difficulty: 3
+files: [{ path: files/case2-2-fort/fort.png, label: "fort.png" }]
+answers: [WAVES]
+hints:
+  - "A plain photo, saved as a PNG. Why PNG?"
+  - "PNG keeps every pixel value exactly. Look at the lowest bits."
+  - "Read the lowest bits of red, green and blue as text."
+writeup: |
+  Nothing shows in the picture or its bit planes as an image, but the lowest bits of red, green and blue, read in order, spell `WAVES` before a zero byte.
+
+  A PNG with nothing obviously in it is always worth a look at the low bits.
+---
+
+A photograph of the old fort, towers on legs in a grey sea, scanned and saved by Ray himself.
