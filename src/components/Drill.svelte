@@ -201,11 +201,16 @@
   }
   .choices {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    grid-template-columns: 1fr;
     gap: 0.6rem;
     border: 0;
     margin: 0;
     padding: 0;
+  }
+  @media (min-width: 36rem) {
+    .choices {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   .choices legend {
     font-weight: 600;

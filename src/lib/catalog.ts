@@ -7,7 +7,7 @@ export const TRACKS: Track[] = [
   { id: 'encodings', number: 1, title: 'Encodings', blurb: 'Morse, binary, hex, Base64 and the other ways to write letters without letters.' },
   { id: 'classical', number: 2, title: 'Classical ciphers', blurb: 'Caesar to Vigenère: hiding a message by shuffling its letters, and breaking it again.' },
   { id: 'hidden', number: 3, title: 'Hidden in plain sight', blurb: 'Acrostics, page source, metadata, image bits and sounds that are pictures.' },
-  { id: 'computers', number: 4, title: 'How computers store things', blurb: 'Bits, bytes, UTF-8, file signatures and hashes.' },
+  { id: 'computers', number: 4, title: 'How computers store things', blurb: 'Unicode, what files really contain, hashes, QR codes, and searching word lists with patterns.' },
   { id: 'modern', number: 5, title: 'Modern ideas, playable', blurb: 'XOR, one-time pads, Enigma and RSA with numbers small enough to do by hand.' },
 ];
 

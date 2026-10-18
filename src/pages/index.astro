@@ -17,7 +17,7 @@ const first = lessons[0];
         Plaintext teaches the ciphers, encodings and hidden-data tricks behind puzzle hunts, ARGs and escape rooms. Each lesson takes about ten
         minutes, ends with puzzles to solve, and gives you a tool to keep.
       </p>
-      {first && <p><a class="btn" href={`/learn/${first.id}`}>Start the first lesson</a> <span class="meta first">{first.data.title}, {first.data.minutes} minutes</span></p>}
+      {first && <p class="start"><a class="btn" href={`/learn/${first.id}`}>Start the first lesson</a> <span class="meta">{first.data.title}, {first.data.minutes} minutes</span></p>}
     </div>
   </section>
 
@@ -97,8 +97,11 @@ const first = lessons[0];
   .intro .btn {
     font-size: var(--step-0);
   }
-  .first {
-    margin-left: 0.75rem;
+  .start {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.9rem;
   }
 
   .tracks h2 {
@@ -143,6 +146,7 @@ const first = lessons[0];
   .lessons .meta {
     font-weight: 400;
     margin-left: 0.4rem;
+    white-space: nowrap;
   }
   .cases,
   .drill-cta {

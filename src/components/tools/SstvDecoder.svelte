@@ -59,7 +59,7 @@
 <div class="tool-panel">
   <div class="row">
     <label class="tool-field"><span>Open an SSTV recording (read in your browser)</span><input type="file" accept="audio/*,.wav" onchange={onPick} disabled={busy} /></label>
-    {#if file && /\.(wav|mp3|ogg|flac)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => fromUrl(file)} disabled={busy}>Decode this puzzle's sound</button>{/if}
+    {#if file && /\.(wav|mp3|ogg|flac)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => fromUrl(file)} disabled={busy}>Decode the sound on this page</button>{/if}
   </div>
   <p class="meta" aria-live="polite">{status}</p>
   <canvas bind:this={canvas} class:empty={!lines} aria-label="Decoded picture"></canvas>

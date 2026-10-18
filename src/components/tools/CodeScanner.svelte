@@ -59,7 +59,7 @@
 <div class="tool-panel">
   <div class="row">
     <label class="tool-field"><span>Open a picture of a QR code or barcode (read in your browser)</span><input type="file" accept="image/*" onchange={onPick} /></label>
-    {#if file && /\.(png|jpe?g|gif|webp)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => scan(file)}>Scan this puzzle's image</button>{/if}
+    {#if file && /\.(png|jpe?g|gif|webp)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => scan(file)}>Scan the image on this page</button>{/if}
   </div>
   {#if preview}<img class="preview" src={preview} alt="The picture being scanned" />{/if}
   {#if result}

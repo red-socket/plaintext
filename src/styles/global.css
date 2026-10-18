@@ -350,10 +350,9 @@ select {
 }
 .chart {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(4.25rem, 1fr));
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
   border-radius: 3px;
   overflow: hidden;
   font-family: var(--mono);
@@ -365,11 +364,42 @@ select {
   align-items: baseline;
   padding: 0.3rem 0.45rem;
   background: var(--paper);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
 }
 .chart b {
   color: var(--ink);
   font-weight: 700;
 }
 .chart span {
+  color: var(--violet);
+}
+
+/* Tools inside lesson steps sit in a wrapper the prose spacing rule skips. */
+.step .body .tool-panel,
+.step .body .wheel-tool,
+.step .body .player {
+  margin-top: 1rem;
+}
+
+input[type='file'] {
+  font-family: var(--serif);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+input[type='file']::file-selector-button {
+  font: inherit;
+  font-weight: 600;
+  margin-right: 0.75rem;
+  padding: 0.4em 0.9em;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+input[type='file']::file-selector-button:hover {
+  border-color: var(--violet);
   color: var(--violet);
 }

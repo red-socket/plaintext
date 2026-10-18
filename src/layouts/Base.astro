@@ -35,12 +35,14 @@ const path = Astro.url.pathname;
     <main id="main">
       <slot />
     </main>
-    <footer class="site-footer page">
+    <footer class="page">
+      <div class="site-footer">
       <p>Plaintext is free and open source: code under AGPL-3.0, lessons under CC BY-SA 4.0. Your progress stays in this browser.</p>
       <a class="maker" href="https://github.com/red-socket">
         <img src="/red-socket.svg" alt="" width="24" height="24" />
         <span>Made by Red Socket</span>
       </a>
+      </div>
     </footer>
   </body>
 </html>

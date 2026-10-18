@@ -71,6 +71,7 @@
   .slot {
     display: grid;
     gap: 0.35rem;
+    align-content: start;
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--rule);
     border-radius: 4px;

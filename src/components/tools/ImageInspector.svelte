@@ -66,7 +66,7 @@
 <div class="tool-panel">
   <div class="row">
     <label class="tool-field"><span>Open an image (read in your browser, never uploaded)</span><input type="file" accept="image/*" onchange={onPick} /></label>
-    {#if file && /\.(png|jpe?g|gif|webp)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => loadImage(file, file.split('/').pop() ?? '')}>Open this puzzle's image</button>{/if}
+    {#if file && /\.(png|jpe?g|gif|webp)$/i.test(file)}<button type="button" class="btn quiet" onclick={() => loadImage(file, file.split('/').pop() ?? '')}>Open the image on this page</button>{/if}
   </div>
   <p class="tool-error" aria-live="polite">{error}</p>
 

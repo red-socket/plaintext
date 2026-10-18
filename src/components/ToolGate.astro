@@ -15,7 +15,7 @@ if (!tool) throw new Error(`Unknown tool ${toolId}`);
 <div class="tool-gate" data-lesson={tool.lesson} data-unlocked="false">
   <div class="locked">
     <p>
-      <strong>{tool.name}</strong>. Finish the <a href={`/learn/${tool.lesson}`}>{lessonTitle}</a> lesson to add it to your toolkit.
+      Locked. Finish the <a href={`/learn/${tool.lesson}`}>{lessonTitle}</a> lesson to add it to your toolkit.
     </p>
   </div>
   <div class="unlocked">
