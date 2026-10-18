@@ -1,0 +1,27 @@
+---
+title: The reused pad
+lesson: xor
+order: 3
+difficulty: 4
+page: |
+  Message 1, sent at 06:00. Decrypted from the weather office's copy:
+  WEATHER REPORT: CLEAR SKIES OVER THE BAY
+  Its ciphertext:
+  4A 85 BC 2E FB 29 E6 FB 3A DB 83 3B E7 3A 3C 8B C9 DA 8F 29 34 B9 FF 29 82 80 E3 8D 35 15 0A 7A 3A 34 0E 97 3F 66 62 D8
+ciphertext: "4E 88 B4 2A FE 29 FA 8F 48 DF 81 26 FC 38 43 F8 AA C2 9F 2D 35 DD ED 3B E5 E5 F1 E3 29 14 0A 7A 20 40 10 97 51 6B 6D C0"
+cipher: { plaintext: "SHIPMENT ARRIVES TUESDAY. ANSWER: VENONA", steps: [{ type: xor, keyHex: "1DC0FD7AB36CB4DB689ED374B56E06AB8A96CA686699AC62CBC5B0AD7A434F281A6046D21F242381" }] }
+answers: [VENONA]
+partials:
+  - answer: "SHIPMENT ARRIVES TUESDAY ANSWER VENONA"
+    reply: "Decrypted. The answer is the last word."
+hints:
+  - "Both messages were sent on the same day, from the same pad page. And you know what the first one says."
+  - "XOR the two ciphertexts: the key cancels out, leaving the two plaintexts XORed together."
+  - "XOR that result with the first plaintext, WEATHER REPORT: CLEAR SKIES OVER THE BAY, as text."
+writeup: |
+  Both messages used the same pad. XORing the two ciphertexts cancels the key and leaves *plaintext 1 XOR plaintext 2*. Message 1 is a weather report you already have, so XORing it back out leaves message 2: `SHIPMENT ARRIVES TUESDAY. ANSWER: VENONA`.
+
+  Venona was the real project that read Soviet messages for decades because some one-time pad pages were used twice. Weather reports were the codebreakers' favourite guessable text.
+---
+
+Two messages intercepted on the same morning. The operator was short of pad pages and used one twice. The first was only a weather report. The second is below.

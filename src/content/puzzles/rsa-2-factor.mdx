@@ -1,0 +1,26 @@
+---
+title: Too small to be safe
+lesson: rsa
+order: 2
+difficulty: 3
+ciphertext: "383 257 316 367 316"
+cipher: { plaintext: "SIEVE", steps: [{ type: rsa, n: 391, e: 7 }] }
+answers: [SIEVE]
+partials:
+  - answer: "17"
+    reply: "That's one factor. Keep going to the private key."
+  - answer: "23"
+    reply: "That's one factor. Keep going to the private key."
+  - answer: "151"
+    reply: "That's the private exponent. Now decrypt."
+hints:
+  - "You only have the public key. But 391 is a small number."
+  - "Factor 391 into two primes, then work out d from (p − 1)(q − 1)."
+  - "391 = 17 × 23, so (p − 1)(q − 1) = 352, and d = 151."
+writeup: |
+  Only the public key was published, but n = 391 is small enough to factor at once: 17 × 23. Then (p − 1)(q − 1) = 16 × 22 = 352, and the private exponent is the inverse of 7 mod 352, which is 151. Decrypting each number gives 19, 9, 5, 22, 5: `SIEVE`.
+
+  The sieve of Eratosthenes is the oldest way to find primes, and trial division is how this key fell.
+---
+
+A message encrypted with a public key someone posted proudly online: **n = 391, e = 7**.

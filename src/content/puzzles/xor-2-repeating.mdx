@@ -1,0 +1,24 @@
+---
+title: Moonlight
+lesson: xor
+order: 2
+difficulty: 2
+ciphertext: "00 0A 0A 1A 6D 0E 1B 6E 19 07 0A 6E 02 0D 1C 0B 1F 19 0E 1A 02 1D 16 60 6D 1B 07 0B 6D 0E 01 1D 1A 0A 1D 6E 04 1C 6F 0B 0E 03 06 1E 1E 0A 61"
+cipher: { plaintext: "MEET AT THE OBSERVATORY. THE ANSWER IS ECLIPSE.", steps: [{ type: xor, key: MOON }] }
+answers: [ECLIPSE]
+partials:
+  - answer: "MEET AT THE OBSERVATORY THE ANSWER IS ECLIPSE"
+    reply: "Decrypted. The answer is the last word."
+  - answer: "MOON"
+    reply: "That's the key. Now use it."
+hints:
+  - "Hex bytes, and a word written on the back of a photo."
+  - "XOR the bytes with that word, repeated."
+  - "The key is MOON, as text."
+writeup: |
+  The photo's caption, MOON, is the key. XORed with the bytes, repeating every four characters, it gives `MEET AT THE OBSERVATORY. THE ANSWER IS ECLIPSE.`
+
+  A short repeating key is the XOR version of Vigenère, and it breaks the same way: find the key length, then solve each position.
+---
+
+A printout of hex, clipped to a photograph of the full moon. On the back of the photo, one word in pencil: *MOON*.

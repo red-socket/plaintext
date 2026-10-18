@@ -1,0 +1,23 @@
+---
+title: Never itself
+lesson: enigma
+order: 3
+difficulty: 3
+ciphertext: "CBSXUJKT"
+cipher: { plaintext: "FLAMINGO", steps: [{ type: enigma, rotors: [V, II, IV], reflector: B, rings: HOP, positions: ZED, plugs: "MT FW", group: 0 }] }
+answers: [FLAMINGO]
+hints:
+  - "You don't have the settings, and you don't need them."
+  - "Enigma never encrypts a letter as itself. Write each candidate under the ciphertext."
+  - "Rule out any candidate with a letter in the same place as the same letter in the ciphertext."
+writeup: |
+  Without the settings you can't decrypt, but you can still rule things out: Enigma never turns a letter into itself. Lining each candidate up under the ciphertext, every word but one puts some letter directly under the same letter. Only `FLAMINGO` survives.
+
+  Bletchley Park used exactly this to place cribs: slide a guessed word along a message and discard every position where a letter would meet itself.
+---
+
+An intercepted one-word Enigma message. Agents report it's the name of a bird, and only one of these four:
+
+**COCKATOO**, **FLAMINGO**, **PARAKEET**, **SKYLARKS**
+
+Which one is it?

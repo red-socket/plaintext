@@ -1,0 +1,56 @@
+---
+title: RSA with small numbers
+track: modern
+order: 4
+summary: A lock anyone can close but only you can open, built from two primes. Small enough here to break by hand.
+minutes: 15
+tool: rsa
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import RsaTool from '../../components/tools/RsaTool.svelte';
+
+<Step n={1} title="Two keys">
+
+Diffie–Hellman lets two people agree on a key. **RSA**, published in 1977 by Ron Rivest, Adi Shamir and Leonard Adleman, goes further: a **public key** anyone can use to encrypt a message to you, and a **private key** only you can use to decrypt it. (Clifford Cocks at GCHQ had found it in 1973; it was declassified in 1997.)
+
+To make a key, pick two primes p and q, and multiply them: **n = p × q**.
+
+<QuickCheck id="rsa-n" answer={["55", "FIFTY FIVE"]} note="5 × 11 = 55.">With p = 5 and q = 11, what is n?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Encrypt and decrypt">
+
+Choose a public exponent **e**. The public key is (n, e); to encrypt a number m, compute **c = mᵉ mod n**. The private exponent **d** is chosen so that raising to e and then to d brings every number back: **m = cᵈ mod n**. Working out d needs (p − 1)(q − 1), which needs p and q.
+
+<RsaTool client:visible />
+
+<QuickCheck id="rsa-encrypt" answer={["8", "EIGHT"]} note="2³ = 8, which is already less than 55.">With n = 55 and e = 3, encrypt the number 2.</QuickCheck>
+
+<QuickCheck id="rsa-decrypt" answer={["2", "TWO"]} note="8²⁷ mod 55 = 2: decryption undoes encryption.">The private exponent for that key is 27. Decrypt 8.</QuickCheck>
+
+</Step>
+
+<Step n={3} title="Why it's hard to break">
+
+Everything rests on one fact: multiplying two primes is easy, and splitting the result back into them is not. Factor n and you can work out d. With four-digit n that takes a moment; real keys have more than 600 digits.
+
+Encrypting one letter at a time, as the puzzles here do, is also weak: each letter always gives the same number, so it's a substitution cipher in disguise. Real systems encrypt big blocks with random padding.
+
+</Step>
+
+<Step n={4} title="Signatures">
+
+RSA also works backwards. "Encrypt" a number with your **private** key and anyone can check it with your **public** key: if raising the signature to e gives back the number, only the private key's owner could have made it. That's a **digital signature**.
+
+</Step>
+
+<Step n={5} title="How to spot it">
+
+- **Numbers bigger than 26**, often all below some n, with a public key **(n, e)** nearby.
+- Words like *public key*, *modulus* or *exponent*.
+- A small n: factor it first.
+
+</Step>

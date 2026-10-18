@@ -310,3 +310,35 @@
     - Bars of different widths in a row, maybe without the numbers printed under them.
   try: Scan it. Damaged and inverted QR codes often still read, and barcode digits may be another code.
   lesson: qr-codes
+
+- id: enigma
+  name: Enigma
+  group: letters-odd
+  example: "CBSXU JKT"
+  tells:
+    - Letters only, in groups of five, with very flat letter counts.
+    - No ciphertext letter ever matches the plaintext letter underneath it.
+    - Rotors, ring settings or plugboard pairs mentioned anywhere.
+  try: Look for the settings in the puzzle and set up an Enigma simulator. Decrypting is the same as encrypting.
+  lesson: enigma
+
+- id: xor
+  name: XOR with a key
+  group: mixed
+  example: "7E 62 6F 0A 6B 64 79 7D"
+  tells:
+    - Hex bytes that aren't ASCII and don't decode as Base64 or anything else.
+    - A key in the puzzle, a word, a phrase or a number.
+    - Two messages that might share a key.
+  try: XOR the bytes with any key the puzzle offers, as text or as a number. With two messages, XOR them together.
+  lesson: xor
+
+- id: rsa
+  name: RSA numbers
+  group: digits
+  example: "1 8 / 27, with public key n = 55, e = 3"
+  tells:
+    - Numbers bigger than 26 but all below some n.
+    - "A public key nearby: a modulus n and an exponent e."
+  try: If you have the private exponent d, raise each number to d mod n. If not, factor n.
+  lesson: rsa

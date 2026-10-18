@@ -1,0 +1,26 @@
+---
+title: The day's key
+lesson: enigma
+order: 2
+difficulty: 3
+page: |
+  Day 14 | Rotors II V I   | Rings F O X | Plugs EP RT UZ LM
+  Day 15 | Rotors IV III II | Rings M A P | Plugs GW HQ SN IJ
+  Day 16 | Rotors I IV V   | Rings D U E | Plugs CY KO BF AL
+ciphertext: "YFZLM XFCVY PZUSB TLDTH OCVUK F"
+cipher: { plaintext: "MEETATDAWNTHEANSWERISRADAR", steps: [{ type: enigma, rotors: [IV, III, II], reflector: B, rings: MAP, positions: ROT, plugs: "GW HQ SN IJ" }] }
+answers: [RADAR]
+partials:
+  - answer: "MEETATDAWNTHEANSWERISRADAR"
+    reply: "Decrypted. The answer is the last word."
+hints:
+  - "The codebook has a row for each day. Which day was the message sent?"
+  - "The 15th. Use that row, with reflector B."
+  - "Rotors IV III II, rings M A P, plugs GW HQ SN IJ, and start at the positions in the message header: R O T."
+writeup: |
+  The message was sent on the 15th, so the codebook's row for day 15 gives the rotors (IV III II), rings (M A P) and plugs (GW HQ SN IJ). The header gives the start positions, R O T. With reflector B, the message reads `MEETATDAWNTHEANSWERISRADAR`.
+
+  Real Enigma networks changed settings every day from printed sheets like this, which is why captured codebooks were treasure.
+---
+
+A page of a captured codebook, and a message sent on the **15th**. The header reads *start: R O T*. All stations used reflector B.

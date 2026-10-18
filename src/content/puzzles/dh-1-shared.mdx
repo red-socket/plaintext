@@ -1,0 +1,24 @@
+---
+title: The shared secret
+lesson: diffie-hellman
+order: 1
+difficulty: 2
+ciphertext: "HVS DOWBH VOG RFWSR. HVS OBGKSF WG HSOZ."
+cipher: { plaintext: "THE PAINT HAS DRIED. THE ANSWER IS TEAL.", steps: [{ type: caesar, shift: 40 }] }
+answers: [TEAL]
+partials:
+  - answer: "40"
+    reply: "That's the shared secret. Now use it as the shift."
+  - answer: "14"
+    reply: "That's the shift. Now decode the message."
+  - answer: "THE PAINT HAS DRIED THE ANSWER IS TEAL"
+    reply: "Decoded. The answer is the last word."
+hints:
+  - "You know p, g, your own secret and Bob's public number. That's enough to compute the shared secret."
+  - "The shared secret is B to the power a, mod p: 26¹³ mod 47."
+  - "It comes to 40. Counted round the alphabet, a shift of 40 is a shift of 14."
+writeup: |
+  The shared secret is Bob's public number raised to your secret, mod p: 26¹³ mod 47 = 40. Bob computed the same thing from your public number, 43, and his own secret. A Caesar shift of 40 goes once round the alphabet and 14 more, so shift back by 14: `THE PAINT HAS DRIED. THE ANSWER IS TEAL.`
+---
+
+You and Bob agreed in public on **p = 47** and **g = 5**. Your secret is **a = 13**, so you sent 5¹³ mod 47 = 43. Bob sent back **B = 26**, then a message encrypted with a Caesar shift equal to your shared secret.

@@ -146,6 +146,30 @@ export const TOOLS: Tool[] = [
     description: 'Reads QR codes, even damaged or inverted ones, and EAN-13 barcodes from a picture.',
     lesson: 'qr-codes',
   },
+  {
+    id: 'xor',
+    name: 'XOR workbench',
+    description: 'XOR text or hex with a key, and XOR two ciphertexts together to cancel a reused key.',
+    lesson: 'xor',
+  },
+  {
+    id: 'enigma',
+    name: 'Enigma machine',
+    description: 'A working Enigma I: five rotors, two reflectors, ring settings, start positions and plugboard.',
+    lesson: 'enigma',
+  },
+  {
+    id: 'key-exchange',
+    name: 'Key exchange',
+    description: 'Diffie–Hellman with small numbers: both sides of the exchange, and an eavesdropper trying every secret.',
+    lesson: 'diffie-hellman',
+  },
+  {
+    id: 'rsa',
+    name: 'RSA workbench',
+    description: 'Make a small RSA key, encrypt and decrypt numbers, and break a key by factoring it.',
+    lesson: 'rsa',
+  },
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);

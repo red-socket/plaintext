@@ -1,0 +1,24 @@
+---
+title: Life, the universe
+lesson: xor
+order: 1
+difficulty: 2
+ciphertext: "7E 62 6F 0A 6B 64 79 7D 6F 78 0A 63 79 0A 61 63 7E 6F"
+cipher: { plaintext: "THE ANSWER IS KITE", steps: [{ type: xor, keyHex: "2A" }] }
+answers: [KITE]
+partials:
+  - answer: "THE ANSWER IS KITE"
+    reply: "Decrypted. The answer is the last word."
+  - answer: "42"
+    reply: "That's the key. Now use it."
+hints:
+  - "It's hex, and the note gives the key as a number. What number is famously the answer to everything?"
+  - "42. XOR works on bytes, so write 42 in hex."
+  - "42 is 2A in hex. XOR every byte with 2A."
+writeup: |
+  The key is 42, the answer to life, the universe and everything, which is `2A` in hex. XORing every byte with `2A` turns `7E 62 6F` into `THE`, and the whole line into `THE ANSWER IS KITE`.
+
+  A single-byte key is weak: there are only 256 to try, and the tool can try them faster than you can read them.
+---
+
+A sticky note on a server, in hex. Underneath: *key = the answer to life, the universe and everything*.

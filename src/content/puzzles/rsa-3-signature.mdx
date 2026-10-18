@@ -1,0 +1,30 @@
+---
+title: Which one is genuine?
+lesson: rsa
+order: 3
+difficulty: 3
+page: |
+  Telegram A: SELL THE WAREHOUSE AT ONCE.   Message number 877,  signature 1328
+  Telegram B: MEET ME AT THE QUAY.          Message number 1204, signature 2993
+  Telegram C: BURN THE LEDGER.              Message number 2650, signature 619
+answers: [QUAY, THE QUAY]
+partials:
+  - answer: "WAREHOUSE"
+    reply: "Telegram A's signature doesn't check out."
+  - answer: "SELL THE WAREHOUSE AT ONCE"
+    reply: "Telegram A's signature doesn't check out."
+  - answer: "BURN THE LEDGER"
+    reply: "Telegram C's signature doesn't check out."
+hints:
+  - "A real signature, raised to the public exponent mod n, gives back the message number."
+  - "For each telegram, compute signature¹⁷ mod 3233 and compare it with the message number."
+  - "Only telegram B checks out: 2993¹⁷ mod 3233 = 1204."
+writeup: |
+  A genuine signature was made with the boss's private key, so raising it to the public exponent 17, mod 3233, gives back the message number. Telegram B passes: 2993¹⁷ mod 3233 = 1204. A and C don't. The real instruction is to meet at `THE QUAY`.
+
+  Anyone can check a signature; only the private key can make one. That's what lets your computer trust a software update.
+---
+
+Three telegrams, all claiming to be from the boss. Her public key is **n = 3233, e = 17**, and she signs the number of each message with her private key.
+
+Where should you go?

@@ -1,0 +1,28 @@
+---
+title: Settings sheet
+lesson: enigma
+order: 1
+difficulty: 2
+ciphertext: "ICMID ARQOM NJHCD B"
+cipher: { plaintext: "THEANSWERISBOMBE", steps: [{ type: enigma, rotors: [III, I, IV], reflector: B, rings: CLV, positions: KAT, plugs: "AQ BV CX DK" }] }
+answers: [BOMBE]
+partials:
+  - answer: "THEANSWERISBOMBE"
+    reply: "Decrypted. The answer is the last word."
+hints:
+  - "Everything you need to set up the machine is in the sheet."
+  - "Set the rotors left to right, then the rings, the start positions and the plugboard. Enigma decrypts by encrypting again."
+  - "Rotors III I IV, reflector B, rings C L V, start K A T, plugs AQ BV CX DK."
+writeup: |
+  Set the machine from the sheet: rotors III, I and IV, reflector B, rings C L V, plugs AQ BV CX DK, and the rotors turned to K A T. Typing the ciphertext lights up `THEANSWERISBOMBE`: *the answer is bombe*, the machine Turing and Welchman designed to find Enigma settings.
+
+  Enigma has no spaces; operators wrote words straight through and broke them up again by eye.
+---
+
+A captured operator's sheet, with everything filled in:
+
+- **Walzenlage** (rotors, left to right): III I IV
+- **Umkehrwalze** (reflector): B
+- **Ringstellung** (rings): C L V
+- **Steckerverbindungen** (plugs): AQ BV CX DK
+- **Grundstellung** (start): K A T

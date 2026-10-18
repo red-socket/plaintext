@@ -1,0 +1,52 @@
+---
+title: The Enigma machine
+track: modern
+order: 2
+summary: Rotors that turn with every key press, a plugboard, and a flaw that helped break it.
+minutes: 15
+tool: enigma
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import EnigmaTool from '../../components/tools/EnigmaTool.svelte';
+
+<Step n={1} title="A substitution that never sits still">
+
+**Enigma** looks like a typewriter in a wooden box. Press a key and a lamp lights up with the ciphertext letter. Inside, the current passes through three **rotors**, each a scrambled alphabet of wires, bounces off a **reflector**, and comes back through the rotors by a different path.
+
+The trick is that the right-hand rotor turns one step **before every key press**, and now and then it pushes the next rotor round, like a mileage counter. So the substitution changes with every letter: press A five times and you get five different letters.
+
+<EnigmaTool client:visible text="AAAAA" />
+
+<QuickCheck id="enigma-bdzgo" answer="BDZGO" note="The classic test: rotors I, II, III, everything at A, no plugs.">With rotors I, II, III, all rings and starts at A and no plugs, what does AAAAA become?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Settings">
+
+An operator set up the machine each day from a codebook: **which three rotors** in which order (from five), the **ring settings** on each rotor, a **plugboard** that swapped up to ten pairs of letters before and after the rotors, and the **start positions** of the rotors. Get any of it wrong and the output is nonsense.
+
+Because of the reflector, Enigma is its own inverse: with the same settings, typing the ciphertext lights up the plaintext.
+
+<QuickCheck id="enigma-inverse" answer="X" note="Same settings, same position: the machine works both ways.">At one position, Enigma turns X into Q. At that same position, what does Q turn into?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="The flaw">
+
+The reflector has a side effect: **a letter can never encrypt to itself**. That sounds harmless. It isn't. If you can guess a word in a message, a **crib**, like *weather report*, you can rule out every position where any letter would line up with itself.
+
+Polish mathematicians led by Marian Rejewski broke Enigma in 1932 and handed their work to Britain and France in July 1939. At Bletchley Park, Alan Turing and Gordon Welchman designed the **bombe**, a machine that used cribs to search for the day's settings.
+
+<QuickCheck id="enigma-self" answer={["NO", "N", "NEVER"]} note="The reflector means a letter's path never comes back to itself.">Can an Enigma ever encrypt a letter as itself?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="How to spot it">
+
+- **Letters only, in groups of five**, with very flat letter counts.
+- No letter of the ciphertext ever matches the plaintext underneath.
+- Rotor numbers, ring settings or plugboard pairs in the puzzle.
+
+</Step>

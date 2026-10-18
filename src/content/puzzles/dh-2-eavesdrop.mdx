@@ -1,0 +1,26 @@
+---
+title: The eavesdropper
+lesson: diffie-hellman
+order: 2
+difficulty: 3
+ciphertext: "WXKXMH LJW QNJA DB. CQN JWBFNA RB FQRBYNA."
+cipher: { plaintext: "NOBODY CAN HEAR US. THE ANSWER IS WHISPER.", steps: [{ type: caesar, shift: 9 }] }
+answers: [WHISPER]
+partials:
+  - answer: "9"
+    reply: "That's the shared secret, and the shift. Now decode."
+  - answer: "41"
+    reply: "That's Alice's secret. Now work out the shared secret."
+  - answer: "NOBODY CAN HEAR US THE ANSWER IS WHISPER"
+    reply: "Decoded. The answer is the last word."
+hints:
+  - "You only have the public numbers. But p is tiny."
+  - "Find Alice's secret a by trying every exponent until 3 to that power, mod 89, gives 56."
+  - "a is 41. Then the shared secret is B to the power a, mod 89, which is 9."
+writeup: |
+  You only saw the public numbers, but with p = 89 there are only 88 possible secrets. Trying each, 3⁴¹ mod 89 = 56, so Alice's secret is 41. The shared secret is then 69⁴¹ mod 89 = 9, and shifting back by 9 gives `NOBODY CAN HEAR US. THE ANSWER IS WHISPER.`
+
+  That's why real key exchanges use primes hundreds of digits long: the same search would take longer than the age of the universe.
+---
+
+You've tapped the line between Alice and Bob. You saw them agree on **p = 89** and **g = 3**, then Alice sent **A = 56** and Bob sent **B = 69**. Then came this, with a Caesar shift equal to their shared secret.

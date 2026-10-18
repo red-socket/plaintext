@@ -1,0 +1,48 @@
+---
+title: Sharing a secret in public
+track: modern
+order: 3
+summary: How two strangers agree on a key while everyone listens, explained with paint and then with small numbers.
+minutes: 12
+tool: key-exchange
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import KeyExchangeTool from '../../components/tools/KeyExchangeTool.svelte';
+
+<Step n={1} title="The problem with keys">
+
+Every cipher so far needs both sides to share a key first. For centuries that meant couriers and codebooks. In 1976 Whitfield Diffie and Martin Hellman, building on ideas from Ralph Merkle, published a way for two people to agree on a secret key over a channel everyone can hear. (Malcolm Williamson at GCHQ had found the same idea a few years earlier, but it stayed secret until 1997.)
+
+</Step>
+
+<Step n={2} title="Mixing paint">
+
+Imagine Alice and Bob agree in public on a common paint colour, say yellow. Each secretly picks a colour of their own, mixes it with the yellow, and sends the mixture to the other. Then each adds their own secret colour to what they received.
+
+Both now hold yellow + Alice's colour + Bob's colour: the same paint. An eavesdropper saw only the two mixtures, and unmixing paint is hard.
+
+</Step>
+
+<Step n={3} title="Clock arithmetic">
+
+The real version uses **modular arithmetic**: numbers that wrap around, like hours on a clock. 17 mod 5 is 2, because 17 = 3 × 5 + 2.
+
+Alice and Bob agree in public on a prime **p** and a base **g**. Alice picks a secret **a** and sends **A = gᵃ mod p**; Bob picks **b** and sends **B = gᵇ mod p**. Alice computes Bᵃ mod p and Bob computes Aᵇ mod p, and the two come out the same. Going backwards, from A to a, is called the *discrete logarithm*, and for large primes nobody knows a fast way.
+
+<QuickCheck id="dh-mod" answer={["2", "TWO"]} note="17 = 3 × 5 + 2.">What is 17 mod 5?</QuickCheck>
+
+<KeyExchangeTool client:visible />
+
+<QuickCheck id="dh-send" answer={["10", "TEN"]} note="5³ = 125, and 125 = 5 × 23 + 10.">With p = 23 and g = 5, Alice's secret is 3. What number does she send?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Why size matters">
+
+With p = 23 an eavesdropper can simply try every exponent. Real systems use primes hundreds of digits long, where trying them all would outlast the universe. Every secure web page you load still starts with a key exchange descended from this one.
+
+<QuickCheck id="dh-public" answer={["THE PUBLIC NUMBERS", "PUBLIC NUMBERS", "PUBLIC", "THE PUBLIC VALUES"]} note="p, g, A and B cross the wire; a, b and the shared secret never do.">What can an eavesdropper see: the secret numbers, or the public numbers?</QuickCheck>
+
+</Step>

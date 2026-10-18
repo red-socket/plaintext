@@ -1,0 +1,63 @@
+---
+title: XOR and the one-time pad
+track: modern
+order: 1
+summary: The simplest operation in computing, and the only cipher ever proven unbreakable, as long as you never reuse the key.
+minutes: 12
+tool: xor
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+import XorTool from '../../components/tools/XorTool.svelte';
+
+<Step n={1} title="Exclusive or">
+
+**XOR** ("exclusive or") compares two bits: the result is 1 if they differ and 0 if they're the same. Done to every bit of two bytes, it mixes them so thoroughly that you can't recover either one on its own.
+
+| A | B | A XOR B |
+| --- | --- | --- |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+<QuickCheck id="xor-bits" answer="1100" note="Bit by bit: 1/0 → 1, 0/1 → 1, 1/1 → 0, 0/0 → 0.">What is `1010` XOR `0110`?</QuickCheck>
+
+</Step>
+
+<Step n={2} title="It undoes itself">
+
+XOR has one magic property: doing it twice with the same key gives you back what you started with. XOR a message with a key and you get ciphertext; XOR the ciphertext with the key again and the message comes back. That makes XOR the core of almost every modern cipher.
+
+<XorTool client:visible text="HELLO" />
+
+<QuickCheck id="xor-twice" answer={["PLAINTEXT", "THE PLAINTEXT", "THE MESSAGE", "MESSAGE"]} note="Key XOR key cancels out, leaving the message.">You XOR a ciphertext with the key that made it. What do you get?</QuickCheck>
+
+</Step>
+
+<Step n={3} title="The one-time pad">
+
+In 1917 Gilbert Vernam built a teleprinter that XORed each character with one from a paper tape of key. Joseph Mauborgne saw that if the tape was **truly random, as long as the message, and never used again**, the result could not be broken. Claude Shannon proved it in 1949: every possible message is equally likely, so the ciphertext tells you nothing.
+
+That's the **one-time pad**. Spies carried pads of random numbers, and leaders' hotlines used tape for decades.
+
+<QuickCheck id="xor-once" answer={["ONCE", "1", "ONE"]} note="Hence the name.">How many times can a one-time pad safely be used?</QuickCheck>
+
+</Step>
+
+<Step n={4} title="Never twice">
+
+Use a pad twice and it collapses. XOR the two ciphertexts together and the key cancels out, leaving the two plaintexts XORed together. Guess a word in one, and the other appears letter by letter.
+
+That's exactly what happened in the 1940s: the Soviet Union reused some of its pad pages, and American and British analysts in the **Venona** project spent decades reading the messages.
+
+</Step>
+
+<Step n={5} title="How to spot it">
+
+- **Hex or bytes** that decode to nonsense, with no clear pattern.
+- A key mentioned anywhere: a word, a number, a phrase.
+- **Two messages** that might share a key: XOR them together.
+
+</Step>

@@ -1,0 +1,22 @@
+---
+title: The private key
+lesson: rsa
+order: 1
+difficulty: 2
+ciphertext: "3023 2041 3086 / 1 2549 615 2037 3086 2100 / 1972 615 / 134 2100 1972 47 3086"
+cipher: { plaintext: "THE ANSWER IS PRIME", steps: [{ type: rsa, n: 3233, e: 17 }] }
+answers: [PRIME]
+partials:
+  - answer: "THE ANSWER IS PRIME"
+    reply: "Decrypted. The answer is the last word."
+hints:
+  - "You have the private key. Each number is one letter, encrypted."
+  - "Raise each number to the power d, mod n."
+  - "Use d = 2753 and n = 3233, then read the results as A1Z26."
+writeup: |
+  Each number is one letter, encrypted with the public key (3233, 17). Raising each to the private exponent 2753, mod 3233, gives numbers from 1 to 26: A1Z26 for `THE ANSWER IS PRIME`.
+
+  Notice the repeats: every E encrypted to the same number. Letter-by-letter RSA is just a substitution cipher with big numbers.
+---
+
+A message for you, and your key card: **public key n = 3233, e = 17; private key d = 2753**.

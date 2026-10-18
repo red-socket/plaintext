@@ -67,6 +67,9 @@ Each step is applied to the output of the one before. Available steps (from `src
 | `{ type: mojibake }` | UTF-8 misread as Windows-1252: café becomes `cafÃ©`. Use twice for doubly garbled text. |
 | `{ type: codepoints }` | Each character as `U+0041`. |
 | `{ type: md5 }`, `{ type: sha256 }` | The hash of the text, in lowercase hex. |
+| `{ type: xor, key: MOON }` or `{ type: xor, keyHex: "2A" }` | XOR with a repeating text or hex key; output is spaced hex. |
+| `{ type: enigma, rotors: [I, II, III], reflector: B, rings: AAA, positions: AAA, plugs: "AB CD" }` | Enigma I, letters only, in groups of five (`group: 0` for none). |
+| `{ type: rsa, n: 3233, e: 17 }` | Each letter's A1Z26 number raised to e mod n; words separated by ` / `. |
 | `{ type: reverse }` | The whole string backwards. |
 | `{ type: map, map: { "0": "□", "1": "■" } }` | Replaces single characters; anything else passes through. |
 

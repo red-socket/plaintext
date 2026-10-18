@@ -6,6 +6,7 @@ import { caesarEncrypt } from './caesar';
 import { zeroWidthHide } from './hidden';
 import { toMojibake } from './unicode';
 import { md5, sha256 } from './digest';
+import { enigmaText, rsaLetters, xorText } from './modern';
 import {
   atbash,
   baconEncode,
@@ -57,6 +58,12 @@ export type Step =
   | { type: 'upper' }
   /** UTF-8 bytes misread as Windows-1252: café becomes cafÃ©. */
   | { type: 'mojibake' }
+  /** XOR with a text key (repeated), or a hex key; output is spaced hex. */
+  | { type: 'xor'; key?: string; keyHex?: string }
+  /** Enigma I. Output in groups of `group` letters (0 for none). */
+  | { type: 'enigma'; rotors: [string, string, string]; reflector: string; rings: string; positions: string; plugs?: string; group?: number }
+  /** Textbook RSA on each letter's A1Z26 number. */
+  | { type: 'rsa'; n: number; e: number }
   | { type: 'md5' }
   | { type: 'sha256' }
   /** Each character as its Unicode code point, U+0041. */
@@ -112,6 +119,12 @@ export function applyStep(text: string, step: Step): string {
       return text.toUpperCase();
     case 'mojibake':
       return toMojibake(text);
+    case 'xor':
+      return xorText(text, step.keyHex !== undefined ? { hex: step.keyHex } : { text: step.key ?? '' });
+    case 'enigma':
+      return enigmaText(text, step, step.group ?? 5);
+    case 'rsa':
+      return rsaLetters(text, step.n, step.e);
     case 'md5':
       return md5(text);
     case 'sha256':
