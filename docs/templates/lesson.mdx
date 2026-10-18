@@ -1,0 +1,32 @@
+---
+# Copy to src/content/lessons/<id>.mdx. Quick-check ids, like puzzle ids, never change once published.
+title: The Something cipher
+track: classical
+order: 2
+summary: One sentence saying what it is, in plain words.
+minutes: 10
+# tool: some-tool-id   (registered in src/lib/catalog.ts)
+---
+
+import Step from '../../components/Step.astro';
+import QuickCheck from '../../components/QuickCheck.astro';
+
+<Step n={1} title="The idea">
+
+Two or three short paragraphs. Show it working before explaining it.
+
+<QuickCheck id="something-first" answer="ANSWER" note="Shown after a correct answer.">A small question about this step.</QuickCheck>
+
+</Step>
+
+<Step n={2} title="Breaking it">
+
+How a solver gets in without the key.
+
+</Step>
+
+<Step n={3} title="How to spot it">
+
+The signs that should make a solver try this. Update the Field Guide entry to match.
+
+</Step>

@@ -26,7 +26,9 @@ const path = Astro.url.pathname;
       <a class="wordmark" href="/" aria-label="Plaintext, home">plaintext</a>
       <nav aria-label="Main">
         <a href="/#tracks" aria-current={path === '/' ? 'page' : undefined}>Learn</a>
+        <a href="/field-guide" aria-current={path.startsWith('/field-guide') ? 'page' : undefined}>Field guide</a>
         <a href="/toolkit" aria-current={path.startsWith('/toolkit') ? 'page' : undefined}>Toolkit</a>
+        <a href="/progress" aria-current={path.startsWith('/progress') ? 'page' : undefined}>Progress</a>
       </nav>
     </header>
     <main id="main">
@@ -34,6 +36,10 @@ const path = Astro.url.pathname;
     </main>
     <footer class="site-footer page">
       <p>Plaintext is free and open source: code under AGPL-3.0, lessons under CC BY-SA 4.0. Your progress stays in this browser.</p>
+      <a class="maker" href="https://github.com/red-socket">
+        <img src="/red-socket.svg" alt="" width="24" height="24" />
+        <span>Made by Red Socket</span>
+      </a>
     </footer>
   </body>
 </html>
@@ -70,7 +76,9 @@ const path = Astro.url.pathname;
 
   nav {
     display: flex;
-    gap: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.25rem 1.25rem;
     font-size: var(--step--1);
   }
   nav a {
@@ -85,10 +93,34 @@ const path = Astro.url.pathname;
   }
 
   .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
     margin-top: 6rem;
     padding-block: 2rem 3rem;
     border-top: 1px solid var(--rule);
     color: var(--ink-soft);
     font-size: var(--step--1);
+  }
+  .site-footer p {
+    max-width: var(--measure);
+  }
+  .maker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .maker:hover span {
+    text-decoration: underline;
+    text-decoration-color: var(--violet);
+    text-underline-offset: 0.18em;
+  }
+  .maker img {
+    image-rendering: pixelated;
   }
 </style>

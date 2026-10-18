@@ -1,0 +1,183 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { GUIDE_GROUPS, TRACKS, type GuideGroup } from '../lib/catalog';
+
+const entries = await getCollection('fieldGuide');
+const lessons = await getCollection('lessons');
+const groups = (Object.keys(GUIDE_GROUPS) as GuideGroup[])
+  .map((g) => ({ id: g, title: GUIDE_GROUPS[g], entries: entries.filter((e) => e.data.group === g) }))
+  .filter((g) => g.entries.length > 0);
+
+function source(e: (typeof entries)[number]) {
+  if (e.data.lesson) {
+    const l = lessons.find((x) => x.id === e.data.lesson!.id);
+    if (l) return { href: `/learn/${l.id}`, text: `Lesson: ${l.data.title}` };
+  }
+  const t = TRACKS.find((x) => x.id === e.data.track);
+  return t ? { text: `Track ${t.number}: ${t.title}. Lesson not written yet.` } : null;
+}
+---
+
+<Base title="Field guide" description="How to recognise ciphers and encodings by what you can see.">
+  <div class="guide page">
+    <header class="prose">
+      <h1>Field guide</h1>
+      <p>
+        Puzzles don't say which cipher they used. Start from what you can see on the page, find it below, and check the signs. More than one
+        entry can fit, so try the cheapest one first.
+      </p>
+    </header>
+
+    <nav class="jump" aria-label="What do you see?">
+      <h2>What do you see?</h2>
+      <ul>
+        {
+          groups.map((g) => (
+            <li>
+              <a href={`#${g.id}`}>{g.title}</a> <span class="meta">{g.entries.map((e) => e.data.name).join(', ')}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    {
+      groups.map((g) => (
+        <section class="group" id={g.id} aria-labelledby={`${g.id}-title`}>
+          <h2 id={`${g.id}-title`}>{g.title}</h2>
+          {g.entries.map((e) => {
+            const src = source(e);
+            return (
+              <article class="entry" id={e.id} aria-labelledby={`${e.id}-name`}>
+                <div class="id">
+                  <h3 id={`${e.id}-name`}>
+                    <a href={`#${e.id}`}>{e.data.name}</a>
+                  </h3>
+                  {g.id === 'pictures' ? <p class="example described">{e.data.example}</p> : <p class="example ciphertext">{e.data.example}</p>}
+                </div>
+                <div class="detail">
+                  <div>
+                    <h4>Signs</h4>
+                    <ul>
+                      {e.data.tells.map((t) => (
+                        <li>{t}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>What to try</h4>
+                    <p>{e.data.try}</p>
+                  </div>
+                  {src && <p class="meta">{src.href ? <a href={src.href}>{src.text}</a> : src.text}</p>}
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .guide {
+    display: grid;
+    gap: 2.5rem;
+  }
+  header {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 2rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+
+  .jump h2 {
+    font-size: var(--step-1);
+    margin-bottom: 0.75rem;
+  }
+  .jump ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--ink);
+    max-width: 48rem;
+  }
+  .jump li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .jump a {
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  .group {
+    display: grid;
+    gap: 0;
+    scroll-margin-top: 1rem;
+  }
+  .group > h2 {
+    font-size: var(--step-2);
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .entry {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    scroll-margin-top: 1rem;
+  }
+  @media (min-width: 52rem) {
+    .entry {
+      grid-template-columns: 15rem 1fr;
+      column-gap: 2.5rem;
+    }
+  }
+  .id,
+  .detail {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    min-width: 0;
+  }
+  .entry:target {
+    background: linear-gradient(to right, var(--violet-faint), transparent 70%);
+  }
+  .entry h3 {
+    font-size: var(--step-1);
+  }
+  .entry h3 a {
+    text-decoration: none;
+  }
+  .entry h3 a:hover {
+    text-decoration: underline;
+  }
+  .example.ciphertext {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .described {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  h4 {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin: 0 0 0.25rem;
+  }
+  .detail ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.3rem;
+  }
+  .detail {
+    max-width: var(--measure);
+  }
+</style>

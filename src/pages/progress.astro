@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import ProgressPanel from '../components/ProgressPanel.svelte';
+import { lessonPuzzles, sortedLessons } from '../lib/content';
+
+const lessons = await Promise.all(
+  (await sortedLessons()).map(async (l) => ({
+    id: l.id,
+    title: l.data.title,
+    puzzles: (await lessonPuzzles(l.id)).map((p) => ({ id: p.id, title: p.data.title })),
+  })),
+);
+---
+
+<Base title="Your progress" description="What you've solved, and how to move your progress to another device.">
+  <div class="progress page">
+    <header class="prose">
+      <h1>Your progress</h1>
+      <p>There are no accounts. Everything you've done is saved in this browser.</p>
+    </header>
+    <ProgressPanel client:load lessons={lessons} />
+  </div>
+</Base>
+
+<style>
+  .progress {
+    display: grid;
+    gap: 2rem;
+  }
+  header {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 2rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+</style>

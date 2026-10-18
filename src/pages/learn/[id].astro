@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import LessonComplete from '../../components/LessonComplete.svelte';
 import PuzzleList from '../../components/PuzzleList.astro';
-import { TRACKS, toolById } from '../../lib/catalog';
+import { PRACTICE, TRACKS, toolById } from '../../lib/catalog';
 import { lessonPuzzles } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -17,6 +17,7 @@ const track = TRACKS.find((t) => t.id === lesson.data.track)!;
 const tool = lesson.data.tool ? toolById(lesson.data.tool) : undefined;
 const puzzles = await lessonPuzzles(lesson.id);
 const first = puzzles[0];
+const practice = PRACTICE[lesson.id];
 ---
 
 <Base title={lesson.data.title} description={lesson.data.summary}>
@@ -45,6 +46,11 @@ const first = puzzles[0];
           <h2 id="puzzles-title">Puzzles</h2>
           <p class="meta">You can try them at any time, but they're easier once the lesson is done.</p>
           <PuzzleList puzzles={puzzles} />
+          {practice && (
+            <p class="more">
+              Want more? <a href={practice.href}>{practice.title}</a> gives you a new message every time.
+            </p>
+          )}
         </section>
       )
     }
@@ -68,6 +74,9 @@ const first = puzzles[0];
   .end {
     margin-top: 3.5rem;
     max-width: var(--measure);
+  }
+  .more {
+    margin-top: 0.5rem;
   }
   .puzzles {
     display: grid;

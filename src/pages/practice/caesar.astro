@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import Practice from '../../components/Practice.svelte';
+import ToolGate from '../../components/ToolGate.astro';
+import CipherWheel from '../../components/tools/CipherWheel.svelte';
+import { toolById } from '../../lib/catalog';
+import { getEntry } from 'astro:content';
+
+const lesson = (await getEntry('lessons', 'caesar'))!;
+const tool = toolById('caesar-wheel')!;
+---
+
+<Base title="Caesar practice" description="Endless Caesar cipher messages to decode, with or without the key.">
+  <div class="practice-page page">
+    <header class="prose">
+      <p class="meta"><a href={`/learn/${lesson.id}`}>{lesson.data.title}</a></p>
+      <h1>Caesar practice</h1>
+      <p>A new message every time. Nothing here is saved or scored; it's just practice.</p>
+    </header>
+
+    <Practice client:load />
+
+    <section class="toolkit" aria-labelledby="toolkit-title">
+      <h2 id="toolkit-title">Your toolkit</h2>
+      <ToolGate tool={tool.id} lessonTitle={lesson.data.title}>
+        <CipherWheel client:visible shift={0} mode="decrypt" />
+      </ToolGate>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .practice-page {
+    display: grid;
+    gap: 2rem;
+  }
+  header {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 2rem;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .toolkit {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--ink);
+    max-width: 56rem;
+  }
+  .toolkit h2 {
+    font-size: var(--step-1);
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+# Copy to src/content/puzzles/<lesson>-<n>-<short-name>.mdx. The file name is the id: never rename it once published.
+title: A short, concrete title
+lesson: caesar
+order: 5
+difficulty: 2
+# Generate the ciphertext with code. The build fails if `cipher` doesn't reproduce it exactly.
+ciphertext: "WKH DQVZHU LV RZO"
+cipher: { type: caesar, shift: 3, plaintext: "THE ANSWER IS OWL" }
+answers: [OWL]
+partials:
+  - answer: "THE ANSWER IS OWL"
+    reply: "Decoded. The answer is one word in there."
+  - answer: "3"
+    reply: "That's the shift. Now use it on the message."
+hints:
+  - "A nudge toward the right idea, without naming it."
+  - "Name the method or where the key is."
+  - "Nearly the whole method: 'Shift every letter back by 3.'"
+writeup: |
+  What the clue was and how you were meant to read it.
+
+  The decoding step, with a short example: `WKH` becomes `THE`.
+
+  One sentence on what to look for next time.
+---
+
+One or two short paragraphs setting the scene. End with the question if it isn't obvious.

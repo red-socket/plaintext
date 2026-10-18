@@ -23,3 +23,20 @@ export const TOOLS: Tool[] = [
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);
+
+/** Field Guide sections, named by what the solver sees. Order is display order. */
+export const GUIDE_GROUPS = {
+  letters: 'Only letters, normal-looking words',
+  'letters-odd': 'Only letters, but no words',
+  digits: 'Numbers',
+  'two-symbols': 'Two symbols only',
+  mixed: 'Letters, digits and symbols',
+  pictures: 'Shapes and pictures',
+} as const;
+
+export type GuideGroup = keyof typeof GUIDE_GROUPS;
+
+/** Generated practice pages, by lesson. */
+export const PRACTICE: Record<string, { href: string; title: string }> = {
+  caesar: { href: '/practice/caesar', title: 'Caesar practice' },
+};

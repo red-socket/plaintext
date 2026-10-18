@@ -1,8 +1,8 @@
 import { defineCollection, reference } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { caesarEncrypt } from './lib/caesar';
-import { TOOLS, TRACKS } from './lib/catalog';
+import { GUIDE_GROUPS, TOOLS, TRACKS, type GuideGroup } from './lib/catalog';
 import { normalizeAnswer } from './lib/normalize';
 
 const answer = z.string().refine((a) => normalizeAnswer(a) !== '', 'Answer has no letters or digits');
@@ -55,4 +55,20 @@ const puzzles = defineCollection({
     }),
 });
 
-export const collections = { lessons, puzzles };
+const fieldGuide = defineCollection({
+  loader: file('./src/content/field-guide.yaml'),
+  schema: z
+    .object({
+      name: z.string(),
+      group: z.enum(Object.keys(GUIDE_GROUPS) as [GuideGroup, ...GuideGroup[]]),
+      example: z.string(),
+      tells: z.array(z.string()).min(1),
+      try: z.string(),
+      /** The lesson that teaches it, once written. Otherwise the track it will belong to. */
+      lesson: reference('lessons').optional(),
+      track: z.enum(TRACKS.map((t) => t.id) as [string, ...string[]]).optional(),
+    })
+    .refine((e) => e.lesson || e.track, 'Give a lesson or a track'),
+});
+
+export const collections = { lessons, puzzles, fieldGuide };

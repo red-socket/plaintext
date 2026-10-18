@@ -1,0 +1,218 @@
+# The Field Guide: how to recognise what you're looking at.
+# Entries are grouped by what you can see, not by name, because that's where a solver starts.
+# Every example must be real output of the method it shows (see docs/AUTHORING.md).
+
+- id: caesar
+  name: Caesar shift
+  group: letters
+  example: "KHOOR ZRUOG"
+  tells:
+    - Letters only, with spaces and punctuation in normal places.
+    - Word lengths look like English, but nothing reads.
+    - A one-letter word that isn't A or I.
+  try: Try ROT13 first, then all 25 shifts. Look nearby for a number that could be the key.
+  lesson: caesar
+
+- id: rot13
+  name: ROT13
+  group: letters
+  example: "GUR DHVPX OEBJA SBK"
+  tells:
+    - "GUR keeps appearing: that's THE."
+    - Used to hide spoilers, punchlines and answers on forums.
+  try: Shift by 13. The same step encodes and decodes.
+  lesson: caesar
+
+- id: atbash
+  name: Atbash
+  group: letters
+  example: "SVOOL DLIOW"
+  tells:
+    - Letters only, normal word shapes.
+    - Lots of letters from the far end of the alphabet (Z, Y, X, W) where you'd expect A, B, C, D.
+    - "GSV keeps appearing: that's THE."
+  try: Reverse the alphabet. A↔Z, B↔Y, C↔X and so on.
+  track: classical
+
+- id: substitution
+  name: Substitution cipher
+  group: letters
+  example: "DTTZ DT QZ ZIT GSR DOSS"
+  tells:
+    - Letters only, normal word shapes, and no single shift works.
+    - Letter frequencies look like English, just on the wrong letters.
+    - Repeated patterns survive, like a double letter or a repeated three-letter word.
+  try: Count letters. The most common is probably E, then T, A, O. Guess short words first.
+  track: classical
+
+- id: vigenere
+  name: Vigenère cipher
+  group: letters
+  example: "LXFOPV EF RNHR"
+  tells:
+    - Letters only, but frequencies are flatter than English. No letter stands out.
+    - The same word encrypts differently in different places.
+    - Repeated chunks appear at distances that share a factor, which is the key length.
+  try: Look for a keyword in the puzzle. Without one, find the key length, then solve each column as a Caesar shift.
+  track: classical
+
+- id: rail-fence
+  name: Rail fence and other transpositions
+  group: letters-odd
+  example: "WECRLTEERDSOEEFEAOCAIVDEN"
+  tells:
+    - The letters are the right ones, in the wrong order. Frequencies match English exactly.
+    - Often one long block with no spaces.
+    - You can sometimes spot real words broken up across the text.
+  try: "Write the letters in a zigzag over 2, 3 or 4 rows, or in a grid, and read it off another way."
+  track: classical
+
+- id: bacon
+  name: Baconian cipher
+  group: two-symbols
+  example: "AABBB AABAA ABABB ABABB ABBBA"
+  tells:
+    - Only two symbols, often A and B, in groups of five.
+    - Or a normal-looking text where two fonts, cases or styles alternate for no reason.
+  try: Read each group of five as a binary number (A=0, B=1), then 0=A, 1=B, 2=C. Older versions merge I/J and U/V.
+  track: classical
+
+- id: a1z26
+  name: A1Z26
+  group: digits
+  example: "8-5-12-12-15"
+  tells:
+    - Numbers between 1 and 26, often separated by dashes or spaces.
+  try: "1 is A, 26 is Z. Try counting from 0, or backwards, if it doesn't read."
+  track: encodings
+
+- id: phone-keypad
+  name: Phone keypad
+  group: digits
+  example: "44 33 555 555 666"
+  tells:
+    - Only the digits 2 to 9.
+    - The same digit repeated up to four times (multi-tap), or digit pairs where the second digit is 1 to 4.
+  try: "Each key has letters on it: 2 is ABC, 7 is PQRS, 9 is WXYZ. 555 means the third letter on 5: L."
+  track: encodings
+
+- id: polybius
+  name: Polybius square and tap code
+  group: digits
+  example: "23 15 31 31 34"
+  tells:
+    - Pairs of digits, each digit from 1 to 5.
+    - Knocks or taps in two groups, or dots arranged in pairs.
+  try: Write A–Z in a 5×5 grid (I and J share a cell) and read each pair as row then column. Tap code uses C for K instead.
+  track: classical
+
+- id: ascii
+  name: ASCII codes
+  group: digits
+  example: "72 101 108 108 111"
+  tells:
+    - Numbers mostly between 65 and 122.
+    - Capital letters are 65 to 90, lowercase 97 to 122, a space is 32.
+  try: Look each number up in an ASCII table, or convert it in your browser's console with String.fromCharCode.
+  track: computers
+
+- id: book-cipher
+  name: Book cipher
+  group: digits
+  example: "12.4.7 3.1.2 88.10.3"
+  tells:
+    - Groups of two or three numbers, where one of them can get large.
+    - The puzzle mentions or shows a book, a page, a song or a document.
+  try: Read the numbers as page, line and word (or word and letter) in the text the puzzle points to.
+  track: classical
+
+- id: binary
+  name: Binary
+  group: two-symbols
+  example: "01001000 01101001"
+  tells:
+    - Only 0 and 1, usually in groups of 8.
+    - Sometimes two other symbols stand in for 0 and 1, like light and dark squares.
+  try: Read each group of 8 as a number, then look it up as ASCII. 01000001 is 65, which is A.
+  track: encodings
+
+- id: morse
+  name: Morse code
+  group: two-symbols
+  example: ".... . .-.. .-.. ---"
+  tells:
+    - Dots and dashes, or any two things of different lengths, with gaps between letters.
+    - Beeps, flashes, long and short marks, blinking lights in a video.
+  try: "E is one dot, T is one dash. Find the separators first: a short gap between letters, a longer one between words."
+  track: encodings
+
+- id: hex
+  name: Hexadecimal
+  group: mixed
+  example: "48 65 6C 6C 6F"
+  tells:
+    - Only 0–9 and A–F.
+    - Often in pairs. Lots of 6s and 7s means lowercase text.
+  try: Read each pair as one byte and look it up as ASCII. 41 is A, 61 is a.
+  track: encodings
+
+- id: base64
+  name: Base64
+  group: mixed
+  example: "SGVsbG8gd29ybGQ="
+  tells:
+    - Upper and lowercase letters, digits, and maybe + and /.
+    - Ends with one or two = signs (not always).
+    - Length is a multiple of 4.
+  try: Decode it as Base64. If the result is still gibberish, it may be decoded twice, or hide something else.
+  track: encodings
+
+- id: base32
+  name: Base32
+  group: mixed
+  example: "JBSWY3DPEE======"
+  tells:
+    - Capital letters and the digits 2 to 7 only. No 0, 1, 8 or 9.
+    - Often a run of = signs at the end.
+  try: Decode it as Base32.
+  track: encodings
+
+- id: hash
+  name: Hash
+  group: mixed
+  example: "5d41402abc4b2a76b9719d911017c592"
+  tells:
+    - Hex characters in one block of a fixed length. 32 characters is MD5, 40 is SHA-1, 64 is SHA-256.
+    - Nothing in the puzzle tells you how to reverse it, because you can't.
+  try: "A hash can't be decoded, only matched. Search for it online, or hash your guesses and compare: this one is the MD5 of \"hello\"."
+  track: computers
+
+- id: braille
+  name: Braille
+  group: pictures
+  example: "⠓⠑⠇⠇⠕"
+  tells:
+    - Cells of up to six dots, two columns of three.
+    - Raised bumps, dots in a grid, or six-light patterns.
+  try: Look up each cell in a Braille chart. A number sign in front means the next letters are digits.
+  track: encodings
+
+- id: pigpen
+  name: Pigpen cipher
+  group: pictures
+  example: "Shapes made of right angles and V's, some with a dot inside."
+  tells:
+    - Symbols built from parts of a tic-tac-toe grid and an X.
+    - Some symbols are the same shape with and without a dot.
+  try: "Draw two # grids and two X's. Fill in A–I, then J–R with dots, then S–V, then W–Z with dots. Each symbol is the shape of its letter's cell."
+  track: classical
+
+- id: semaphore
+  name: Flag semaphore
+  group: pictures
+  example: "Figures holding two flags or arms at fixed angles."
+  tells:
+    - Two arms or lines from a centre point, at one of eight angles each.
+    - Stick figures, clock hands or flags in poses that repeat.
+  try: Look up each pair of positions in a semaphore chart. If nothing reads, mirror the figures; it's easy to read them from the wrong side.
+  track: encodings
